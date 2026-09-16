@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Masuk Administrator — Japakeh Post CMS</title>
+  <meta name="description" content="Sistem Manajemen Konten Editorial Resmi Japakeh Post — PT Japakeh Media Nusantara">
+  <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../assets/js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/auth-guard.js"></script>
+</head>
+<body class="bg-[#F5F5F5] min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Top Simple Brand Strip -->
+  <header class="bg-[#0B0B0B] border-b border-gray-800 py-3 px-6">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <a href="../index.html" class="flex items-center space-x-2 text-white text-xs font-medium hover:text-buser-red transition-colors">
+          <svg class="w-4 h-4 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span>Kunjungi Portal Publik Japakeh Post</span>
+        </a>
+      </div>
+      <div class="text-gray-400 text-xs font-mono hidden sm:block">
+        PORTAL CMS REDAKSI v2.4
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Login Card Container -->
+  <main class="flex-1 flex items-center justify-center p-4 sm:p-8">
+    <div class="w-full max-w-md">
+      
+      <!-- Login Card -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-xl overflow-hidden">
+        <!-- Card Header with Brand Pattern -->
+        <div class="bg-[#0B0B0B] p-6 sm:p-8 text-center relative border-b-4 border-b-buser-red">
+          <div class="flex items-center justify-center space-x-3 mb-4">
+            <img src="../assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-12 w-auto object-contain">
+            <div class="flex flex-col items-start justify-center">
+              <div class="flex items-center space-x-1.5 leading-none">
+                <span class="text-white font-black text-2xl tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+                <span class="bg-buser-red text-white text-xs font-black px-1.5 py-0.5 rounded-sm tracking-wider uppercase">POST</span>
+              </div>
+              <span class="text-[8.5px] text-gray-400 font-semibold tracking-widest uppercase mt-1 whitespace-nowrap">CEPAT, AKURAT, TERPERCAYA</span>
+            </div>
+          </div>
+          <p class="text-xs font-semibold tracking-wider text-gray-300 uppercase">
+            Sistem Editorial & Content Management
+          </p>
+          <div class="mt-2 text-[11px] text-gray-400 font-medium">
+            PT Japakeh Media Nusantara
+          </div>
+        </div>
+
+        <!-- Form Body -->
+        <div class="p-6 sm:p-8">
+          <div class="mb-6 text-center">
+            <h1 class="text-xl font-bold text-gray-900 tracking-tight">Selamat Datang Kembali</h1>
+            <p class="text-xs text-gray-500 mt-1">Silakan masukkan kredensial akun redaksi Anda</p>
+          </div>
+
+          <!-- Alert Mock -->
+          <div id="login-alert" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-start gap-2">
+            <svg class="w-4 h-4 shrink-0 mt-0.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span id="login-alert-text">Email atau password yang Anda masukkan tidak sesuai.</span>
+          </div>
+
+          <form id="login-form" class="space-y-4">
+            <!-- Email / Username -->
+            <div>
+              <label for="email" class="block text-xs font-semibold text-gray-700 mb-1.5">
+                Email atau Username Redaksi
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  id="email" 
+                  name="email" 
+                  value="alb4hri@gmail.com" 
+                  required 
+                  class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white transition-all"
+                  placeholder="alb4hri@gmail.com">
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="password" class="block text-xs font-semibold text-gray-700">
+                  Kata Sandi
+                </label>
+                <a href="#" id="btn-forgot-password" class="text-xs text-buser-red hover:underline font-medium">
+                  Lupa Password?
+                </a>
+              </div>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </div>
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  value="Japakeh#2026" 
+                  required 
+                  class="w-full pl-9 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white transition-all"
+                  placeholder="Masukkan kata sandi">
+                <button 
+                  type="button" 
+                  id="toggle-password" 
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                  aria-label="Tampilkan Password">
+                  <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Session Security & Timeout Notice -->
+            <div class="flex items-center justify-between pt-1 bg-gray-50 p-2.5 rounded-lg border border-gray-200 text-xs">
+              <div class="flex items-center space-x-2 text-gray-700">
+                <svg class="w-4 h-4 text-buser-red shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-medium">Batas Waktu Sesi Aktif</span>
+              </div>
+              <span class="text-[11px] font-semibold text-gray-600 bg-white px-2 py-0.5 rounded border border-gray-200">Maks. 2 Jam / Inaktif 30 Mnt</span>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="pt-2">
+              <button 
+                type="submit" 
+                id="btn-login"
+                class="w-full py-2.5 px-4 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-sm rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2">
+                <span>Masuk ke Dashboard</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <!-- Quick Test Credentials helper -->
+          <div class="mt-6 pt-4 border-t border-gray-100 bg-gray-50 -mx-6 -mb-6 p-4 text-center rounded-b-xl">
+            <p class="text-[11px] text-gray-500 font-medium">
+              Akses Cepat: <span class="font-bold text-gray-800">alb4hri@gmail.com</span> &bull; Sandi: <span class="font-mono font-semibold text-buser-red">Japakeh#2026</span> (Klik "Masuk ke Dashboard" untuk langsung masuk)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Notice -->
+      <div class="mt-6 text-center space-y-1">
+        <p class="text-xs text-gray-500 flex items-center justify-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+          Sistem Terenkripsi SSL 256-bit • Akses Khusus Redaksi
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Minimal Corporate Footer -->
+  <footer class="bg-white border-t border-gray-200 py-4 px-6 text-center text-xs text-gray-500">
+    <div class="max-w-4xl mx-auto space-y-1">
+      <p class="font-semibold text-gray-700">
+        Japakeh Post — PT Japakeh Media Nusantara
+      </p>
+      <p class="text-[11px] text-gray-400">
+        Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Kec. Darul Imarah, Kab. Aceh Besar, Aceh &nbsp;•&nbsp; WhatsApp: 082165071114
+      </p>
+      <p class="text-[11px] text-gray-400">
+        © 2026 Japakeh Post. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/admin.js"></script>
+  <script>
+    // Password toggle
+    const toggleBtn = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    toggleBtn.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      if (type === 'text') {
+        eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+        `;
+      } else {
+        eyeIcon.innerHTML = `
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        `;
+      }
+    });
+
+    // Cek parameter URL untuk notifikasi sesi expired
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('expired')) {
+      const alertBox = document.getElementById('login-alert');
+      const alertText = document.getElementById('login-alert-text');
+      if (alertBox && alertText) {
+        alertText.textContent = 'Sesi Anda telah kedaluwarsa karena batas waktu (maksimal 2 jam atau tidak aktif selama 30 menit). Silakan masuk kembali.';
+        alertBox.classList.remove('hidden');
+      }
+    }
+
+    // Form submit
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btn-login');
+      const alertBox = document.getElementById('login-alert');
+      const alertText = document.getElementById('login-alert-text');
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        if (alertBox && alertText) {
+          alertText.textContent = 'Email dan kata sandi wajib diisi.';
+          alertBox.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (alertBox) alertBox.classList.add('hidden');
+
+      const originalBtnHtml = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Memverifikasi...</span>
+      `;
+
+      try {
+        const api = window.JapakehPostAPI || window.BuserInfoAPI;
+        const res = await api.login(email, password);
+        if (res && res.status === 'success') {
+          showToast('success', 'Login Berhasil', 'Mengarahkan ke Dashboard Editorial...');
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 600);
+        } else {
+          const errMsg = (res && res.message) ? res.message : 'Email atau kata sandi tidak valid.';
+          if (alertBox && alertText) {
+            alertText.textContent = errMsg;
+            alertBox.classList.remove('hidden');
+          }
+          showToast('error', 'Login Gagal', errMsg);
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+        }
+      } catch (err) {
+        if (alertBox && alertText) {
+          alertText.textContent = 'Terjadi kesalahan sistem saat menghubungi server login.';
+          alertBox.classList.remove('hidden');
+        }
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+    });
+
+    // Forgot password handler
+    document.getElementById('btn-forgot-password').addEventListener('click', (e) => {
+      e.preventDefault();
+      confirmAction({
+        title: 'Pemulihan Akun Redaksi',
+        message: 'Tautan reset password akan dikirimkan ke email terdaftar Anda. Lanjutkan?',
+        confirmText: 'Kirim Tautan',
+        type: 'primary',
+        onConfirm: () => {
+          showToast('info', 'Email Terkirim', 'Instruksi reset password telah dikirim ke alb4hri@gmail.com.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

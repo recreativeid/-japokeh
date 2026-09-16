@@ -1,0 +1,11 @@
+# Pass Authorization Header to PHP on Apache / XAMPP / FastCGI
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Authorization, X-Token, X-Requested-With"
+</IfModule>

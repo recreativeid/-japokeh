@@ -1,0 +1,96 @@
+# ==============================================================================
+# JAPAKEH POST Portal Berita - Git Ignore Configuration
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Environment & Sensitive Credentials
+# ------------------------------------------------------------------------------
+.env
+.env.*
+*.env
+backend_ci4/.env
+backend_ci4/env
+!.env.example
+!backend_ci4/.env.example
+
+# ------------------------------------------------------------------------------
+# 2. User Uploaded Files (Dynamic Media)
+# ------------------------------------------------------------------------------
+/assets/images/berita/uploads/*
+!/assets/images/berita/uploads/.gitkeep
+/uploads/*
+!/uploads/.gitkeep
+
+# ------------------------------------------------------------------------------
+# 3. Backend & CodeIgniter 4 Writable Directory
+# ------------------------------------------------------------------------------
+backend_ci4/writable/
+writable/
+*.cache
+
+# ------------------------------------------------------------------------------
+# 4. Dependencies (Composer & Node/NPM)
+# ------------------------------------------------------------------------------
+vendor/
+backend_ci4/vendor/
+composer.phar
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ------------------------------------------------------------------------------
+# 5. Logs & Error Files
+# ------------------------------------------------------------------------------
+*.log
+error_log
+backend_ci4/writable/logs/
+
+# ------------------------------------------------------------------------------
+# 6. Database Backups & Dumps
+# ------------------------------------------------------------------------------
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite3
+*.db
+!database_mysql.sql
+
+# ------------------------------------------------------------------------------
+# 7. Operating System Files
+# ------------------------------------------------------------------------------
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# ------------------------------------------------------------------------------
+# 8. IDE & Code Editors
+# ------------------------------------------------------------------------------
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
+*.tmp
+*.temp
+
+# VS Code (ignore local cache/workspace state, preserve team configs)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

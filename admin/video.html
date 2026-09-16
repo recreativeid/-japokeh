@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Manajemen Video — Japakeh Post CMS</title>
+  <meta name="description" content="Manajemen Video Berita YouTube dan Caption Portal Japakeh Post">
+  <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../assets/js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/auth-guard.js"></script>
+</head>
+<body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
+
+  <!-- Mobile Sidebar Overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-200 lg:hidden"></div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0B0B0B] text-gray-300 flex flex-col justify-between transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0 lg:static border-r border-gray-800">
+    <div>
+      <div class="h-16 flex items-center justify-between px-5 border-b border-gray-800">
+        <a href="index.html" class="flex items-center space-x-2.5">
+          <img src="../assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-9 w-auto object-contain shrink-0">
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center space-x-1 leading-none">
+              <span class="text-white font-black text-base tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+              <span class="bg-buser-red text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm tracking-wider uppercase">POST</span>
+            </div>
+            <span class="text-[7.5px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5 whitespace-nowrap">PANEL REDAKSI</span>
+          </div>
+        </a>
+        <button id="sidebar-close-btn" class="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="py-4 px-3 space-y-1 overflow-y-auto max-h-[calc(100vh-175px)] sidebar-scroll">
+        <div class="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Menu Editorial</div>
+        <a href="index.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="berita.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <span>Berita</span>
+        </a>
+        <a href="kategori.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          <span>Kategori</span>
+        </a>
+        <a href="penulis.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          <span>Penulis</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Profil Redaksi</span>
+        </a>
+        <a href="media.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Media</span>
+        </a>
+        <!-- MENU VIDEO (ACTIVE) -->
+        <a href="video.html" class="nav-item active">
+          <svg class="w-4 h-4 mr-3 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span>Video</span>
+        </a>
+
+        <a href="iklan.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
+          <span>Iklan & Ads</span>
+        </a>
+        <a href="komentar.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="flex-1">Komentar</span>
+          <span class="px-1.5 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-400 rounded">5</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Sistem</div>
+        <a href="pengguna.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Pengguna</span>
+        </a>
+        <a href="pengaturan.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Bottom Profile -->
+    <div class="p-3 border-t border-gray-800 bg-[#111111]">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+        <a href="profil.html" class="flex items-center space-x-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+          <div class="user-display-avatar w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shrink-0 ring-2 ring-red-500/30">
+            RD
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="user-display-name text-xs font-semibold text-white truncate">Pemimpin Redaksi</div>
+            <div class="user-display-role text-[10px] text-gray-400 truncate">Administrator</div>
+          </div>
+        </a>
+        <a href="login.html" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Top Navbar -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-3">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Manajemen Video YouTube</h1>
+          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola video liputan YouTube dengan caption untuk ditampilkan di portal portal client</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="../internasional.html?cat=video" target="_blank" class="hidden sm:inline-flex items-center text-xs font-semibold text-gray-600 hover:text-buser-red px-3 py-1.5 border border-gray-200 rounded-lg hover:border-buser-red transition-colors">
+          <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Lihat di Portal
+        </a>
+        <button type="button" id="btn-add-video" class="btn btn-primary btn-sm flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Tambah Video</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      
+      <!-- STATS KPI CARDS -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Total Video Terdaftar</p>
+            <h3 class="text-2xl font-black text-gray-900 mt-1" id="stat-total-video">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          </div>
+        </div>
+
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">Video Aktif (Tayang)</p>
+            <h3 class="text-2xl font-black text-emerald-700 mt-1" id="stat-active-video">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        </div>
+
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Integrasi YouTube</p>
+            <h3 class="text-xs font-semibold text-gray-800 mt-1 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Auto Embed & Thumbnail
+            </h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-black text-xs">
+            YT
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH TOOLBAR -->
+      <div class="cms-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3 flex-1">
+          <!-- Search input -->
+          <div class="relative min-w-[240px] flex-1 sm:flex-initial">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input 
+              type="text" 
+              id="video-search-input" 
+              placeholder="Cari judul atau caption video..." 
+              class="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+          </div>
+
+          <!-- Status Filter -->
+          <select id="video-status-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800">
+            <option value="all">Semua Status</option>
+            <option value="active">Hanya Aktif</option>
+            <option value="inactive">Hanya Nonaktif</option>
+          </select>
+        </div>
+
+        <button type="button" id="btn-refresh-list" class="btn btn-secondary btn-sm flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Segarkan Data</span>
+        </button>
+      </div>
+
+      <!-- VIDEO CARDS / LIST CONTAINER -->
+      <div id="video-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Will be loaded dynamically via JavaScript -->
+        <div class="col-span-full p-12 text-center text-gray-500 cms-card">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-red-600 border-t-transparent mb-2"></div>
+          <p class="text-xs">Memuat daftar video dari server...</p>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- =========================================================================
+       MODAL FORM TAMBAH / EDIT VIDEO YOUTUBE
+       ========================================================================= -->
+  <div id="modal-video-form" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-video-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0 border-b border-gray-800">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 bg-buser-red rounded-full"></span>
+          <h3 class="text-sm sm:text-base font-bold text-white tracking-wide" id="modal-video-title">
+            Tambah Video YouTube Baru
+          </h3>
+        </div>
+        <button type="button" id="btn-close-video-modal" class="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable Form) -->
+      <form id="form-video" class="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+        <input type="hidden" id="video-id-input" value="">
+
+        <!-- Input Link YouTube -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Link YouTube <span class="text-red-500">*</span>
+          </label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="video-url-input" 
+              required
+              placeholder="Contoh: https://www.youtube.com/watch?v=ScMzIvxBSi4 atau https://youtu.be/..." 
+              class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white font-mono">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-500">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500">
+            Mendukung link biasa (<code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">watch?v=...</code>), link singkat (<code class="bg-gray-100 px-1 py-0.5 rounded text-gray-700">youtu.be/...</code>), Shorts, maupun embed.
+          </p>
+        </div>
+
+        <!-- Live Video Preview Card inside Modal -->
+        <div class="space-y-1.5">
+          <label class="block font-semibold text-gray-700">Pratinjau Pemutar YouTube:</label>
+          <div id="modal-preview-box" class="w-full aspect-video bg-black rounded-lg overflow-hidden border border-gray-300 relative flex items-center justify-center text-center p-4">
+            <div id="modal-preview-placeholder" class="text-gray-400 space-y-1">
+              <svg class="w-8 h-8 mx-auto text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <p class="text-[11px]">Tempelkan link YouTube di atas untuk melihat pratinjau video langsung di sini.</p>
+            </div>
+            <iframe 
+              id="modal-preview-iframe" 
+              class="w-full h-full border-0 hidden" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Input Judul Video -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Judul Video Berita <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="video-title-input" 
+            required
+            placeholder="Contoh: Investigasi Khusus: Pengungkapan Fakta Lapangan Sindikat Digital" 
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white font-semibold">
+        </div>
+
+        <!-- Input Caption Video (Requirement Utama) -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gray-800">
+              Caption / Keterangan Video <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10px] text-red-600 font-semibold">Tampil di portal client</span>
+          </div>
+          <textarea 
+            id="video-caption-input" 
+            rows="4" 
+            required
+            placeholder="Tuliskan narasi caption atau ringkasan penjelasan video ini. Teks ini akan ditampilkan jelas di bawah/samping video pada halaman beranda portal berita..." 
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white leading-relaxed"></textarea>
+        </div>
+
+        <!-- Status Tampilkan -->
+        <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-gray-800 block">Status Publikasi</span>
+            <span class="text-[11px] text-gray-500">Tampilkan video ini di halaman depan (setelah Berita Terkini)</span>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="video-active-input" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-buser-red"></div>
+          </label>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="pt-4 border-t border-gray-200 flex items-center justify-end space-x-2">
+          <button type="button" id="btn-cancel-video-modal" class="btn btn-secondary btn-sm">
+            Batal
+          </button>
+          <button type="submit" id="btn-save-video" class="btn btn-primary btn-sm flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Simpan Video</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL PREVIEW DETAIL PLAYER
+       ========================================================================= -->
+  <div id="modal-watch-player" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-watch-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative bg-[#0E0E0E] text-white w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col border border-gray-800">
+      <div class="h-12 px-4 bg-black flex items-center justify-between border-b border-gray-800">
+        <h4 id="watch-modal-title" class="text-xs sm:text-sm font-bold truncate pr-4 text-gray-200">Pratinjau Video</h4>
+        <button type="button" id="btn-close-watch-modal" class="p-1 rounded text-gray-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="aspect-video w-full bg-black">
+        <iframe id="watch-modal-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="p-4 bg-[#141414] border-t border-gray-800 space-y-2">
+        <div class="text-[11px] font-bold uppercase tracking-wider text-red-500">Caption Video:</div>
+        <p id="watch-modal-caption" class="text-xs text-gray-300 leading-relaxed bg-black/40 p-3 rounded border-l-2 border-red-600"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- SCRIPTS -->
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    // State
+    let allVideos = [];
+    let isEditing = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadVideoList();
+      bindEvents();
+    });
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = `px-4 py-3 rounded-lg shadow-xl text-xs font-semibold flex items-center gap-2 pointer-events-auto transition-all duration-300 transform translate-y-4 opacity-0 ${
+        type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'
+      }`;
+      toast.innerHTML = `
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${
+          type === 'success' ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'
+        }"/></svg>
+        <span>${message}</span>
+      `;
+      const container = document.getElementById('toast-container');
+      container.appendChild(toast);
+      
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    async function loadVideoList() {
+      const listContainer = document.getElementById('video-list-container');
+      try {
+        const res = await window.BuserInfoAPI.getVideos();
+        allVideos = res.videos || [];
+
+        updateKPIs(allVideos);
+        filterAndRenderVideos();
+      } catch (err) {
+        console.error('Error load video:', err);
+        listContainer.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-white rounded-xl border border-red-200">
+            <p class="text-sm font-bold text-red-600">Gagal mengambil data video dari server.</p>
+            <p class="text-xs text-gray-500 mt-1">${err.message}</p>
+            <button onclick="loadVideoList()" class="mt-3 btn btn-secondary btn-sm">Coba Lagi</button>
+          </div>
+        `;
+      }
+    }
+
+    function updateKPIs(videos) {
+      const totalEl = document.getElementById('stat-total-video');
+      const activeEl = document.getElementById('stat-active-video');
+      if (totalEl) totalEl.textContent = videos.length;
+      if (activeEl) {
+        const activeCount = videos.filter(v => v.is_active).length;
+        activeEl.textContent = activeCount;
+      }
+    }
+
+    function filterAndRenderVideos() {
+      const searchVal = (document.getElementById('video-search-input').value || '').toLowerCase().trim();
+      const statusVal = document.getElementById('video-status-filter').value;
+      const listContainer = document.getElementById('video-list-container');
+
+      let filtered = allVideos.filter(v => {
+        const matchSearch = !searchVal || 
+          (v.title && v.title.toLowerCase().includes(searchVal)) || 
+          (v.caption && v.caption.toLowerCase().includes(searchVal));
+
+        const matchStatus = statusVal === 'all' || 
+          (statusVal === 'active' && v.is_active) || 
+          (statusVal === 'inactive' && !v.is_active);
+
+        return matchSearch && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="col-span-full p-12 text-center bg-white rounded-xl border border-gray-200">
+            <svg class="w-12 h-12 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <p class="text-sm font-bold text-gray-700">Tidak ada video yang sesuai dengan filter.</p>
+            <p class="text-xs text-gray-400 mt-1">Silakan tambah video baru atau ubah kata kunci pencarian.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(v => {
+        return `
+          <div class="cms-card overflow-hidden flex flex-col justify-between group border hover:border-buser-red transition-all shadow-sm">
+            <div>
+              <!-- Video Preview Thumbnail Header -->
+              <div class="relative aspect-video bg-black overflow-hidden group/thumb cursor-pointer" onclick="openWatchModal(${v.id_video})">
+                <img src="${v.thumbnail_url}" alt="${v.title}" class="w-full h-full object-cover group-hover/thumb:scale-105 transition-transform duration-300" onerror="this.src='https://img.youtube.com/vi/${v.youtube_id}/0.jpg'" />
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover/thumb:bg-black/20 transition-colors">
+                  <div class="w-12 h-12 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover/thumb:scale-110 transition-transform">
+                    <svg class="w-6 h-6 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div class="absolute top-2 left-2 flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 text-[10px] font-black rounded uppercase ${v.is_active ? 'bg-emerald-600 text-white' : 'bg-gray-700 text-gray-200'}">
+                    ${v.is_active ? 'Aktif di Client' : 'Nonaktif'}
+                  </span>
+                </div>
+                <div class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">
+                  YouTube: ${v.youtube_id}
+                </div>
+              </div>
+
+              <!-- Content Body -->
+              <div class="p-4 space-y-3">
+                <h4 class="font-bold text-sm text-gray-900 leading-snug line-clamp-2 hover:text-buser-red transition-colors">
+                  ${v.title}
+                </h4>
+
+                <!-- Caption Box -->
+                <div class="bg-gray-50 border-l-2 border-buser-red p-2.5 rounded-r">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Caption / Keterangan:</span>
+                  <p class="text-xs text-gray-700 leading-relaxed line-clamp-3">
+                    ${v.caption || '<span class="italic text-gray-400">Tidak ada caption.</span>'}
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-gray-400 pt-1">
+                  <span>Ditambahkan: ${new Date(v.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                  <a href="${v.watch_url}" target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-700 flex items-center gap-1 font-semibold">
+                    <span>Link YouTube</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+              <button type="button" onclick="openWatchModal(${v.id_video})" class="text-xs font-semibold text-gray-700 hover:text-buser-red flex items-center gap-1">
+                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>Tonton</span>
+              </button>
+
+              <div class="flex items-center space-x-2">
+                <button type="button" onclick="openEditModal(${v.id_video})" class="px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  <span>Edit</span>
+                </button>
+                <button type="button" onclick="confirmDeleteVideo(${v.id_video}, '${v.title.replace(/'/g, "\\'")}')" class="px-2.5 py-1 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 rounded transition-colors flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  <span>Hapus</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+    }
+
+    function bindEvents() {
+      // Tombol tambah video
+      document.getElementById('btn-add-video').addEventListener('click', () => openAddModal());
+
+      // Search & filter
+      document.getElementById('video-search-input').addEventListener('input', () => filterAndRenderVideos());
+      document.getElementById('video-status-filter').addEventListener('change', () => filterAndRenderVideos());
+      document.getElementById('btn-refresh-list').addEventListener('click', () => loadVideoList());
+
+      // Close modal
+      document.getElementById('btn-close-video-modal').addEventListener('click', () => closeVideoModal());
+      document.getElementById('btn-cancel-video-modal').addEventListener('click', () => closeVideoModal());
+      document.getElementById('modal-video-backdrop').addEventListener('click', () => closeVideoModal());
+
+      // Close watch modal
+      document.getElementById('btn-close-watch-modal').addEventListener('click', () => closeWatchModal());
+      document.getElementById('modal-watch-backdrop').addEventListener('click', () => closeWatchModal());
+
+      // Live YouTube URL preview in modal form
+      const urlInput = document.getElementById('video-url-input');
+      urlInput.addEventListener('input', () => updateModalLivePreview());
+      urlInput.addEventListener('paste', () => setTimeout(updateModalLivePreview, 100));
+
+      // Submit Form
+      document.getElementById('form-video').addEventListener('submit', handleSaveVideo);
+    }
+
+    function updateModalLivePreview() {
+      const val = document.getElementById('video-url-input').value.trim();
+      const iframe = document.getElementById('modal-preview-iframe');
+      const placeholder = document.getElementById('modal-preview-placeholder');
+
+      const ytId = window.BuserInfoAPI.extractYouTubeId(val);
+      if (ytId) {
+        iframe.src = `https://www.youtube-nocookie.com/embed/${ytId}?rel=0`;
+        iframe.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        iframe.src = '';
+        iframe.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    function openAddModal() {
+      isEditing = false;
+      document.getElementById('modal-video-title').textContent = 'Tambah Video YouTube Baru';
+      document.getElementById('video-id-input').value = '';
+      document.getElementById('video-url-input').value = '';
+      document.getElementById('video-title-input').value = '';
+      document.getElementById('video-caption-input').value = '';
+      document.getElementById('video-active-input').checked = true;
+
+      updateModalLivePreview();
+      document.getElementById('modal-video-form').classList.remove('hidden');
+    }
+
+    function openEditModal(id) {
+      const v = allVideos.find(item => item.id_video == id);
+      if (!v) return;
+
+      isEditing = true;
+      document.getElementById('modal-video-title').textContent = 'Edit Video YouTube';
+      document.getElementById('video-id-input').value = v.id_video;
+      document.getElementById('video-url-input').value = v.youtube_url;
+      document.getElementById('video-title-input').value = v.title;
+      document.getElementById('video-caption-input').value = v.caption || '';
+      document.getElementById('video-active-input').checked = v.is_active;
+
+      updateModalLivePreview();
+      document.getElementById('modal-video-form').classList.remove('hidden');
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('modal-video-form');
+      modal.classList.add('hidden');
+      document.getElementById('modal-preview-iframe').src = '';
+    }
+
+    function openWatchModal(id) {
+      const v = allVideos.find(item => item.id_video == id);
+      if (!v) return;
+
+      document.getElementById('watch-modal-title').textContent = v.title;
+      document.getElementById('watch-modal-caption').textContent = v.caption || 'Tidak ada caption.';
+      document.getElementById('watch-modal-iframe').src = `https://www.youtube-nocookie.com/embed/${v.youtube_id}?autoplay=1&rel=0`;
+      document.getElementById('modal-watch-player').classList.remove('hidden');
+    }
+
+    function closeWatchModal() {
+      const modal = document.getElementById('modal-watch-player');
+      modal.classList.add('hidden');
+      document.getElementById('watch-modal-iframe').src = '';
+    }
+
+    async function handleSaveVideo(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('video-id-input').value;
+      const youtube_url = document.getElementById('video-url-input').value.trim();
+      const title = document.getElementById('video-title-input').value.trim();
+      const caption = document.getElementById('video-caption-input').value.trim();
+      const is_active = document.getElementById('video-active-input').checked;
+
+      const ytId = window.BuserInfoAPI.extractYouTubeId(youtube_url);
+      if (!ytId) {
+        alert('Link YouTube tidak valid. Mohon masukkan link YouTube yang valid (contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/...)');
+        return;
+      }
+
+      const payload = { title, youtube_url, caption, is_active };
+      const saveBtn = document.getElementById('btn-save-video');
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `<span>Menyimpan...</span>`;
+
+      try {
+        let res;
+        if (isEditing && id) {
+          res = await window.BuserInfoAPI.updateVideo(id, payload);
+        } else {
+          res = await window.BuserInfoAPI.createVideo(payload);
+        }
+
+        if (res.status === 'success') {
+          showToast(isEditing ? 'Video berhasil diperbarui!' : 'Video baru berhasil ditambahkan!');
+          closeVideoModal();
+          await loadVideoList();
+        } else {
+          alert('Gagal menyimpan video: ' + (res.message || 'Terjadi kesalahan'));
+        }
+      } catch (err) {
+        alert('Gagal menghubungi server: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          <span>Simpan Video</span>
+        `;
+      }
+    }
+
+    async function confirmDeleteVideo(id, title) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus video ini?\n\n"${title}"`)) {
+        return;
+      }
+
+      try {
+        const res = await window.BuserInfoAPI.deleteVideo(id);
+        if (res.status === 'success') {
+          showToast('Video berhasil dihapus!', 'success');
+          await loadVideoList();
+        } else {
+          alert('Gagal menghapus video: ' + (res.message || 'Terjadi kesalahan'));
+        }
+      } catch (err) {
+        alert('Gagal menghubungi server: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>

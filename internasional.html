@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Berita Internasional — Japakeh Post</title>
+  <meta name="description" content="Kumpulan berita internasional terkini seputar dinamika geopolitik, diplomasi, krisis global, konflik kawasan, dan perkembangan dunia terpercaya di Japakeh Post.">
+  <meta name="keywords" content="berita internasional, dunia, diplomasi, ktt, geopolitik, japakeh post">
+  <meta name="author" content="PT Japakeh Media Nusantara">
+  <link rel="icon" type="image/webp" href="assets/images/logo/favicon.webp">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/js/tailwind-config.js"></script>
+
+  <!-- Google Fonts & Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-[#F1F5F9] text-[#0F172A] antialiased flex flex-col min-h-screen font-sans">
+
+  <!-- ========================================================================
+       TOP NAVBAR / HEADER (Clean White & Midnight Slate #0F172A)
+       ======================================================================== -->
+  <header class="bg-white text-slate-900 sticky top-0 z-40 shadow-xs border-b border-slate-200">
+    <!-- TOP BAR: Logo, Desktop Search & Utilities -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Left: Hamburger (Mobile) & Brand Logo -->
+        <div class="flex items-center space-x-3">
+          <!-- Mobile Drawer Toggle Button -->
+          <button type="button" class="mobile-menu-btn md:hidden p-2 rounded-lg text-slate-700 hover:text-buser-red hover:bg-slate-100 transition-colors" aria-label="Buka Menu Navigasi">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Brand Logo: Favicon + Wordmark -->
+          <a href="index.html" class="flex items-center space-x-2.5 sm:space-x-3 shrink-0 group" aria-label="Japakeh Post Beranda">
+            <img src="assets/images/logo/favicon.webp" alt="Japakeh Post Logo" class="h-10 sm:h-12 w-auto object-contain shrink-0 group-hover:scale-105 transition-transform" />
+            <div class="flex flex-col justify-center">
+              <div class="flex items-center space-x-1.5 leading-none">
+                <span class="text-slate-950 font-black text-xl sm:text-2xl tracking-tight uppercase">JAPAKEH</span>
+                <span class="bg-buser-red text-white text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full tracking-wider uppercase shadow-xs">POST</span>
+              </div>
+              <span class="text-[8px] sm:text-[9px] text-slate-500 font-bold tracking-widest uppercase mt-1 whitespace-nowrap">CEPAT, AKURAT, TERPERCAYA</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Desktop Quick Search Bar (Modern Rounded) -->
+        <div class="hidden md:flex items-center flex-1 max-w-sm lg:max-w-md mx-8">
+          <form action="cari.html" method="GET" class="w-full relative">
+            <input type="text" name="q" placeholder="Cari topik atau berita terkini..." class="w-full bg-slate-50 text-xs text-slate-800 placeholder-slate-400 pl-4 pr-10 py-2.5 rounded-full border border-slate-200 focus:border-buser-red focus:bg-white focus:outline-none transition-all shadow-2xs" />
+            <button type="submit" class="absolute right-0 top-0 h-full px-3.5 text-slate-400 hover:text-buser-red transition-colors" aria-label="Cari">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right Utilities: Quick Search & Saved Bookmarks -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Quick Search Icon (Mobile) -->
+          <button type="button" class="open-search-modal-btn md:hidden p-2 rounded-full text-slate-600 hover:text-buser-red hover:bg-slate-100 transition-colors" aria-label="Cari Berita">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+
+          <!-- Bookmarks / Simpan Berita Button -->
+          <button type="button" class="open-bookmark-btn relative p-2 rounded-full text-slate-600 hover:text-buser-red hover:bg-slate-100 flex items-center transition-colors" title="Berita Tersimpan">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            <span class="bookmark-count-badge hidden absolute -top-0.5 -right-0.5 bg-buser-red text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- HORIZONTAL CATEGORY NAVIGATION BAR (Clean Light Sticky Track) -->
+    <div class="bg-white/95 backdrop-blur-md border-t border-slate-200 relative">
+      <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative flex items-center justify-center">
+        
+        <!-- Left Scroll Arrow (Desktop) -->
+        <button id="scroll-nav-left" class="hidden lg:flex absolute left-2 sm:left-4 items-center justify-center w-7 h-7 rounded-full bg-white shadow-md border border-slate-200 hover:bg-rose-50 hover:text-buser-red text-slate-700 z-10 transition-colors" aria-label="Geser Kiri">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- Scrollable Category Track -->
+        <nav id="category-scroll-nav" class="flex items-center justify-start md:justify-center space-x-1.5 sm:space-x-2 overflow-x-auto no-scrollbar py-2 text-xs font-bold uppercase tracking-wider flex-1 md:flex-initial scroll-smooth">
+          <a href="index.html" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Home</a>
+          <a href="internasional.html?cat=daerah" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Daerah</a>
+          <a href="internasional.html?cat=nasional" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Nasional</a>
+          <a href="internasional.html?cat=politik" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Politik</a>
+          <a href="internasional.html?cat=hukum" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Hukum</a>
+          <a href="internasional.html?cat=ekonomi" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Ekonomi</a>
+          <a href="internasional.html?cat=bisnis" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Bisnis</a>
+          <a href="internasional.html?cat=pendidikan" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Pendidikan</a>
+          <a href="internasional.html?cat=teknologi" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Teknologi</a>
+          <a href="internasional.html?cat=internasional" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Internasional</a>
+        </nav>
+
+        <!-- Tombol Titik/Garis Tiga untuk Kategori Tambahan (Opsional bila > 10 kategori) -->
+        <div id="category-more-container" class="relative shrink-0 ml-1.5 flex items-center">
+          <button id="category-more-btn" type="button" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red font-bold text-xs uppercase tracking-wider bg-slate-100 hover:border-slate-300 border border-slate-200 transition-colors shadow-2xs" aria-expanded="false" aria-haspopup="true" aria-label="Kategori Tambahan">
+            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+            <span class="text-[11px] font-bold">Lainnya</span>
+            <svg id="category-more-arrow" class="w-3 h-3 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <!-- Dropdown Menu -->
+          <div id="category-more-dropdown" class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fadeIn divide-y divide-slate-100">
+            <a href="internasional.html?cat=foto" class="cat-nav-link block px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors whitespace-nowrap">Foto</a>
+            <a href="internasional.html?cat=video" class="cat-nav-link block px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors whitespace-nowrap">Video</a>
+          </div>
+        </div>
+
+        <!-- Right Scroll Arrow (Desktop) -->
+        <button id="scroll-nav-right" class="hidden lg:flex absolute right-2 sm:right-4 items-center justify-center w-7 h-7 rounded-full bg-white shadow-md border border-slate-200 hover:bg-rose-50 hover:text-buser-red text-slate-700 z-10 transition-colors" aria-label="Geser Kanan">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- BRAND BORDER STRIPE -->
+    <div class="h-1 bg-gradient-to-r from-buser-red via-rose-600 to-slate-900 w-full" aria-hidden="true"></div>
+  </header>
+
+  <!-- BREADCRUMB & CATEGORY HEADER -->
+  <section class="bg-white border-b border-slate-200 py-6 px-3 sm:px-4 lg:px-6 shadow-2xs">
+    <div class="max-w-7xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center space-x-2 text-xs text-slate-500 mb-2.5">
+        <a href="index.html" class="hover:text-buser-red transition-colors font-medium">Home</a>
+        <span class="text-slate-300">/</span>
+        <span id="breadcrumb-category-name" class="text-buser-red font-bold">Internasional</span>
+      </nav>
+
+      <!-- Category Title & Description -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 id="category-page-title" class="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight flex items-center">
+            <span class="w-1.5 h-5 bg-buser-red rounded-full mr-2.5 inline-block"></span>
+            Berita Internasional
+          </h1>
+          <p id="category-page-desc" class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
+            Menyajikan perkembangan geopolitik dunia, dinamika hubungan multilateral, pertemuan diplomasi tingkat tinggi, serta krisis global aktual secara terpercaya dan berimbang.
+          </p>
+        </div>
+
+        <!-- Filter Sub-topics -->
+        <div class="flex flex-wrap gap-1.5 pt-2 sm:pt-0">
+          <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium">#KTTGlobal</span>
+          <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium">#Geopolitik</span>
+          <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium">#Diplomasi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTAINER (Desktop 70% Left Content, 30% Right Sidebar) -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8 flex-1 w-full">
+    <!-- SLOT IKLAN: HEADER LEADERBOARD -->
+    <div data-ad-slot="header" class="w-full mb-6"></div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+
+      <!-- LEFT COLUMN: MAIN CONTENT (~70% = 8 cols) -->
+      <div class="lg:col-span-8 space-y-6 sm:space-y-8">
+
+        <!-- FEATURED CATEGORY ARTICLE (HERO - Dinamis dari Database) -->
+        <article id="category-featured-card" class="bg-white border border-slate-200 rounded-2xl overflow-hidden news-card-hover group shadow-soft">
+          <!-- Diisi dinamis oleh category-live.js dari database PostgreSQL -->
+        </article>
+
+        <!-- SECTION HEADING: DAFTAR BERITA TERKINI KATEGORI -->
+        <div class="section-heading-bar justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
+            <h2 id="category-feed-title" class="text-base sm:text-lg font-black uppercase tracking-tight text-slate-900">
+              Daftar Berita Internasional Terkini
+            </h2>
+          </div>
+          <span class="text-xs text-slate-400 font-medium">Urut: Terbaru</span>
+        </div>
+
+        <!-- LIST OF LATEST CATEGORY NEWS -->
+        <div id="category-articles-list" class="space-y-4">
+          <!-- Diisi dinamis oleh category-live.js dari database PostgreSQL -->
+        </div>
+
+        <!-- PAGINATION UI COMPONENT -->
+        <nav class="flex items-center justify-center space-x-2 pt-6 pb-2" aria-label="Navigasi Halaman">
+          <span class="px-4 py-2 bg-buser-red text-white text-xs font-bold rounded-full shadow-xs">1</span>
+        </nav>
+
+      </div>
+
+      <!-- RIGHT COLUMN: SIDEBAR (~30% = 4 cols) -->
+      <aside class="lg:col-span-4 space-y-6">
+        
+        <!-- SIDEBAR: TRENDING SECTION -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-soft">
+          <div class="section-heading-bar mb-4 justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
+              <h2 class="text-base font-black uppercase tracking-tight text-slate-900">
+                Trending Kategori
+              </h2>
+            </div>
+            <span class="text-[10px] bg-rose-50 text-buser-red font-extrabold px-2.5 py-0.5 rounded-full">HOT</span>
+          </div>
+
+          <div class="divide-y divide-slate-100">
+            <!-- Diisi dinamis oleh category-live.js dari database PostgreSQL -->
+          </div>
+        </div>
+
+        <!-- SLOT IKLAN: SIDEBAR -->
+        <div data-ad-slot="sidebar" class="w-full"></div>
+
+        <!-- HOTLINE BOX -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-soft border-t-2 border-buser-red">
+          <span class="text-[10px] font-black uppercase text-buser-red tracking-wider">KONTRIBUSI KONTEN</span>
+          <h4 class="text-sm font-bold mt-1 mb-2">Punya Bahan Liputan Berita?</h4>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            Kirimkan naskah rilis pers, liputan daerah, atau informasi penting kepada meja redaksi kami.
+          </p>
+          <a href="mailto:alb4hri@gmail.com" class="inline-flex items-center bg-buser-red hover:bg-buser-redHover text-white text-xs font-bold px-4 py-2 rounded-full transition-all shadow-xs">
+            Kirim ke Redaksi &rarr;
+          </a>
+        </div>
+
+      </aside>
+
+    </div>
+
+    <!-- SLOT IKLAN: FOOTER BAWAH -->
+    <div data-ad-slot="footer" class="w-full mt-8"></div>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER (Modern Deep Midnight Slate #0F172A, Ruby Red, & Crisp White)
+       ======================================================================== -->
+  <footer class="bg-[#0F172A] text-slate-300 pt-6 sm:pt-8 pb-4 sm:pb-5 mt-8 sm:mt-10 relative border-t border-slate-800">
+    <!-- Top Brand Accent Stripe (Ruby & Slate) -->
+    <div class="brand-accent-stripe absolute top-0 left-0 right-0 h-1 flex" aria-hidden="true">
+      <div class="bg-buser-red flex-1"></div>
+      <div class="bg-slate-900 w-24"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 pb-6 border-b border-slate-800">
+        
+        <!-- BRAND & DESCRIPTION (4 cols) -->
+        <div class="lg:col-span-4 space-y-2.5">
+          <a href="index.html" class="inline-block" aria-label="Japakeh Post Beranda">
+            <img src="assets/images/logo/japakeh-logo.webp" alt="Japakeh Post" class="h-9 sm:h-10 w-auto object-contain" />
+          </a>
+          <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed text-justify">
+            Portal berita digital independen menyajikan laporan peristiwa daerah, nasional, politik, hukum, perekonomian, pendidikan, dan teknologi terkini secara cepat, akurat, dan terpercaya.
+          </p>
+          <div class="flex items-center space-x-2.5 pt-1">
+            <a href="https://wa.me/6282165071114" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center p-1.5 transition-all shadow-sm hover:scale-105 border border-slate-700/60" aria-label="WhatsApp" title="WhatsApp Japakeh Post">
+              <svg class="w-4 h-4" viewBox="0 0 48 48">
+                <path fill="#fff" d="M4.9,43.3l2.7-9.8C5.9,30.6,5,27.3,5,24C5,13.5,13.5,5,24,5c5.1,0,9.9,2,13.4,5.6C41,14.1,43,18.9,43,24c0,10.5-8.5,19-19,19c-3.2,0-6.3-0.8-9.1-2.3L4.9,43.3z"></path>
+                <path fill="#4caf50" d="M24,40c2.8,0,5.6-0.7,8-2.1l0.6-0.3l5.9,1.5l-1.6-5.8l0.4-0.6c1.5-2.5,2.4-5.4,2.4-8.7c0-8.8-7.2-16-16-16S8,15.2,8,24c0,3.3,0.9,6.2,2.4,8.7l0.4,0.6l-1.6,5.8l5.9-1.5l0.6,0.3C18.4,39.3,21.2,40,24,40z"></path>
+                <path fill="#fff" d="M33.1,28.6c-0.4-0.2-2.4-1.2-2.8-1.3c-0.4-0.2-0.6-0.2-0.9,0.2c-0.3,0.4-1.1,1.3-1.3,1.6c-0.2,0.2-0.5,0.3-0.9,0.1c-0.4-0.2-1.7-0.6-3.3-2c-1.2-1.1-2-2.4-2.3-2.8c-0.2-0.4,0-0.6,0.2-0.8c0.2-0.2,0.4-0.5,0.6-0.7c0.2-0.2,0.3-0.4,0.4-0.6c0.1-0.2,0.1-0.5,0-0.7c-0.1-0.2-0.9-2.2-1.2-3c-0.3-0.8-0.7-0.7-0.9-0.7c-0.2,0-0.5,0-0.7,0c-0.3,0-0.7,0.1-1.1,0.5c-0.4,0.4-1.4,1.4-1.4,3.4c0,2,1.5,4,1.7,4.2c0.2,0.3,2.9,4.5,7.1,6.3c1,0.4,1.8,0.7,2.4,0.9c1,0.3,1.9,0.3,2.7,0.2c0.8-0.1,2.4-1,2.8-1.9c0.4-0.9,0.4-1.7,0.3-1.9C33.7,28.9,33.5,28.8,33.1,28.6z"></path>
+              </svg>
+            </a>
+            <a href="mailto:alb4hri@gmail.com" class="w-8 h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center p-1.5 transition-all shadow-sm hover:scale-105 border border-slate-700/60" aria-label="Email" title="Email Redaksi Japakeh Post">
+              <svg class="w-4 h-4" viewBox="0 0 48 48">
+                <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"></path>
+                <path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"></path>
+                <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"></polygon>
+                <path fill="#c62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C8.132,7.551,5.638,8.134,4.608,10.053L3,12.298z"></path>
+                <path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341c1.744-1.308,4.238-0.725,5.268,1.194L45,12.298z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- INFORMASI PERUSAHAAN & LEGALITAS (3 cols) -->
+        <div class="lg:col-span-3 space-y-2 text-xs text-slate-300">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+            Informasi Perusahaan
+          </h3>
+          <div class="space-y-1">
+            <p class="font-bold text-white text-xs sm:text-sm">PT JAPAKEH MEDIA NUSANTARA</p>
+            <p class="text-[11px]"><span class="text-slate-400">Pimpinan:</span> <strong class="text-white">Al Bahri</strong></p>
+            <p class="text-[11px]"><span class="text-slate-400">Jenis Layanan:</span> <strong class="text-white">Portal Berita Siber & Multimedia</strong></p>
+            <p class="text-[10.5px] text-slate-400 pt-0.5 leading-relaxed text-justify">Beroperasi mematuhi Kode Etik Jurnalistik dan UU Pokok Pers No. 40 Tahun 1999.</p>
+          </div>
+        </div>
+
+        <!-- ALAMAT KANTOR REDAKSI (3 cols) -->
+        <div class="lg:col-span-3 space-y-2 text-xs text-slate-300">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+            Kantor Redaksi
+          </h3>
+          <address class="not-italic space-y-0.5 leading-snug text-slate-300 text-[11px] text-justify">
+            <p class="font-semibold text-white">Gedung PT Japakeh Media Nusantara</p>
+            <p>Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh</p>
+            <p>Kec. Darul Imarah, Kab. Aceh Besar, Aceh</p>
+            <div class="pt-1.5 mt-1 border-t border-slate-800 space-y-0.5">
+              <p class="flex items-center">
+                <span class="text-slate-400 w-14">WhatsApp:</span>
+                <a href="https://wa.me/6282165071114" class="text-slate-200 hover:text-buser-red font-mono hover:underline font-bold transition-colors">082165071114</a>
+              </p>
+              <p class="flex items-center">
+                <span class="text-slate-400 w-14">Email:</span>
+                <a href="mailto:alb4hri@gmail.com" class="text-rose-400 font-mono hover:underline font-bold">alb4hri@gmail.com</a>
+              </p>
+            </div>
+          </address>
+        </div>
+
+        <!-- FOOTER NAVIGATION (2 cols) -->
+        <div class="lg:col-span-2 space-y-2 text-xs">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+            Navigasi
+          </h3>
+          <ul class="space-y-1 text-[11px] text-slate-400">
+            <li><a href="tentang.html" class="hover:text-white transition-colors">Tentang Kami</a></li>
+            <li><a href="tentang.html#redaksi" class="hover:text-white transition-colors">Susunan Redaksi</a></li>
+            <li><a href="tentang.html#pedoman" class="hover:text-white transition-colors">Pedoman Media Siber</a></li>
+            <li><a href="tentang.html#kontak" class="hover:text-white transition-colors">Kontak & Hotline</a></li>
+            <li><a href="internasional.html?cat=daerah" class="hover:text-white transition-colors">Kanal Daerah</a></li>
+            <li><a href="internasional.html?cat=nasional" class="hover:text-white transition-colors">Kanal Nasional</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM FOOTER -->
+      <div class="pt-3.5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
+        <p>&copy; 2026 Japakeh Post. All Rights Reserved. Dikelola oleh PT Japakeh Media Nusantara.</p>
+        <p class="text-[10.5px] text-slate-400">
+          Portal Berita Terpercaya
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS & DRAWERS -->
+  <div id="mobile-drawer" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+    <div id="drawer-backdrop" class="drawer-backdrop fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+    <div id="drawer-panel" class="drawer-panel fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-[#0F172A] text-white z-10 flex flex-col shadow-2xl border-r border-slate-800">
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+        <a href="index.html" class="flex items-center space-x-2.5">
+          <img src="assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-9 w-auto object-contain shrink-0" />
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center space-x-1.5 leading-none">
+              <span class="text-white font-black text-lg tracking-wider uppercase">JAPAKEH</span>
+              <span class="bg-buser-red text-white text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider uppercase shadow-xs">POST</span>
+            </div>
+            <span class="text-[7.5px] text-slate-400 font-semibold tracking-wider uppercase mt-1 whitespace-nowrap">CEPAT, AKURAT, TERPERCAYA</span>
+          </div>
+        </a>
+        <button class="close-drawer-btn text-slate-400 hover:text-white p-1.5 rounded-full hover:bg-slate-800" aria-label="Tutup Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="p-4 border-b border-slate-800">
+        <form action="cari.html" method="GET" class="relative">
+          <input type="text" name="q" placeholder="Cari berita..." class="w-full bg-slate-800/80 text-xs text-white placeholder-slate-400 pl-3.5 pr-8 py-2 rounded-full border border-slate-700 focus:border-buser-red focus:outline-none" />
+          <button type="submit" class="absolute right-0 top-0 h-full px-3 text-slate-400 hover:text-white">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </button>
+        </form>
+      </div>
+      <div class="flex-1 overflow-y-auto py-3 px-3 space-y-1 text-sm font-semibold divide-y divide-slate-800/60">
+        <div class="space-y-1 pb-2">
+          <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2">Kanal Berita</span>
+          <a href="index.html" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Beranda</a>
+          <a href="internasional.html?cat=daerah" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Daerah</a>
+          <a href="internasional.html?cat=nasional" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Nasional</a>
+          <a href="internasional.html?cat=politik" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Politik</a>
+          <a href="internasional.html?cat=hukum" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Hukum</a>
+          <a href="internasional.html?cat=ekonomi" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Ekonomi</a>
+          <a href="internasional.html?cat=bisnis" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Bisnis</a>
+          <a href="internasional.html?cat=pendidikan" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Pendidikan</a>
+          <a href="internasional.html?cat=teknologi" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Teknologi</a>
+          <a href="internasional.html?cat=internasional" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Internasional</a>
+          <a href="internasional.html?cat=foto" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Foto</a>
+          <a href="internasional.html?cat=video" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Video</a>
+        </div>
+        <div class="pt-2 space-y-1 text-xs">
+          <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2">Informasi & Redaksi</span>
+          <a href="tentang.html" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white">Tentang Japakeh Post</a>
+          <a href="tentang.html#redaksi" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white">Susunan Redaksi</a>
+          <a href="tentang.html#pedoman" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white">Pedoman Media Siber</a>
+          <a href="tentang.html#kontak" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white">Kontak & Hotline</a>
+          <a href="cari.html" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white">Pencarian Berita</a>
+        </div>
+      </div>
+      <div class="p-4 border-t border-slate-800 bg-[#0B1120] space-y-2">
+        <a href="https://wa.me/6282165071114" target="_blank" class="flex items-center justify-center space-x-2 w-full py-2.5 bg-buser-red hover:bg-buser-redHover text-white rounded-full text-xs font-bold transition-all shadow-xs">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+          <span>WhatsApp Redaksi: 082165071114</span>
+        </a>
+        <div class="text-[10px] text-slate-500 text-center">
+          &copy; 2026 PT Japakeh Media Nusantara
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKMARK DRAWER MODAL -->
+  <div id="bookmark-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true">
+    <div id="bookmark-backdrop" class="drawer-backdrop fixed inset-0 bg-slate-950/70 backdrop-blur-sm"></div>
+    <div id="bookmark-panel" class="bookmark-panel fixed top-0 right-0 bottom-0 w-full max-w-md bg-[#F1F5F9] z-10 flex flex-col shadow-2xl border-l border-slate-200">
+      <div class="p-4 bg-[#0F172A] text-white flex items-center justify-between border-b-2 border-buser-red">
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-buser-red" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
+          <h2 class="font-black text-sm uppercase tracking-wider">Berita Tersimpan</h2>
+        </div>
+        <button class="close-bookmark-btn text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800" aria-label="Tutup Daftar Baca">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="bookmark-modal-list" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+      <div class="p-3 bg-white border-t border-slate-200 text-center text-xs text-slate-500">
+        Berita tersimpan otomatis di perangkat browser Anda.
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK SEARCH MODAL -->
+  <div id="quick-search-modal" class="fixed inset-0 z-50 hidden flex items-start justify-center pt-20 px-4">
+    <div id="search-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm"></div>
+    <div class="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 z-10 border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center space-x-2">
+          <span class="w-2 h-5 bg-buser-red rounded-full"></span>
+          <h3 class="font-black text-base text-slate-900 uppercase tracking-tight">Cari Berita Japakeh Post</h3>
+        </div>
+        <button id="close-search-modal-btn" class="text-slate-400 hover:text-slate-900 p-1.5 rounded-full hover:bg-slate-100" aria-label="Tutup">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form id="quick-search-form" class="space-y-4">
+        <input type="text" id="quick-search-input" placeholder="Ketik kata kunci berita..." class="w-full text-sm border-2 border-slate-200 focus:border-buser-red p-3 pl-4 rounded-full focus:outline-none transition-colors" />
+        <div class="flex justify-between items-center text-xs text-slate-500">
+          <span>Tekan <kbd class="px-2 py-0.5 bg-slate-100 rounded font-mono border border-slate-300">Enter</kbd></span>
+          <button type="submit" class="bg-buser-red hover:bg-buser-redHover text-white px-5 py-2 font-bold rounded-full transition-all shadow-xs">Cari</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/news-data.js"></script>
+  <script src="assets/js/api-client.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/category-live.js"></script>
+  <script src="assets/js/ads-loader.js"></script>
+</body>
+</html>

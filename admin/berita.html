@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Manajemen Berita — Japakeh Post CMS</title>
+  <meta name="description" content="Manajemen Publikasi, Kurasi, dan Arsip Berita Portal Japakeh Post">
+  <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../assets/js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/auth-guard.js"></script>
+</head>
+<body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-200 lg:hidden"></div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0B0B0B] text-gray-300 flex flex-col justify-between transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0 lg:static border-r border-gray-800">
+    <div>
+      <div class="h-16 flex items-center justify-between px-5 border-b border-gray-800">
+        <a href="index.html" class="flex items-center space-x-2.5">
+          <img src="../assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-9 w-auto object-contain shrink-0">
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center space-x-1 leading-none">
+              <span class="text-white font-black text-base tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+              <span class="bg-buser-red text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm tracking-wider uppercase">POST</span>
+            </div>
+            <span class="text-[7.5px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5 whitespace-nowrap">PANEL REDAKSI</span>
+          </div>
+        </a>
+        <button id="sidebar-close-btn" class="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="py-4 px-3 space-y-1 overflow-y-auto max-h-[calc(100vh-175px)] sidebar-scroll">
+        <div class="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Menu Editorial</div>
+        <a href="index.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="berita.html" class="nav-item active">
+          <svg class="w-4 h-4 mr-3 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <span>Berita</span>
+        </a>
+        <a href="kategori.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          <span>Kategori</span>
+        </a>
+        <a href="penulis.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          <span>Penulis</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Profil Redaksi</span>
+        </a>
+        <a href="media.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Media</span>
+        </a>
+        <a href="video.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span>Video</span>
+        </a>
+        <a href="iklan.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" /></svg>
+          <span>Iklan & Ads</span>
+        </a>
+        <a href="komentar.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="flex-1">Komentar</span>
+          <span class="px-1.5 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-400 rounded">5</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Sistem</div>
+        <a href="pengguna.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Pengguna</span>
+        </a>
+        <a href="pengaturan.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Bottom Profile -->
+    <div class="p-3 border-t border-gray-800 bg-[#111111]">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+        <a href="profil.html" class="flex items-center space-x-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+          <div class="user-display-avatar w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shrink-0 ring-2 ring-red-500/30">
+            RD
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="user-display-name text-xs font-semibold text-white truncate">Pemimpin Redaksi</div>
+            <div class="user-display-role text-[10px] text-gray-400 truncate">Administrator</div>
+          </div>
+        </a>
+        <a href="login.html" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Top Navbar -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-3">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Manajemen Berita</h1>
+          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola seluruh artikel, kurasi status, dan jadwal tayang portal</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <span id="live-wib-clock" class="hidden xl:inline-block text-xs font-mono text-gray-500 bg-gray-50 px-2.5 py-1 rounded border border-gray-200">
+          Memuat waktu...
+        </span>
+
+        <button type="button" id="btn-add-news" class="btn btn-primary btn-sm">
+          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          <span>Tambah Berita</span>
+        </button>
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button id="notif-btn" class="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span id="notif-badge" class="absolute top-1.5 right-1.5 w-2 h-2 bg-buser-red rounded-full ring-2 ring-white"></span>
+          </button>
+          <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg border border-gray-200 shadow-xl z-50 py-2">
+            <div class="px-4 py-2 border-b border-gray-100 flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-900">Notifikasi</span>
+              <button id="mark-all-read-btn" class="text-[11px] text-buser-red hover:underline font-semibold">Tandai Dibaca</button>
+            </div>
+            <div class="divide-y divide-gray-100 text-xs max-h-64 overflow-y-auto">
+              <div class="px-4 py-2.5 hover:bg-gray-50">
+                <span id="notif-berita-count" class="font-semibold text-gray-900">0 Berita menunggu review</span>
+                <p class="text-gray-500 text-[11px] mt-0.5">Periksa naskah masuk dari wartawan daerah.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Dropdown -->
+        <div class="relative">
+          <button id="user-menu-btn" class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-gray-100">
+            <div class="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">AR</div>
+          </button>
+          <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-xl z-50 py-1 text-xs">
+            <a href="profil.html" class="block px-3 py-2 text-gray-700 hover:bg-gray-50">Profil Redaksi</a>
+            <a href="login.html" class="block px-3 py-2 text-red-600 hover:bg-red-50">Keluar</a>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-5">
+      
+      <!-- STATUS TABS -->
+      <div class="flex items-center space-x-2 border-b border-gray-200 overflow-x-auto pb-px">
+        <button class="news-tab-btn active px-4 py-2.5 text-xs font-bold border-b-2 border-b-buser-red text-buser-red flex items-center space-x-1.5 whitespace-nowrap" data-tab="all">
+          <span>Semua</span>
+          <span id="tab-count-all" class="bg-red-100 text-buser-red px-1.5 py-0.5 rounded-full text-[10px]">--</span>
+        </button>
+        <button class="news-tab-btn px-4 py-2.5 text-xs font-medium text-gray-500 hover:text-gray-800 border-b-2 border-b-transparent flex items-center space-x-1.5 whitespace-nowrap" data-tab="published">
+          <span>Published</span>
+          <span id="tab-count-published" class="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-[10px]">--</span>
+        </button>
+        <button class="news-tab-btn px-4 py-2.5 text-xs font-medium text-gray-500 hover:text-gray-800 border-b-2 border-b-transparent flex items-center space-x-1.5 whitespace-nowrap" data-tab="draft">
+          <span>Draft</span>
+          <span id="tab-count-draft" class="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-[10px]">--</span>
+        </button>
+        <button class="news-tab-btn px-4 py-2.5 text-xs font-medium text-gray-500 hover:text-gray-800 border-b-2 border-b-transparent flex items-center space-x-1.5 whitespace-nowrap" data-tab="review">
+          <span>Review</span>
+          <span id="tab-count-review" class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full text-[10px] font-bold">--</span>
+        </button>
+        <button class="news-tab-btn px-4 py-2.5 text-xs font-medium text-gray-500 hover:text-gray-800 border-b-2 border-b-transparent flex items-center space-x-1.5 whitespace-nowrap" data-tab="scheduled">
+          <span>Scheduled</span>
+          <span id="tab-count-scheduled" class="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full text-[10px]">--</span>
+        </button>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div class="cms-card p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          
+          <!-- Search input -->
+          <div class="lg:col-span-2 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input 
+              type="text" 
+              id="filter-search" 
+              placeholder="Cari judul berita atau keyword..." 
+              class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white transition-all">
+          </div>
+
+          <!-- Category filter -->
+          <div>
+            <select id="filter-category" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+              <option value="">Semua Kategori</option>
+              <option value="Nasional">Nasional</option>
+              <option value="Daerah">Daerah</option>
+              <option value="Politik">Politik</option>
+              <option value="Kriminal">Kriminal</option>
+              <option value="Ekonomi">Ekonomi</option>
+              <option value="Pendidikan">Pendidikan</option>
+              <option value="Teknologi">Teknologi</option>
+              <option value="Olahraga">Olahraga</option>
+              <option value="Internasional">Internasional</option>
+              <option value="Lifestyle">Lifestyle</option>
+            </select>
+          </div>
+
+          <!-- Author filter -->
+          <div>
+            <select id="filter-author" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+              <option value="">Semua Penulis</option>
+              <option value="Dimas Pratama">Dimas Pratama</option>
+              <option value="Siti Nurhaliza">Siti Nurhaliza</option>
+              <option value="Rudi Hartono">Rudi Hartono</option>
+              <option value="Bambang Sudiro, S.I.Kom.">Bambang Sudiro, S.I.Kom.</option>
+              <option value="Maya Safitri">Maya Safitri</option>
+            </select>
+          </div>
+
+          <!-- Date Filter / Reset button -->
+          <div class="flex items-center gap-2">
+            <input 
+              type="date" 
+              id="filter-date" 
+              class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+            <button type="button" id="btn-reset-filters" class="p-2 text-gray-400 hover:text-gray-700 bg-gray-100 rounded-lg" title="Reset Filter">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BULK ACTIONS FLOATING STRIP (Hidden by default, shown when checkboxes are selected) -->
+      <div id="bulk-action-bar" class="hidden bg-[#0B0B0B] text-white p-3 rounded-lg flex items-center justify-between shadow-lg animate-in fade-in">
+        <div class="flex items-center space-x-3 text-xs font-medium">
+          <span class="bg-buser-red px-2 py-0.5 rounded font-bold" id="selected-count">0</span>
+          <span>berita dipilih</span>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button type="button" onclick="executeBulk('publish')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 rounded text-xs font-semibold">
+            Terbitkan
+          </button>
+          <button type="button" onclick="executeBulk('draft')" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded text-xs font-semibold">
+            Pindah ke Draft
+          </button>
+          <button type="button" onclick="executeBulk('delete')" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded text-xs font-semibold">
+            Hapus Masal
+          </button>
+        </div>
+      </div>
+
+      <!-- NEWS TABLE CONTAINER -->
+      <div class="cms-card overflow-hidden">
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse table-responsive-cards" id="news-data-table">
+            <thead>
+              <tr class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                <th class="py-3 px-4 w-10">
+                  <input type="checkbox" id="check-all" class="w-4 h-4 rounded border-gray-300 text-buser-red focus:ring-buser-red cursor-pointer">
+                </th>
+                <th class="py-3 px-4 w-16">Thumbnail</th>
+                <th class="py-3 px-4">Judul Artikel</th>
+                <th class="py-3 px-4">Kategori</th>
+                <th class="py-3 px-4">Penulis</th>
+                <th class="py-3 px-4">Status</th>
+                <th class="py-3 px-4">Tanggal Publikasi</th>
+                <th class="py-3 px-4 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 text-xs" id="news-table-body">
+              <tr>
+                <td colspan="8" class="text-center py-8 text-gray-400">
+                  <div class="inline-flex items-center space-x-2">
+                    <svg class="animate-spin h-5 w-5 text-buser-red" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                    <span>Memuat data berita...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- EMPTY STATE (Demonstrated when filter returns 0) -->
+        <div id="empty-state" class="hidden p-12 text-center">
+          <div class="w-16 h-16 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          </div>
+          <h3 class="text-base font-bold text-gray-900 mb-1">Belum ada berita yang sesuai</h3>
+          <p class="text-xs text-gray-500 max-w-sm mx-auto mb-4">Tidak ditemukan artikel dengan kriteria filter yang Anda tentukan. Silakan ubah filter pencarian atau buat berita baru.</p>
+          <button type="button" id="btn-empty-add-news" class="btn btn-primary btn-sm">
+            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Tambah Berita Baru</span>
+          </button>
+        </div>
+
+        <!-- PAGINATION & SUMMARY -->
+        <div class="p-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+          <div class="flex items-center space-x-1.5">
+            <span>Menampilkan</span>
+            <span id="summary-visible-count" class="font-bold text-gray-900">0</span>
+            <span>dari</span>
+            <span id="summary-total-count" class="font-bold text-gray-900">0</span>
+            <span>berita</span>
+          </div>
+
+          <div class="flex items-center space-x-1">
+            <button class="px-2.5 py-1 rounded border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-40" disabled>&laquo; Sebelumnya</button>
+            <button class="px-2.5 py-1 rounded border border-buser-red bg-buser-red text-white font-bold">1</button>
+            <button class="px-2.5 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">2</button>
+            <button class="px-2.5 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">3</button>
+            <span class="px-1 text-gray-400">...</span>
+            <button class="px-2.5 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">10</button>
+            <button class="px-2.5 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">Selanjutnya &raquo;</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Corporate Footer -->
+    <footer class="bg-white border-t border-gray-200 py-3 px-6 text-xs text-gray-500 shrink-0">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+        <div>
+          <span class="font-bold text-gray-800">Japakeh Post</span> — PT Japakeh Media Nusantara
+        </div>
+        <div class="text-[11px] text-gray-400">
+          Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Aceh Besar • WhatsApp: 082165071114 • © 2026 Japakeh Post
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ADD / EDIT NEWS MODAL (MODAL KELOLA BERITA) -->
+  <div id="news-modal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 modal-backdrop hidden">
+    <div class="bg-white rounded-xl max-w-5xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in zoom-in-95">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-3.5 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-red-600/20 text-buser-red flex items-center justify-center font-bold">
+            <svg class="w-4 h-4 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          </div>
+          <div>
+            <h3 id="news-modal-title" class="text-sm sm:text-base font-bold text-white leading-tight">Tambah Berita Baru</h3>
+            <p id="news-modal-subtitle" class="text-[11px] text-gray-400">Lengkapi konten berita, rubrikasi, dan media untuk tayang di portal</p>
+          </div>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800 transition-colors" data-modal-close>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable Form) -->
+      <form id="news-modal-form" class="overflow-y-auto flex-1 p-4 sm:p-6 space-y-6">
+        <input type="hidden" id="article-id" value="">
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- LEFT COLUMN: Content (2 cols) -->
+          <div class="lg:col-span-2 space-y-4">
+            
+            <!-- Judul & Slug -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3">
+              <div>
+                <label for="article-title" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">
+                  Judul Berita <span class="text-red-500">*</span>
+                </label>
+                <textarea 
+                  id="article-title" 
+                  rows="2" 
+                  required 
+                  placeholder="Masukkan judul berita yang aktual, lugas, dan menarik..." 
+                  class="w-full text-base sm:text-lg font-bold text-gray-900 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-buser-red focus:border-buser-red transition-all leading-snug bg-white"></textarea>
+              </div>
+
+              <!-- Slug generator field -->
+              <div>
+                <label class="block text-[11px] font-semibold text-gray-500 mb-1">Permalink / Slug URL</label>
+                <div class="flex items-center text-xs bg-white border border-gray-300 rounded-lg px-2.5 py-1.5 focus-within:ring-2 focus-within:ring-buser-red">
+                  <span class="text-gray-400 font-mono shrink-0">japakehpost.com/berita/</span>
+                  <input 
+                    type="text" 
+                    id="article-slug" 
+                    class="w-full bg-transparent text-gray-800 font-mono text-xs focus:outline-none pl-1" 
+                    placeholder="judul-berita-otomatis">
+                  <button type="button" id="btn-edit-slug" class="text-gray-400 hover:text-gray-700 p-1 shrink-0" title="Buka Kunci Slug">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ringkasan / Excerpt -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200">
+              <div class="flex justify-between items-center mb-1">
+                <label for="article-excerpt" class="text-xs font-bold uppercase tracking-wider text-gray-700">
+                  Ringkasan / Excerpt
+                </label>
+                <span id="excerpt-counter" class="text-[11px] text-gray-400">0 / 220 karakter</span>
+              </div>
+              <textarea 
+                id="article-excerpt" 
+                rows="2" 
+                maxlength="220" 
+                placeholder="Tuliskan rangkuman 1-2 kalimat pengantar berita untuk ditampilkan di feed dan media sosial..." 
+                class="w-full text-xs text-gray-800 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-buser-red focus:border-buser-red bg-white"></textarea>
+            </div>
+
+            <!-- Rich Text Editor (Isi Berita) -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+              <div class="p-2.5 bg-gray-50 border-b border-gray-200 flex flex-wrap items-center gap-1">
+                <!-- Headings -->
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 font-bold text-xs" data-command="formatBlock" data-val="h2" title="Heading 2">
+                  H2
+                </button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 font-bold text-xs" data-command="formatBlock" data-val="h3" title="Heading 3">
+                  H3
+                </button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 font-medium text-xs" data-command="formatBlock" data-val="p" title="Paragraf">
+                  P
+                </button>
+
+                <div class="h-4 w-px bg-gray-300 mx-1"></div>
+
+                <!-- Inline Styles -->
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 font-bold text-xs" data-command="bold" title="Tebal (Ctrl+B)">B</button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 italic text-xs font-serif" data-command="italic" title="Miring (Ctrl+I)">I</button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700 underline text-xs" data-command="underline" title="Garis Bawah (Ctrl+U)">U</button>
+
+                <div class="h-4 w-px bg-gray-300 mx-1"></div>
+
+                <!-- Lists & Quotes -->
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700" data-command="insertUnorderedList" title="Daftar Poin">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16M2 6h.01M2 12h.01M2 18h.01"/></svg>
+                </button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700" data-command="insertOrderedList" title="Daftar Angka">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6h14M7 12h14M7 18h14M3 5v3h2M3 11h2v3H3v-3m0 6h2v3H3v-3"/></svg>
+                </button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700" data-command="formatBlock" data-val="blockquote" title="Kutipan Redaksi">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                </button>
+
+                <div class="h-4 w-px bg-gray-300 mx-1"></div>
+
+                <!-- Media Embeds -->
+                <button type="button" id="btn-insert-link" class="p-1.5 rounded hover:bg-gray-200 text-gray-700" title="Sisipkan Link">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                </button>
+                <button type="button" id="btn-insert-image" class="p-1.5 rounded hover:bg-gray-200 text-gray-700" title="Sisipkan Gambar Berita">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </button>
+                <button type="button" id="btn-insert-video" class="p-1.5 rounded hover:bg-gray-200 text-gray-700" title="Embed Video YouTube">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                </button>
+
+                <div class="h-4 w-px bg-gray-300 mx-1"></div>
+
+                <!-- Undo / Redo -->
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700" data-command="undo" title="Undo (Ctrl+Z)">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a5 5 0 015 5v2m-15-7l4-4m-4 4l4 4"/></svg>
+                </button>
+                <button type="button" class="editor-tool-btn p-1.5 rounded hover:bg-gray-200 text-gray-700" data-command="redo" title="Redo (Ctrl+Y)">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10H11a5 5 0 00-5 5v2m15-7l-4-4m4 4l-4 4"/></svg>
+                </button>
+              </div>
+
+              <!-- Contenteditable -->
+              <div 
+                id="editor-body" 
+                contenteditable="true" 
+                class="editor-content p-4 min-h-[260px] max-h-[380px] overflow-y-auto focus:outline-none text-sm bg-white"
+                spellcheck="false">
+                <p>Tulis konten naskah berita di sini...</p>
+              </div>
+
+              <div class="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+                <div id="word-count-display">0 kata • 0 karakter</div>
+                <div class="text-gray-400">Editor Redaksi Japakeh Post</div>
+              </div>
+            </div>
+
+            <!-- Collapsible SEO -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+              <button type="button" id="btn-toggle-seo" class="w-full p-3 text-left font-bold text-xs uppercase tracking-wider text-gray-800 bg-gray-50 flex items-center justify-between">
+                <span class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  <span>Optimasi Mesin Pencari (SEO Metadata)</span>
+                </span>
+                <svg id="seo-chevron" class="w-4 h-4 text-gray-500 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              </button>
+
+              <div id="seo-content" class="hidden p-4 space-y-3 border-t border-gray-100">
+                <div>
+                  <label for="seo-meta-title" class="block text-xs font-semibold text-gray-700 mb-1">Meta Title</label>
+                  <input type="text" id="seo-meta-title" placeholder="Maks 60 karakter..." class="w-full py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:bg-white">
+                </div>
+                <div>
+                  <label for="seo-meta-desc" class="block text-xs font-semibold text-gray-700 mb-1">Meta Description</label>
+                  <textarea id="seo-meta-desc" rows="2" placeholder="Maks 160 karakter..." class="w-full py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:bg-white"></textarea>
+                </div>
+                <div>
+                  <label for="seo-focus-keyword" class="block text-xs font-semibold text-gray-700 mb-1">Focus Keyword</label>
+                  <input type="text" id="seo-focus-keyword" placeholder="contoh: kasus suap, pembangunan daerah, berita terkini" class="w-full py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:bg-white">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Settings, Category, Author, Thumbnail, Tags (1 col) -->
+          <div class="space-y-4">
+            
+            <!-- Pengaturan Publikasi -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-200 pb-2">
+                Status Publikasi
+              </h4>
+              <div class="space-y-2 text-xs">
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                  <input type="radio" name="pub_status" value="publish" checked class="text-buser-red focus:ring-buser-red">
+                  <div>
+                    <span class="font-bold text-gray-900">Terbitkan Sekarang</span>
+                    <p class="text-[10px] text-gray-500">Tayang langsung di portal publik</p>
+                  </div>
+                </label>
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                  <input type="radio" name="pub_status" value="draft" class="text-buser-red focus:ring-buser-red">
+                  <div>
+                    <span class="font-bold text-gray-900">Simpan sebagai Draft</span>
+                    <p class="text-[10px] text-gray-500">Belum dipublikasikan</p>
+                  </div>
+                </label>
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                  <input type="radio" name="pub_status" value="review" class="text-buser-red focus:ring-buser-red">
+                  <div>
+                    <span class="font-bold text-gray-900">Kirim untuk Review</span>
+                    <p class="text-[10px] text-gray-500">Menunggu verifikasi redaksi</p>
+                  </div>
+                </label>
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                  <input type="radio" name="pub_status" value="schedule" id="radio-schedule" class="text-buser-red focus:ring-buser-red">
+                  <div>
+                    <span class="font-bold text-gray-900">Jadwalkan Tayang</span>
+                    <p class="text-[10px] text-gray-500">Publikasi otomatis pada waktu tertentu</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Datetime picker for scheduled -->
+              <div id="schedule-picker-box" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-lg space-y-1">
+                <label class="block text-[11px] font-bold text-blue-900">Waktu Jadwal Tayang (WIB)</label>
+                <input type="datetime-local" id="schedule-datetime" class="w-full text-xs p-1.5 bg-white border border-blue-300 rounded focus:ring-buser-red">
+              </div>
+            </div>
+
+            <!-- Kategori & Penulis -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3">
+              <div>
+                <label for="article-category" class="block text-xs font-semibold text-gray-700 mb-1">
+                  Kategori Berita <span class="text-red-500">*</span>
+                </label>
+                <select id="article-category" required class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red">
+                  <option value="" disabled selected>Pilih Kategori</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="article-author" class="block text-xs font-semibold text-gray-700 mb-1">
+                  Penulis / Redaksi <span class="text-red-500">*</span>
+                </label>
+                <select id="article-author" required class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red">
+                  <option value="Bambang Sudiro, S.I.Kom." selected>Bambang Sudiro, S.I.Kom. (Pemimpin Redaksi)</option>
+                  <option value="Dimas Pratama">Dimas Pratama (Reporter Kriminal)</option>
+                  <option value="Siti Nurhaliza">Siti Nurhaliza (Editor Politik)</option>
+                  <option value="Rudi Hartono">Rudi Hartono (Reporter Investigasi)</option>
+                  <option value="Maya Safitri">Maya Safitri (Reporter Nasional)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Thumbnail Card -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-2.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">
+                Thumbnail Berita
+              </h4>
+
+              <div id="thumb-preview-container" class="relative rounded-lg overflow-hidden border border-gray-200 bg-gray-100 aspect-video flex items-center justify-center">
+                <img id="thumb-preview-img" src="../assets/images/berita/hero/sorotan-utama-dunia.jpg" alt="Preview" class="w-full h-full object-cover">
+              </div>
+
+              <div class="flex items-center gap-2">
+                <label class="btn btn-outline btn-sm flex-1 cursor-pointer text-center justify-center">
+                  <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                  <span>Unggah Gambar</span>
+                  <input type="file" id="thumb-file-input" accept="image/*" class="hidden">
+                </label>
+                <button type="button" id="btn-remove-thumb" class="btn btn-danger-outline btn-sm" title="Reset Thumbnail">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+              <p class="text-[10px] text-gray-400">Rasio 16:9 disarankan. Format JPG/PNG/WebP maks 2MB.</p>
+            </div>
+
+            <!-- Tag Berita -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-2">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">Tag Berita</h4>
+              <div id="tag-container" class="flex flex-wrap gap-1">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-50 text-buser-red border border-red-200">
+                  berita <button type="button" class="ml-1 text-red-400 hover:text-red-700" onclick="this.parentElement.remove()">&times;</button>
+                </span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-50 text-buser-red border border-red-200">
+                  terkini <button type="button" class="ml-1 text-red-400 hover:text-red-700" onclick="this.parentElement.remove()">&times;</button>
+                </span>
+              </div>
+              <div class="flex gap-1.5 pt-1">
+                <input type="text" id="new-tag-input" placeholder="Tambah tag..." class="w-full text-xs py-1 px-2 bg-white border border-gray-300 rounded focus:ring-buser-red">
+                <button type="button" id="btn-add-tag" class="btn btn-dark btn-sm text-[11px] px-2.5">Tambah</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="sticky bottom-0 bg-white pt-4 pb-1 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+          <div id="save-status-text" class="text-xs text-gray-500 truncate">
+            Siap menyimpan perubahan
+          </div>
+          <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+            <button type="button" class="btn btn-outline btn-sm" data-modal-close>
+              Batal
+            </button>
+            <button type="button" id="btn-preview-modal" class="btn btn-outline btn-sm">
+              <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>Pratinjau</span>
+            </button>
+            <button type="button" id="btn-save-draft" class="btn btn-outline btn-sm">
+              Simpan Draft
+            </button>
+            <button type="submit" id="btn-submit-publish" class="btn btn-primary btn-sm">
+              Terbitkan Berita
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ARTICLE PREVIEW MODAL -->
+  <div id="preview-modal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in zoom-in-95">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-[#0B0B0B] text-white flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="flex items-center space-x-2">
+            <img src="../assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-6 w-auto object-contain">
+            <span class="text-white font-black text-sm tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+            <span class="bg-buser-red text-white text-[8px] font-black px-1 py-0.5 rounded-sm uppercase">POST</span>
+          </div>
+          <span class="text-xs text-gray-400 border-l border-gray-700 pl-3">Simulasi Pratinjau Publik</span>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-white p-1 rounded hover:bg-gray-800" data-modal-close>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      
+      <!-- Article View Body -->
+      <div class="p-6 sm:p-8 overflow-y-auto flex-1 space-y-4">
+        <div class="flex items-center space-x-2 text-xs font-semibold text-buser-red">
+          <span id="modal-prev-cat">Daerah</span>
+          <span>•</span>
+          <span class="text-gray-400" id="modal-prev-date">Hari ini</span>
+        </div>
+        <h1 id="modal-prev-title" class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+          Judul Berita Pratinjau
+        </h1>
+        <div class="text-xs text-gray-500 font-medium">
+          Penulis: <span id="modal-prev-author" class="text-gray-800 font-semibold">Al Bahri</span> • Japakeh Post
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200 aspect-video">
+          <img id="modal-prev-img" src="../assets/images/berita/hero/sorotan-utama-dunia.jpg" alt="Preview" class="w-full h-full object-cover">
+        </div>
+        <div id="modal-prev-body" class="editor-content text-sm pt-2">
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+        <button type="button" class="btn btn-outline btn-sm" data-modal-close>Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/admin-berita-live.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

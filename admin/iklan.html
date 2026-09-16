@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Manajemen Iklan & Ads — Japakeh Post CMS</title>
+  <meta name="description" content="Manajemen Iklan Google Ads dan Banner Sponsor Portal Japakeh Post">
+  <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../assets/js/tailwind-config.js"></script>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../assets/js/api-client.js"></script>
+  <script src="js/auth-guard.js"></script>
+</head>
+<body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
+
+  <!-- Mobile Sidebar Overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-200 lg:hidden"></div>
+
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0B0B0B] text-gray-300 flex flex-col justify-between transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0 lg:static border-r border-gray-800">
+    <div>
+      <div class="h-16 flex items-center justify-between px-5 border-b border-gray-800">
+        <a href="index.html" class="flex items-center space-x-2.5">
+          <img src="../assets/images/logo/favicon.webp" alt="Japakeh Post" class="h-9 w-auto object-contain shrink-0">
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center space-x-1 leading-none">
+              <span class="text-white font-black text-base tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+              <span class="bg-buser-red text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm tracking-wider uppercase">POST</span>
+            </div>
+            <span class="text-[7.5px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5 whitespace-nowrap">PANEL REDAKSI</span>
+          </div>
+        </a>
+        <button id="sidebar-close-btn" class="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="py-4 px-3 space-y-1 overflow-y-auto max-h-[calc(100vh-175px)] sidebar-scroll">
+        <div class="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Menu Editorial</div>
+        <a href="index.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="berita.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <span>Berita</span>
+        </a>
+        <a href="kategori.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          <span>Kategori</span>
+        </a>
+        <a href="penulis.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          <span>Penulis</span>
+        </a>
+        <a href="profil.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Profil Redaksi</span>
+        </a>
+        <a href="media.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Media</span>
+        </a>
+        <a href="video.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          <span>Video</span>
+        </a>
+
+        <!-- MENU IKLAN (ACTIVE) -->
+        <a href="iklan.html" class="nav-item active">
+          <svg class="w-4 h-4 mr-3 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+          </svg>
+          <span class="flex-1">Iklan & Ads</span>
+          <span class="px-1.5 py-0.5 text-[9px] font-extrabold bg-buser-red text-white rounded uppercase tracking-wider">ADS</span>
+        </a>
+
+        <a href="komentar.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="flex-1">Komentar</span>
+          <span class="px-1.5 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-400 rounded">5</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Sistem</div>
+        <a href="pengguna.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Pengguna</span>
+        </a>
+        <a href="pengaturan.html" class="nav-item">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Bottom Profile -->
+    <div class="p-3 border-t border-gray-800 bg-[#111111]">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+        <a href="profil.html" class="flex items-center space-x-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+          <div class="user-display-avatar w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shrink-0 ring-2 ring-red-500/30">
+            RD
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="user-display-name text-xs font-semibold text-white truncate">Pemimpin Redaksi</div>
+            <div class="user-display-role text-[10px] text-gray-400 truncate">Administrator</div>
+          </div>
+        </a>
+        <a href="login.html" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+    
+    <!-- Top Navbar -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-3">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Manajemen Iklan & Monetisasi</h1>
+          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola kode Google Ads dan banner sponsor/endorse portal berita Japakeh Post</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="../index.html" target="_blank" class="hidden sm:inline-flex items-center text-xs font-semibold text-gray-600 hover:text-buser-red px-3 py-1.5 border border-gray-200 rounded-lg hover:border-buser-red transition-colors">
+          <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Lihat di Portal
+        </a>
+        <button type="button" id="btn-add-ad" class="btn btn-primary btn-sm flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span>Tambah Iklan Baru</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- CONTENT BODY -->
+    <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      
+      <!-- STATS KPI CARDS -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-gray-500">Total Slot Iklan</p>
+            <h3 class="text-2xl font-black text-gray-900 mt-1" id="stat-total-ad">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-red-50 text-buser-red flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+          </div>
+        </div>
+
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">Iklan Tayang (Aktif)</p>
+            <h3 class="text-2xl font-black text-emerald-700 mt-1" id="stat-active-ad">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        </div>
+
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-blue-600">Google AdSense</p>
+            <h3 class="text-2xl font-black text-blue-700 mt-1" id="stat-google-ad">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs">
+            G-Ads
+          </div>
+        </div>
+
+        <div class="cms-card p-4 flex items-center justify-between">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wider text-purple-600">Banner Sponsor / Endorse</p>
+            <h3 class="text-2xl font-black text-purple-700 mt-1" id="stat-banner-ad">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE GUIDANCE ACCORDION (PANDUAN ADMIN) -->
+      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-xl p-4 sm:p-5 shadow-sm border border-slate-700">
+        <div class="flex items-center justify-between cursor-pointer" id="toggle-guide-btn">
+          <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </span>
+            <div>
+              <h3 class="text-xs sm:text-sm font-bold text-white">Panduan Singkat: Cara Memasang Iklan di Website</h3>
+              <p class="text-[11px] text-slate-300">Penjelasan alur kerja Google Ads, banner sponsor langsung, dan sistem prioritas slot</p>
+            </div>
+          </div>
+          <button type="button" class="text-slate-400 hover:text-white p-1" aria-label="Buka/Tutup Panduan">
+            <svg id="guide-arrow-icon" class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+        </div>
+
+        <div id="guide-content-box" class="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
+            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-blue-500/20 text-blue-300 rounded mb-1.5">1. Google AdSense</span>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Pilih tipe <strong>Google Ads</strong>, lalu tempelkan <em>(paste)</em> potongan kode script <code>&lt;script&gt;...&lt;/script&gt;</code> yang didapat dari akun AdSense Anda ke kotak kode. Iklan akan berganti otomatis sesuai pembaca.
+            </p>
+          </div>
+          <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
+            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-purple-500/20 text-purple-300 rounded mb-1.5">2. Sponsor / Endorse</span>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Pilih tipe <strong>Banner Sponsor</strong>. Unggah foto banner (JPG/PNG/WebP) dan masukkan tautan (URL web klien atau link WhatsApp). Saat pembaca mengklik banner, mereka akan diarahkan ke tujuan tersebut.
+            </p>
+          </div>
+          <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
+            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/20 text-emerald-300 rounded mb-1.5">3. Sistem Prioritas</span>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Jika di slot yang sama (misal Sidebar) terdapat Banner Sponsor dan Google Ads yang sama-sama aktif, sistem akan <strong>memprioritaskan Banner Sponsor</strong> terlebih dahulu agar website tetap rapi dan tidak bertumpuk.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH TOOLBAR -->
+      <div class="cms-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2.5 flex-1">
+          <!-- Search input -->
+          <div class="relative min-w-[200px] flex-1 sm:flex-initial">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <input 
+              type="text" 
+              id="ad-search-input" 
+              placeholder="Cari judul iklan atau sponsor..." 
+              class="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+          </div>
+
+          <!-- Tipe Filter -->
+          <select id="ad-type-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800">
+            <option value="all">Semua Tipe</option>
+            <option value="google">Google AdSense</option>
+            <option value="banner">Banner Sponsor</option>
+          </select>
+
+          <!-- Posisi Filter -->
+          <select id="ad-position-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800">
+            <option value="all">Semua Posisi Slot</option>
+            <option value="header">Header Atas (Leaderboard)</option>
+            <option value="sidebar">Sidebar Samping</option>
+            <option value="article_middle">Artikel Tengah (In-Article)</option>
+            <option value="home_middle">Beranda Tengah (Home Feed)</option>
+            <option value="article_bottom">Artikel Bawah</option>
+            <option value="footer">Footer Bawah</option>
+          </select>
+
+          <!-- Status Filter -->
+          <select id="ad-status-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800">
+            <option value="all">Semua Status</option>
+            <option value="active">Hanya Aktif</option>
+            <option value="inactive">Hanya Nonaktif</option>
+          </select>
+        </div>
+
+        <button type="button" id="btn-refresh-list" class="btn btn-secondary btn-sm flex items-center gap-1 shrink-0">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Segarkan Data</span>
+        </button>
+      </div>
+
+      <!-- IKLAN LIST TABLE / CARDS -->
+      <div class="cms-card overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase tracking-wider text-[10px]">
+                <th class="py-3 px-4 w-12 text-center">No</th>
+                <th class="py-3 px-4">Info Iklan / Kampanye</th>
+                <th class="py-3 px-4">Tipe & Format</th>
+                <th class="py-3 px-4">Posisi Slot</th>
+                <th class="py-3 px-4 text-center">Status Tayang</th>
+                <th class="py-3 px-4 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="ad-table-body" class="divide-y divide-gray-100">
+              <tr>
+                <td colspan="6" class="p-8 text-center text-gray-500">
+                  <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-red-600 border-t-transparent mb-2"></div>
+                  <p class="text-xs">Memuat data iklan...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       MODAL FORM TAMBAH / EDIT IKLAN
+       ========================================================================= -->
+  <div id="modal-ad-form" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-ad-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0 border-b border-gray-800">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 bg-buser-red rounded-full"></span>
+          <h3 class="text-sm sm:text-base font-bold text-white tracking-wide" id="modal-ad-title">
+            Tambah Iklan Baru
+          </h3>
+        </div>
+        <button type="button" id="btn-close-ad-modal" class="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Form) -->
+      <form id="form-ad" class="flex-1 overflow-y-auto p-6 space-y-4 text-xs">
+        <input type="hidden" id="ad-id-input" value="">
+
+        <!-- Judul Iklan -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Nama / Judul Iklan <span class="text-red-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="ad-title-input" 
+            required
+            placeholder="Contoh: Sponsor Bank Aceh Landmark atau Google AdSense Sidebar" 
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+        </div>
+
+        <!-- Tipe Iklan (Radio Selection) -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Tipe Iklan <span class="text-red-500">*</span>
+          </label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex items-center space-x-3 transition-all border-gray-200 hover:border-blue-400" id="label-type-google">
+              <input type="radio" name="ad_type" value="google" checked class="text-blue-600 focus:ring-blue-500">
+              <div>
+                <span class="block font-bold text-gray-900 text-xs">Google AdSense</span>
+                <span class="text-[10px] text-gray-500">Kode script otomatis dari Google</span>
+              </div>
+            </label>
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex items-center space-x-3 transition-all border-gray-200 hover:border-purple-400" id="label-type-banner">
+              <input type="radio" name="ad_type" value="banner" class="text-purple-600 focus:ring-purple-500">
+              <div>
+                <span class="block font-bold text-gray-900 text-xs">Banner Sponsor / Endorse</span>
+                <span class="text-[10px] text-gray-500">Upload gambar & link klien lokal</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Posisi Slot Penempatan -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Posisi Penempatan Slot <span class="text-red-500">*</span>
+          </label>
+          <select id="ad-position-input" required class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+            <option value="header">Header Atas (Leaderboard Banner — Sangat Strategis)</option>
+            <option value="sidebar">Sidebar Samping (Widget Artikel / Beranda)</option>
+            <option value="article_middle">Artikel Tengah (Di sela paragraf berita pembaca)</option>
+            <option value="home_middle">Beranda Tengah (Di antara seksi berita utama)</option>
+            <option value="article_bottom">Artikel Bawah (Sebelum kolom komentar)</option>
+            <option value="footer">Footer Bawah (Di atas copyright)</option>
+          </select>
+        </div>
+
+        <!-- FIELD KHUSUS: GOOGLE ADSENSE -->
+        <div id="field-google-container" class="space-y-1.5 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-blue-900">
+              Kode Script Google AdSense <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10px] text-blue-700 bg-blue-100 px-2 py-0.5 rounded font-mono">HTML / JavaScript</span>
+          </div>
+          <p class="text-[11px] text-blue-800 leading-normal">
+            Salin <em>(copy)</em> kode unit iklan dari dashboard Google AdSense bapak/ibu, lalu tempelkan <em>(paste)</em> di kolom teks di bawah:
+          </p>
+          <textarea 
+            id="ad-code-input" 
+            rows="5" 
+            placeholder='<script async src="https://pagead2.googlesyndication.com/..."></script>&#10;<ins class="adsbygoogle" style="display:block" ...></ins>&#10;<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>'
+            class="w-full px-3 py-2 bg-white border border-blue-200 rounded-lg text-[11px] font-mono text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+        </div>
+
+        <!-- FIELD KHUSUS: BANNER ENDORSE -->
+        <div id="field-banner-container" class="space-y-3 bg-purple-50/50 p-4 rounded-xl border border-purple-100 hidden">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-purple-900">
+              Gambar Banner Sponsor <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10px] text-purple-700 bg-purple-100 px-2 py-0.5 rounded font-medium">Format: JPG, PNG, WEBP, GIF</span>
+          </div>
+          <div class="p-2.5 bg-white/80 rounded-lg border border-purple-200 text-[11px] text-purple-900 space-y-1">
+            <p class="font-bold flex items-center gap-1 text-purple-800">
+              <svg class="w-3.5 h-3.5 text-purple-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Rekomendasi Ukuran Standar (Proporsional Tanpa Terpotong):</span>
+            </p>
+            <ul class="list-disc list-inside text-[10.5px] text-gray-600 pl-1 space-y-0.5">
+              <li><strong>Slot Header:</strong> 728 &times; 90 px atau 1200 &times; 200 px (Banner Horizontal)</li>
+              <li><strong>Slot Sidebar:</strong> 300 &times; 250 px atau Rasio 1:1 Persegi</li>
+              <li><strong>Slot Artikel / Beranda:</strong> Rasio 16:9 atau 4:1 (Maksimal tinggi 200 px)</li>
+            </ul>
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-700 mb-1">Unggah Gambar (File):</label>
+              <input type="file" id="ad-image-file" accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 cursor-pointer">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-gray-700 mb-1">Atau Masukkan URL/Path Gambar:</label>
+              <input type="text" id="ad-image-url" placeholder="assets/images/berita/nasional/..." class="w-full px-3 py-1.5 bg-white border border-purple-200 rounded-lg text-xs">
+            </div>
+          </div>
+
+          <!-- Preview Gambar Banner (Proporsional Utuh) -->
+          <div id="banner-preview-box" class="mt-2 hidden">
+            <span class="text-[10px] text-gray-500 block mb-1">Preview Gambar (Tampil Utuh Tanpa Terpotong):</span>
+            <div class="relative h-32 bg-slate-100/90 rounded-lg overflow-hidden border border-purple-200 flex items-center justify-center p-2">
+              <img id="banner-preview-img" src="" alt="Preview Banner" class="max-h-full max-w-full w-auto h-auto object-contain">
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="block font-bold text-gray-800">
+              Tautan / Link Tujuan Klik
+            </label>
+            <input 
+              type="url" 
+              id="ad-link-input" 
+              placeholder="https://contohsponsor.com atau https://wa.me/628123456789" 
+              class="w-full px-3 py-2 bg-white border border-purple-200 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            <span class="text-[10px] text-gray-500">Ketika banner diklik pembaca, halaman akan membuka tautan ini di tab baru.</span>
+          </div>
+        </div>
+
+        <!-- Keterangan Tambahan / Catatan Internal -->
+        <div class="space-y-1.5">
+          <label class="block font-bold text-gray-800">
+            Catatan Internal / Keterangan Kontrak
+          </label>
+          <input 
+            type="text" 
+            id="ad-note-input" 
+            placeholder="Contoh: Kontrak periode 1 September - 31 Desember 2026 (Kontak: 0821-xxxx)" 
+            class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 items-center pt-2">
+          <!-- Urutan -->
+          <div class="space-y-1">
+            <label class="block font-bold text-gray-800">Prioritas Urutan</label>
+            <input type="number" id="ad-order-input" value="1" min="0" class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs">
+          </div>
+
+          <!-- Switch Status Aktif -->
+          <div class="flex items-center space-x-2 pt-4">
+            <input type="checkbox" id="ad-active-input" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red cursor-pointer">
+            <label for="ad-active-input" class="font-bold text-gray-800 cursor-pointer select-none">
+              Aktifkan Sekarang (Tayang di Web)
+            </label>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-2">
+          <button type="button" id="btn-cancel-ad-modal" class="btn btn-secondary btn-sm">Batal</button>
+          <button type="submit" id="btn-submit-ad-modal" class="btn btn-primary btn-sm flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Simpan Iklan</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL PREVIEW IKLAN LIVE
+       ========================================================================= -->
+  <div id="modal-preview" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-preview-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col">
+      <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
+          <h3 class="text-sm font-bold text-white tracking-wide">Pratinjau Tampilan Iklan</h3>
+        </div>
+        <button type="button" id="btn-close-preview" class="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto max-h-[75vh]">
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl mb-4 text-[11px] text-gray-600">
+          <strong>Posisi Slot:</strong> <span id="preview-slot-label" class="font-bold text-gray-900">-</span>
+        </div>
+        <div id="preview-content-box" class="border border-dashed border-gray-300 p-4 rounded-xl flex items-center justify-center min-h-[140px] bg-white">
+          <!-- Content preview injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL KONFIRMASI HAPUS
+       ========================================================================= -->
+  <div id="modal-delete" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="modal-delete-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+    <div class="relative bg-white w-full max-w-sm rounded-xl shadow-2xl p-6 z-10 text-center">
+      <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+      </div>
+      <h4 class="font-bold text-gray-900 text-sm mb-1">Hapus Iklan Ini?</h4>
+      <p class="text-xs text-gray-500 mb-5" id="delete-ad-title-text">Iklan yang dihapus tidak dapat dikembalikan.</p>
+      <div class="flex items-center justify-center space-x-2">
+        <button type="button" id="btn-cancel-delete" class="btn btn-secondary btn-sm flex-1">Batal</button>
+        <button type="button" id="btn-confirm-delete" class="btn btn-primary btn-sm flex-1 bg-red-600 hover:bg-red-700">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- LOGIC SCRIPT MANAJEMEN IKLAN -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentAds = [];
+      let activeDeleteId = null;
+
+      const adTableBody = document.getElementById('ad-table-body');
+      const searchInput = document.getElementById('ad-search-input');
+      const typeFilter = document.getElementById('ad-type-filter');
+      const positionFilter = document.getElementById('ad-position-filter');
+      const statusFilter = document.getElementById('ad-status-filter');
+      const btnRefresh = document.getElementById('btn-refresh-list');
+
+      // Modals
+      const modalAdForm = document.getElementById('modal-ad-form');
+      const modalPreview = document.getElementById('modal-preview');
+      const modalDelete = document.getElementById('modal-delete');
+      const btnAddAd = document.getElementById('btn-add-ad');
+      const btnCloseAdModal = document.getElementById('btn-close-ad-modal');
+      const btnCancelAdModal = document.getElementById('btn-cancel-ad-modal');
+      const btnClosePreview = document.getElementById('btn-close-preview');
+      const btnCancelDelete = document.getElementById('btn-cancel-delete');
+      const btnConfirmDelete = document.getElementById('btn-confirm-delete');
+
+      // Form Elements
+      const formAd = document.getElementById('form-ad');
+      const adIdInput = document.getElementById('ad-id-input');
+      const adTitleInput = document.getElementById('ad-title-input');
+      const adPositionInput = document.getElementById('ad-position-input');
+      const adCodeInput = document.getElementById('ad-code-input');
+      const adImageFile = document.getElementById('ad-image-file');
+      const adImageUrl = document.getElementById('ad-image-url');
+      const adLinkInput = document.getElementById('ad-link-input');
+      const adNoteInput = document.getElementById('ad-note-input');
+      const adOrderInput = document.getElementById('ad-order-input');
+      const adActiveInput = document.getElementById('ad-active-input');
+
+      const fieldGoogle = document.getElementById('field-google-container');
+      const fieldBanner = document.getElementById('field-banner-container');
+      const bannerPreviewBox = document.getElementById('banner-preview-box');
+      const bannerPreviewImg = document.getElementById('banner-preview-img');
+
+      // Toggle Panduan Accordion
+      const toggleGuideBtn = document.getElementById('toggle-guide-btn');
+      const guideContentBox = document.getElementById('guide-content-box');
+      const guideArrowIcon = document.getElementById('guide-arrow-icon');
+      if (toggleGuideBtn) {
+        toggleGuideBtn.addEventListener('click', () => {
+          guideContentBox.classList.toggle('hidden');
+          guideArrowIcon.classList.toggle('rotate-180');
+        });
+      }
+
+      // Radio Type Switch
+      document.querySelectorAll('input[name="ad_type"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          switchAdType(e.target.value);
+        });
+      });
+
+      function switchAdType(type) {
+        if (type === 'google') {
+          fieldGoogle.classList.remove('hidden');
+          fieldBanner.classList.add('hidden');
+          document.getElementById('label-type-google').classList.add('border-blue-500', 'bg-blue-50/40');
+          document.getElementById('label-type-banner').classList.remove('border-purple-500', 'bg-purple-50/40');
+        } else {
+          fieldGoogle.classList.add('hidden');
+          fieldBanner.classList.remove('hidden');
+          document.getElementById('label-type-banner').classList.add('border-purple-500', 'bg-purple-50/40');
+          document.getElementById('label-type-google').classList.remove('border-blue-500', 'bg-blue-50/40');
+        }
+      }
+
+      // Preview Image on file select
+      if (adImageFile) {
+        adImageFile.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (re) => {
+              bannerPreviewImg.src = re.target.result;
+              bannerPreviewBox.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      // Preview Image on URL change
+      if (adImageUrl) {
+        adImageUrl.addEventListener('input', (e) => {
+          const val = e.target.value.trim();
+          if (val) {
+            bannerPreviewImg.src = val;
+            bannerPreviewBox.classList.remove('hidden');
+          }
+        });
+      }
+
+      // Helper Toast
+      function showToast(msg, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        const color = type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white';
+        toast.className = `${color} px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold flex items-center space-x-2 transform transition-all duration-200 translate-y-2 opacity-0 pointer-events-auto`;
+        toast.innerHTML = `
+          <span>${msg}</span>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      }
+
+      // Format Posisi Slot Label
+      function getPositionLabel(pos) {
+        const map = {
+          'header': 'Header Atas (Leaderboard)',
+          'sidebar': 'Sidebar Samping',
+          'article_middle': 'Artikel Tengah (In-Article)',
+          'home_middle': 'Beranda Tengah',
+          'article_bottom': 'Artikel Bawah',
+          'footer': 'Footer Bawah'
+        };
+        return map[pos] || pos;
+      }
+
+      // Load Ads from API
+      async function loadAds() {
+        adTableBody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-8 text-center text-gray-500">
+              <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-red-600 border-t-transparent mb-2"></div>
+              <p class="text-xs">Mengambil data iklan terbaru...</p>
+            </td>
+          </tr>
+        `;
+
+        try {
+          const res = await BuserInfoAPI.getAds();
+          currentAds = res?.ads || [];
+          updateStats(currentAds);
+          renderAdsTable();
+        } catch (err) {
+          adTableBody.innerHTML = `
+            <tr>
+              <td colspan="6" class="p-6 text-center text-red-500">
+                Gagal memuat data iklan: ${err.message}
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      function updateStats(ads) {
+        document.getElementById('stat-total-ad').textContent = ads.length;
+        document.getElementById('stat-active-ad').textContent = ads.filter(a => a.is_active == 1).length;
+        document.getElementById('stat-google-ad').textContent = ads.filter(a => a.tipe === 'google').length;
+        document.getElementById('stat-banner-ad').textContent = ads.filter(a => a.tipe === 'banner').length;
+      }
+
+      function renderAdsTable() {
+        const q = searchInput.value.toLowerCase().trim();
+        const typeVal = typeFilter.value;
+        const posVal = positionFilter.value;
+        const statusVal = statusFilter.value;
+
+        const filtered = currentAds.filter(ad => {
+          if (typeVal !== 'all' && ad.tipe !== typeVal) return false;
+          if (posVal !== 'all' && ad.posisi !== posVal) return false;
+          if (statusVal === 'active' && ad.is_active != 1) return false;
+          if (statusVal === 'inactive' && ad.is_active != 0) return false;
+          if (q) {
+            const titleMatch = (ad.judul || '').toLowerCase().includes(q);
+            const noteMatch = (ad.keterangan || '').toLowerCase().includes(q);
+            if (!titleMatch && !noteMatch) return false;
+          }
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          adTableBody.innerHTML = `
+            <tr>
+              <td colspan="6" class="p-8 text-center text-gray-400">
+                <svg class="w-10 h-10 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <p class="font-bold text-gray-600">Tidak ada iklan ditemukan</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Silakan tambahkan iklan baru atau sesuaikan filter pencarian Anda.</p>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        adTableBody.innerHTML = filtered.map((ad, idx) => {
+          const isGoogle = ad.tipe === 'google';
+          const typeBadge = isGoogle
+            ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">Google Ads</span>`
+            : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">Banner Sponsor</span>`;
+
+          const posBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">${getPositionLabel(ad.posisi)}</span>`;
+
+          const visualThumb = isGoogle
+            ? `<div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 font-bold flex items-center justify-center shrink-0 text-xs">G-Ads</div>`
+            : `<div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+                 <img src="${ad.gambar || '../assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg'}" class="w-full h-full object-cover" onerror="this.src='../assets/images/logo/favicon.webp';">
+               </div>`;
+
+          const isActive = ad.is_active == 1;
+          const statusToggle = `
+            <button type="button" class="btn-toggle-status relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isActive ? 'bg-emerald-500' : 'bg-gray-300'}" data-id="${ad.id}" title="${isActive ? 'Klik untuk nonaktifkan' : 'Klik untuk aktifkan'}">
+              <span class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${isActive ? 'translate-x-4' : 'translate-x-0'}"></span>
+            </button>
+          `;
+
+          return `
+            <tr class="hover:bg-gray-50/80 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-gray-400">${idx + 1}</td>
+              <td class="py-3 px-4">
+                <div class="flex items-center space-x-3">
+                  ${visualThumb}
+                  <div class="min-w-0">
+                    <p class="font-bold text-gray-900 text-xs truncate max-w-xs sm:max-w-md">${escapeHtml(ad.judul)}</p>
+                    <p class="text-[11px] text-gray-500 truncate max-w-xs">${ad.keterangan ? escapeHtml(ad.keterangan) : (isGoogle ? 'Unit Iklan AdSense' : 'Link: ' + (ad.link_tujuan || '-'))}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4">${typeBadge}</td>
+              <td class="py-3 px-4">${posBadge}</td>
+              <td class="py-3 px-4 text-center">${statusToggle}</td>
+              <td class="py-3 px-4 text-right whitespace-nowrap">
+                <div class="inline-flex items-center space-x-1.5">
+                  <button type="button" class="btn-preview-ad p-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors" data-id="${ad.id}" title="Pratinjau Iklan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                  </button>
+                  <button type="button" class="btn-edit-ad p-1.5 rounded-lg text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" data-id="${ad.id}" title="Edit Iklan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button type="button" class="btn-delete-ad p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" data-id="${ad.id}" title="Hapus Iklan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        attachTableEvents();
+      }
+
+      function attachTableEvents() {
+        // Toggle Status
+        document.querySelectorAll('.btn-toggle-status').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const id = btn.getAttribute('data-id');
+            const res = await BuserInfoAPI.toggleAdStatus(id);
+            if (res.status === 'success') {
+              showToast(res.message || 'Status iklan berhasil diubah');
+              loadAds();
+            } else {
+              showToast(res.message || 'Gagal mengubah status', 'error');
+            }
+          });
+        });
+
+        // Edit Button
+        document.querySelectorAll('.btn-edit-ad').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const ad = currentAds.find(a => a.id == id);
+            if (ad) openEditModal(ad);
+          });
+        });
+
+        // Preview Button
+        document.querySelectorAll('.btn-preview-ad').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const ad = currentAds.find(a => a.id == id);
+            if (ad) openPreviewModal(ad);
+          });
+        });
+
+        // Delete Button
+        document.querySelectorAll('.btn-delete-ad').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const ad = currentAds.find(a => a.id == id);
+            if (ad) {
+              activeDeleteId = id;
+              document.getElementById('delete-ad-title-text').textContent = `Hapus "${ad.judul}"?`;
+              modalDelete.classList.remove('hidden');
+            }
+          });
+        });
+      }
+
+      // Filter change listeners
+      searchInput.addEventListener('input', renderAdsTable);
+      typeFilter.addEventListener('change', renderAdsTable);
+      positionFilter.addEventListener('change', renderAdsTable);
+      statusFilter.addEventListener('change', renderAdsTable);
+      btnRefresh.addEventListener('click', () => {
+        showToast('Memperbarui data iklan...');
+        loadAds();
+      });
+
+      // Open Modal Tambah
+      btnAddAd.addEventListener('click', () => {
+        formAd.reset();
+        adIdInput.value = '';
+        document.getElementById('modal-ad-title').textContent = 'Tambah Iklan Baru';
+        document.querySelector('input[name="ad_type"][value="google"]').checked = true;
+        switchAdType('google');
+        bannerPreviewBox.classList.add('hidden');
+        adActiveInput.checked = true;
+        modalAdForm.classList.remove('hidden');
+      });
+
+      function openEditModal(ad) {
+        formAd.reset();
+        adIdInput.value = ad.id;
+        document.getElementById('modal-ad-title').textContent = 'Edit Iklan / Kampanye';
+        adTitleInput.value = ad.judul || '';
+        adPositionInput.value = ad.posisi || 'sidebar';
+        adNoteInput.value = ad.keterangan || '';
+        adOrderInput.value = ad.urutan || 1;
+        adActiveInput.checked = ad.is_active == 1;
+
+        const typeRadio = document.querySelector(`input[name="ad_type"][value="${ad.tipe}"]`);
+        if (typeRadio) typeRadio.checked = true;
+        switchAdType(ad.tipe);
+
+        if (ad.tipe === 'google') {
+          adCodeInput.value = ad.kode_html || '';
+        } else {
+          adImageUrl.value = ad.gambar || '';
+          adLinkInput.value = ad.link_tujuan || '';
+          if (ad.gambar) {
+            bannerPreviewImg.src = ad.gambar;
+            bannerPreviewBox.classList.remove('hidden');
+          }
+        }
+
+        modalAdForm.classList.remove('hidden');
+      }
+
+      // Submit Form
+      formAd.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = adIdInput.value;
+        const type = document.querySelector('input[name="ad_type"]:checked').value;
+        const submitBtn = document.getElementById('btn-submit-ad-modal');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span>Menyimpan...</span>`;
+
+        let gambarPath = adImageUrl.value.trim();
+
+        // Jika ada upload file gambar untuk banner sponsor
+        if (type === 'banner' && adImageFile.files && adImageFile.files[0]) {
+          try {
+            const formData = new FormData();
+            formData.append('thumbnail', adImageFile.files[0]);
+            const uploadRes = await fetch('../api/upload.php', {
+              method: 'POST',
+              headers: BuserInfoAPI.getAuthHeaders(),
+              body: formData
+            });
+            const uploadJson = await uploadRes.json();
+            if (uploadJson.status === 'success' && uploadJson.data?.url) {
+              gambarPath = uploadJson.data.url;
+            }
+          } catch (ue) {
+            console.warn('Gagal upload banner, menggunakan fallback lokal:', ue);
+          }
+        }
+
+        const payload = {
+          judul: adTitleInput.value.trim(),
+          tipe: type,
+          posisi: adPositionInput.value,
+          kode_html: type === 'google' ? adCodeInput.value : null,
+          gambar: type === 'banner' ? (gambarPath || 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg') : null,
+          link_tujuan: type === 'banner' ? adLinkInput.value.trim() : null,
+          keterangan: adNoteInput.value.trim(),
+          urutan: parseInt(adOrderInput.value || '1', 10),
+          is_active: adActiveInput.checked ? 1 : 0
+        };
+
+        try {
+          let res;
+          if (id) {
+            res = await BuserInfoAPI.updateAd(id, payload);
+          } else {
+            res = await BuserInfoAPI.createAd(payload);
+          }
+
+          if (res.status === 'success') {
+            showToast(res.message || 'Iklan berhasil disimpan!');
+            modalAdForm.classList.add('hidden');
+            loadAds();
+          } else {
+            showToast(res.message || 'Gagal menyimpan iklan', 'error');
+          }
+        } catch (err) {
+          showToast(err.message || 'Terjadi kesalahan sistem', 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Simpan Iklan</span>
+          `;
+        }
+      });
+
+      // Preview Modal Handler
+      function openPreviewModal(ad) {
+        document.getElementById('preview-slot-label').textContent = `${getPositionLabel(ad.posisi)} (${ad.tipe === 'google' ? 'Google AdSense' : 'Banner Sponsor'})`;
+        const box = document.getElementById('preview-content-box');
+        box.innerHTML = '';
+
+        if (ad.tipe === 'banner') {
+          box.innerHTML = `
+            <div class="w-full max-w-lg mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-white">
+              <div class="px-3 py-1 bg-gray-50 border-b border-gray-100 flex items-center justify-between text-[10px] text-gray-500 uppercase font-bold">
+                <span>Iklan Sponsor</span>
+                <span>${escapeHtml(ad.judul)}</span>
+              </div>
+              <a href="${ad.link_tujuan || '#'}" target="_blank" class="flex items-center justify-center p-3 bg-slate-50/80 min-h-[140px] max-h-56">
+                <img src="${ad.gambar || '../assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg'}" class="max-h-52 max-w-full w-auto h-auto object-contain">
+              </a>
+            </div>
+          `;
+        } else {
+          box.innerHTML = `
+            <div class="w-full text-center p-4 bg-blue-50/50 border border-blue-200 rounded-xl">
+              <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase rounded mb-2">Google AdSense Slot</span>
+              <div class="font-mono text-xs text-gray-700 bg-white p-3 rounded border border-gray-200 text-left overflow-x-auto max-h-40">
+                ${escapeHtml(ad.kode_html || '')}
+              </div>
+            </div>
+          `;
+        }
+        modalPreview.classList.remove('hidden');
+      }
+
+      // Delete Confirm Handler
+      btnConfirmDelete.addEventListener('click', async () => {
+        if (!activeDeleteId) return;
+        btnConfirmDelete.disabled = true;
+        try {
+          const res = await BuserInfoAPI.deleteAd(activeDeleteId);
+          if (res.status === 'success') {
+            showToast('Iklan berhasil dihapus');
+            modalDelete.classList.add('hidden');
+            loadAds();
+          } else {
+            showToast(res.message || 'Gagal menghapus', 'error');
+          }
+        } catch (err) {
+          showToast(err.message, 'error');
+        } finally {
+          btnConfirmDelete.disabled = false;
+          activeDeleteId = null;
+        }
+      });
+
+      // Close modal events
+      [btnCloseAdModal, btnCancelAdModal, document.getElementById('modal-ad-backdrop')].forEach(el => {
+        if (el) el.addEventListener('click', () => modalAdForm.classList.add('hidden'));
+      });
+      [btnClosePreview, document.getElementById('modal-preview-backdrop')].forEach(el => {
+        if (el) el.addEventListener('click', () => modalPreview.classList.add('hidden'));
+      });
+      [btnCancelDelete, document.getElementById('modal-delete-backdrop')].forEach(el => {
+        if (el) el.addEventListener('click', () => modalDelete.classList.add('hidden'));
+      });
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // Start initial load
+      loadAds();
+    });
+  </script>
+</body>
+</html>

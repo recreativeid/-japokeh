@@ -1,0 +1,392 @@
+/* ==========================================================================
+   Japakeh Post - Modern Indonesian News Portal Stylesheet
+   PT Japakeh Media Nusantara
+   Brand Concept: Ruby Crimson (#C8102E), Putih Bersih (#FFFFFF), Slate Black (#0F172A)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+
+:root {
+  --japakeh-black: #0F172A;
+  --japakeh-red: #C8102E;
+  --japakeh-red-hover: #991B1B;
+  --japakeh-dark: #1E293B;
+  --japakeh-light: #F1F5F9;
+  --japakeh-rose-soft: #FFF1F2;
+  --buser-black: #0F172A;
+  --buser-red: #C8102E;
+  --buser-red-hover: #991B1B;
+  --buser-dark: #1E293B;
+  --buser-light: #F1F5F9;
+  --buser-gray-border: #E2E8F0;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Merriweather', Georgia, Cambria, serif;
+}
+
+/* Base resets & typography */
+html {
+  font-size: 13px;
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 13.5px;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Compact Container Max Width (Tabaca / Indonesian news standard: 1080px) */
+.max-w-7xl {
+  max-width: 1080px !important;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--buser-light);
+  color: var(--buser-black);
+  overflow-x: clip;
+}
+
+/* Continuous Sticky Sidebar for Desktop (Beside main content until footer) */
+@media (min-width: 1024px) {
+  .sticky-sidebar-desktop,
+  .sticky-sidebar-flow {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4.75rem;
+    align-self: start;
+    max-height: calc(100vh - 5.5rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
+  }
+  .sticky-sidebar-desktop::-webkit-scrollbar,
+  .sticky-sidebar-flow::-webkit-scrollbar {
+    width: 3px;
+  }
+  .sticky-sidebar-desktop::-webkit-scrollbar-thumb,
+  .sticky-sidebar-flow::-webkit-scrollbar-thumb {
+    background: rgba(203, 213, 225, 0.6);
+    border-radius: 3px;
+  }
+}
+
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F1F1;
+}
+::-webkit-scrollbar-thumb {
+  background: #C1C1C1;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--buser-red);
+}
+
+/* Horizontal Category Navigation Scrollbar (Hidden for clean mobile UX) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Headline clamps */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Breaking News Ticker Animation */
+.ticker-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: tickerSlide 35s linear infinite;
+}
+.ticker-wrapper:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes tickerSlide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Flashing Pulse for Breaking Badge */
+@keyframes pulseDot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.3);
+  }
+}
+.pulse-badge {
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+
+/* Reading Progress Bar on Article Details (Brand Red) */
+#reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3.5px;
+  background: var(--buser-red, #DC2626);
+  width: 0%;
+  z-index: 100;
+  transition: width 0.1s ease-out;
+}
+
+/* Brand Stripe Signature (Merah & Hitam) */
+.brand-accent-stripe {
+  display: flex;
+  height: 4px;
+  width: 100%;
+}
+.brand-accent-stripe > .stripe-red {
+  background-color: var(--buser-red);
+  flex: 7;
+}
+.brand-accent-stripe > .stripe-black {
+  background-color: var(--buser-black);
+  flex: 3;
+}
+
+/* Article Body Typography Variations */
+.article-text-sm {
+  font-size: 1.0rem !important;
+  line-height: 1.8 !important;
+}
+.article-text-md {
+  font-size: 1.15rem !important;
+  line-height: 1.95 !important;
+}
+.article-text-lg {
+  font-size: 1.3rem !important;
+  line-height: 2.1 !important;
+}
+
+/* Editorial Blockquote */
+.editorial-quote {
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--buser-red);
+  background: #FFF1F2;
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+/* Card Hover Shadows & Micro-interactions */
+.news-card-hover {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+.news-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.09);
+  border-color: #FECDD3 !important;
+}
+.news-card-hover:hover .news-headline {
+  color: var(--buser-red);
+}
+
+/* Drawer Transitions */
+.drawer-backdrop {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-panel {
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer-panel.active {
+  transform: translateX(0);
+}
+
+/* Right-side Modal/Drawer for Bookmarks */
+.bookmark-panel {
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bookmark-panel.active {
+  transform: translateX(0);
+}
+
+/* Category Tab Active Indicator */
+.cat-nav-link {
+  transition: all 0.15s ease;
+}
+.cat-nav-link.active {
+  background-color: var(--buser-red) !important;
+  color: #FFFFFF !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-bottom: none !important;
+}
+.category-tab.active {
+  background-color: var(--buser-red) !important;
+  color: #FFFFFF !important;
+  border-radius: 9999px !important;
+}
+
+/* Compact Editorial News Card */
+.compact-news-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  transition: transform 0.2s ease;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.compact-news-card:hover .compact-news-title {
+  color: #E60000;
+}
+
+/* Section Bar Heading Accents */
+.section-heading-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1.5px solid #E2E8F0;
+  padding-bottom: 0.5rem;
+}
+.section-heading-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -1.5px;
+  left: 0;
+  width: 32px;
+  height: 2px;
+  border-radius: 9999px;
+  background-color: var(--buser-red);
+}
+.section-heading-bar.accent-black::after {
+  background-color: var(--buser-black);
+}
+
+#category-scroll-nav {
+  justify-content: flex-start;
+}
+
+/* Modern Top Slider (Carousel Berita Utama) */
+#top-slider {
+  outline: none;
+}
+#top-slider:focus-visible {
+  box-shadow: 0 0 0 2px var(--buser-red);
+}
+.top-slider-track {
+  will-change: transform;
+}
+.top-slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.top-slider-dot:hover {
+  background-color: #FFFFFF;
+  transform: scale(1.2);
+}
+.top-slider-dot.active {
+  width: 24px;
+  background-color: var(--buser-red, #C8102E);
+  border-radius: 9999px;
+  box-shadow: 0 0 12px rgba(200, 16, 46, 0.8);
+}
+
+/* Modal Popup & Fade Animations */
+@keyframes scaleUp {
+  0% { transform: scale(0.94); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-scaleUp {
+  animation: scaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Hero Carousel Pill Dots */
+.hero-dot-indicator {
+  height: 6px;
+  width: 6px;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.hero-dot-indicator:hover {
+  background-color: #FFFFFF;
+}
+.hero-dot-indicator.active {
+  width: 18px;
+  background-color: #E60000;
+  border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(230, 0, 0, 0.8);
+}
+
+/* Print styles */
+@media print {
+  header, footer, .ticker-wrapper, .share-box, #reading-progress-bar, #mobile-drawer, #bookmark-modal {
+    display: none !important;
+  }
+  body {
+    background: #FFF;
+    color: #000;
+  }
+}

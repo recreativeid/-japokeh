@@ -1,0 +1,80 @@
+  <!-- SIDEBAR NAVIGATION -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-[#0B0B0B] text-gray-300 flex flex-col justify-between transition-transform duration-200 ease-in-out -translate-x-full lg:translate-x-0 lg:static border-r border-gray-800">
+    <div>
+      <div class="h-16 flex items-center justify-between px-5 border-b border-gray-800">
+        <a href="<?= base_url('admin') ?>" class="flex items-center space-x-2.5">
+          <img src="<?= base_url('assets/images/logo/favicon.webp') ?>" alt="Japakeh Post" class="h-9 w-auto object-contain shrink-0">
+          <div class="flex flex-col justify-center">
+            <div class="flex items-center space-x-1 leading-none">
+              <span class="text-white font-black text-base tracking-wider uppercase">JAPAKEH<span class="text-buser-red">.</span></span>
+              <span class="bg-buser-red text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm tracking-wider uppercase">POST</span>
+            </div>
+            <span class="text-[7.5px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5 whitespace-nowrap">PANEL REDAKSI</span>
+          </div>
+        </a>
+        <button id="sidebar-close-btn" class="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="py-4 px-3 space-y-1 overflow-y-auto max-h-[calc(100vh-175px)] sidebar-scroll">
+        <div class="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Menu Editorial</div>
+        <a href="<?= base_url('admin/dashboard') ?>" class="nav-item <?= (uri_string() === 'admin' || uri_string() === 'admin/dashboard') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="<?= base_url('admin/berita') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/berita') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+          <span>Berita</span>
+        </a>
+        <a href="<?= base_url('admin/kategori') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/kategori') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          <span>Kategori</span>
+        </a>
+        <a href="<?= base_url('admin/penulis') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/penulis') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          <span>Penulis</span>
+        </a>
+        <a href="<?= base_url('admin/profil') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/profil') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          <span>Profil Redaksi</span>
+        </a>
+        <a href="<?= base_url('admin/media') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/media') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Media</span>
+        </a>
+        <a href="<?= base_url('admin/komentar') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/komentar') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          <span class="flex-1">Komentar</span>
+        </a>
+
+        <div class="px-3 pt-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">Sistem</div>
+        <a href="<?= base_url('admin/pengguna') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/pengguna') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <span>Pengguna</span>
+        </a>
+        <a href="<?= base_url('admin/pengaturan') ?>" class="nav-item <?= str_contains(uri_string(), 'admin/pengaturan') ? 'active' : '' ?>">
+          <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <span>Pengaturan</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Bottom Profile -->
+    <div class="p-3 border-t border-gray-800 bg-[#111111]">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-gray-900/60 border border-gray-800">
+        <a href="<?= base_url('admin/profil') ?>" class="flex items-center space-x-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity">
+          <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs shrink-0 ring-2 ring-red-500/30">
+            <?= strtoupper(substr(session()->get('user_name') ?? 'RD', 0, 2)) ?>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold text-white truncate"><?= esc(session()->get('user_name') ?? 'Pemimpin Redaksi') ?></div>
+            <div class="text-[10px] text-gray-400 truncate"><?= esc(session()->get('user_role') ?? 'Pemimpin Redaksi') ?></div>
+          </div>
+        </a>
+        <a href="<?= base_url('admin/logout') ?>" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </a>
+      </div>
+    </div>
+  </aside>
