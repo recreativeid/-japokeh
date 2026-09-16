@@ -254,7 +254,7 @@
   <!-- ========================================================================
        FOOTER (Modern Deep Midnight Slate #0F172A, Ruby Red, & Crisp White)
        ======================================================================== -->
-  <footer class="bg-[#0F172A] text-slate-300 pt-6 sm:pt-8 pb-4 sm:pb-5 mt-8 sm:mt-10 relative border-t border-slate-800">
+  <footer class="bg-[#0F172A] text-slate-300 pt-8 pb-6 mt-10 relative z-20 clear-both border-t border-slate-800">
     <!-- Top Brand Accent Stripe (Ruby & Slate) -->
     <div class="brand-accent-stripe absolute top-0 left-0 right-0 h-1 flex" aria-hidden="true">
       <div class="bg-buser-red flex-1"></div>
@@ -262,17 +262,17 @@
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 pb-6 border-b border-slate-800">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 pb-8 border-b border-slate-800/80">
         
-        <!-- BRAND & DESCRIPTION (4 cols) -->
-        <div class="lg:col-span-4 space-y-2.5">
+        <!-- BRAND & DESCRIPTION (4 cols on lg, 2 cols on sm) -->
+        <div class="sm:col-span-2 lg:col-span-4 space-y-3">
           <a href="index.html" class="inline-block" aria-label="Japakeh Post Beranda">
             <img src="assets/images/logo/japakeh-logo.webp" alt="Japakeh Post" class="h-9 sm:h-10 w-auto object-contain" />
           </a>
-          <p class="text-[11px] sm:text-xs text-slate-400 leading-relaxed text-justify">
+          <p class="text-xs text-slate-400 leading-relaxed text-left">
             Portal berita digital independen menyajikan laporan peristiwa daerah, nasional, politik, hukum, perekonomian, pendidikan, dan teknologi terkini secara cepat, akurat, dan terpercaya.
           </p>
-          <div class="flex items-center space-x-2.5 pt-1">
+          <div class="flex items-center space-x-3 pt-1">
             <a href="https://wa.me/6282165071114" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center p-1.5 transition-all shadow-sm hover:scale-105 border border-slate-700/60" aria-label="WhatsApp" title="WhatsApp Japakeh Post">
               <svg class="w-4 h-4" viewBox="0 0 48 48">
                 <path fill="#fff" d="M4.9,43.3l2.7-9.8C5.9,30.6,5,27.3,5,24C5,13.5,13.5,5,24,5c5.1,0,9.9,2,13.4,5.6C41,14.1,43,18.9,43,24c0,10.5-8.5,19-19,19c-3.2,0-6.3-0.8-9.1-2.3L4.9,43.3z"></path>
@@ -292,60 +292,62 @@
           </div>
         </div>
 
-        <!-- INFORMASI PERUSAHAAN & LEGALITAS (3 cols) -->
-        <div class="lg:col-span-3 space-y-2 text-xs text-slate-300">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+        <!-- INFORMASI PERUSAHAAN & LEGALITAS (3 cols on lg, 1 col on sm) -->
+        <div class="sm:col-span-1 lg:col-span-3 space-y-2.5 text-xs text-slate-300">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
             Informasi Perusahaan
           </h3>
-          <div class="space-y-1">
-            <p class="font-bold text-white text-xs sm:text-sm">PT JAPAKEH MEDIA NUSANTARA</p>
+          <div class="space-y-1.5 leading-relaxed">
+            <p class="font-bold text-white text-xs">PT JAPAKEH MEDIA NUSANTARA</p>
             <p class="text-[11px]"><span class="text-slate-400">Pimpinan:</span> <strong class="text-white">Al Bahri</strong></p>
             <p class="text-[11px]"><span class="text-slate-400">Jenis Layanan:</span> <strong class="text-white">Portal Berita Siber & Multimedia</strong></p>
-            <p class="text-[10.5px] text-slate-400 pt-0.5 leading-relaxed text-justify">Beroperasi mematuhi Kode Etik Jurnalistik dan UU Pokok Pers No. 40 Tahun 1999.</p>
+            <p class="text-[10.5px] text-slate-400 pt-1 leading-relaxed text-left">
+              Beroperasi mematuhi Kode Etik Jurnalistik dan UU Pokok Pers No. 40 Tahun 1999.
+            </p>
           </div>
         </div>
 
-        <!-- ALAMAT KANTOR REDAKSI (3 cols) -->
-        <div class="lg:col-span-3 space-y-2 text-xs text-slate-300">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+        <!-- ALAMAT KANTOR REDAKSI (3 cols on lg, 1 col on sm) -->
+        <div class="sm:col-span-1 lg:col-span-3 space-y-2.5 text-xs text-slate-300">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
             Kantor Redaksi
           </h3>
-          <address class="not-italic space-y-0.5 leading-snug text-slate-300 text-[11px] text-justify">
+          <address class="not-italic space-y-1 leading-relaxed text-slate-300 text-[11px] text-left">
             <p class="font-semibold text-white">Gedung PT Japakeh Media Nusantara</p>
-            <p>Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh</p>
-            <p>Kec. Darul Imarah, Kab. Aceh Besar, Aceh</p>
-            <div class="pt-1.5 mt-1 border-t border-slate-800 space-y-0.5">
-              <p class="flex items-center">
-                <span class="text-slate-400 w-14">WhatsApp:</span>
-                <a href="https://wa.me/6282165071114" class="text-slate-200 hover:text-buser-red font-mono hover:underline font-bold transition-colors">082165071114</a>
-              </p>
-              <p class="flex items-center">
-                <span class="text-slate-400 w-14">Email:</span>
-                <a href="mailto:alb4hri@gmail.com" class="text-rose-400 font-mono hover:underline font-bold">alb4hri@gmail.com</a>
-              </p>
+            <p class="text-slate-400">Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh</p>
+            <p class="text-slate-400">Kec. Darul Imarah, Kab. Aceh Besar, Aceh</p>
+            <div class="pt-2 mt-1.5 border-t border-slate-800 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-400 font-medium w-16 shrink-0">WhatsApp:</span>
+                <a href="https://wa.me/6282165071114" target="_blank" rel="noopener noreferrer" class="text-slate-200 hover:text-buser-red font-mono font-bold hover:underline transition-colors truncate">082165071114</a>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-slate-400 font-medium w-16 shrink-0">Email:</span>
+                <a href="mailto:alb4hri@gmail.com" class="text-rose-400 font-mono font-bold hover:underline truncate">alb4hri@gmail.com</a>
+              </div>
             </div>
           </address>
         </div>
 
-        <!-- FOOTER NAVIGATION (2 cols) -->
-        <div class="lg:col-span-2 space-y-2 text-xs">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-1.5">
+        <!-- FOOTER NAVIGATION (2 cols on lg, 2 cols on sm) -->
+        <div class="sm:col-span-2 lg:col-span-2 space-y-2.5 text-xs">
+          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
             Navigasi
           </h3>
-          <ul class="space-y-1 text-[11px] text-slate-400">
-            <li><a href="tentang.html" class="hover:text-white transition-colors">Tentang Kami</a></li>
-            <li><a href="tentang.html#redaksi" class="hover:text-white transition-colors">Susunan Redaksi</a></li>
-            <li><a href="tentang.html#pedoman" class="hover:text-white transition-colors">Pedoman Media Siber</a></li>
-            <li><a href="tentang.html#kontak" class="hover:text-white transition-colors">Kontak & Hotline</a></li>
-            <li><a href="internasional.html?cat=daerah" class="hover:text-white transition-colors">Kanal Daerah</a></li>
-            <li><a href="internasional.html?cat=nasional" class="hover:text-white transition-colors">Kanal Nasional</a></li>
+          <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-1.5 text-[11px] text-slate-400">
+            <li><a href="tentang.html" class="hover:text-white transition-colors block py-0.5">Tentang Kami</a></li>
+            <li><a href="tentang.html#redaksi" class="hover:text-white transition-colors block py-0.5">Susunan Redaksi</a></li>
+            <li><a href="tentang.html#pedoman" class="hover:text-white transition-colors block py-0.5">Pedoman Media</a></li>
+            <li><a href="tentang.html#kontak" class="hover:text-white transition-colors block py-0.5">Kontak & Hotline</a></li>
+            <li><a href="internasional.html?cat=daerah" class="hover:text-white transition-colors block py-0.5">Kanal Daerah</a></li>
+            <li><a href="internasional.html?cat=nasional" class="hover:text-white transition-colors block py-0.5">Kanal Nasional</a></li>
           </ul>
         </div>
 
       </div>
 
       <!-- BOTTOM FOOTER -->
-      <div class="pt-3.5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
         <p>&copy; 2026 Japakeh Post. All Rights Reserved. Dikelola oleh PT Japakeh Media Nusantara.</p>
         <p class="text-[10.5px] text-slate-400">
           Portal Berita Terpercaya

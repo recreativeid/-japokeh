@@ -52,9 +52,10 @@ async function renderAllLiveContentFromDB() {
     // 6. Render Berita Populer (Naik posisi tepat setelah Berita Terbaru, maks 5)
     renderBeritaPopuler(articles);
 
-    // 7. Render Berita Foto (Shorts style, maks 4, di atas Video)
-    renderFotoSection(articles);
   }
+
+  // 7. Render Berita Foto (Shorts style, maks 4, di atas Video - mandiri & selalu aktif)
+  renderFotoSection(articles);
 
   // 8. Render Berita Video (Shorts style, maks 4, di bawah Foto - mandiri & selalu aktif)
   await renderVideoSection(articles);
@@ -116,7 +117,8 @@ const DEFAULT_VIDEOS = [
     youtube_id: 'kJQP7kiw5Fk',
     youtube_url: 'https://www.youtube.com/watch?v=kJQP7kiw5Fk',
     caption: 'Dokumentasi visual keindahan lanskap pantai, kehidupan nelayan pesisir, dan ragam potensi wisata bahari nusantara.',
-    thumbnail_url: 'https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg',
+    content: '<p><strong>PESISIR BARAT</strong> &mdash; Hamparan pasir putih alami dan deburan ombak Samudera Hindia menyajikan panorama bahari yang memukau bagi wisatawan dan masyarakat lokal. Dokumentasi video eksklusif jurnalis Japakeh Post menyoroti dinamika keseharian nelayan tradisional serta upaya pelestarian terumbu karang di pesisir barat Aceh.</p><p>Kawasan pesisir ini terus didorong menjadi salah satu destinasi ekowisata unggulan daerah dengan tetap menjaga kelestarian ekosistem pesisir dan kearifan lokal budaya bahari nusantara.</p>',
+    thumbnail_url: 'assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg',
     created_at: '2026-09-12 10:00:00',
     author: 'Redaksi Japakeh',
     duration: '02:45'
@@ -127,7 +129,8 @@ const DEFAULT_VIDEOS = [
     youtube_id: 'kXYiU_JCYtU',
     youtube_url: 'https://www.youtube.com/watch?v=kXYiU_JCYtU',
     caption: 'Liputan eksklusif persiapan kontingen atlet daerah dalam pemusatan latihan cabang olahraga unggulan dengan dukungan sport science terpadu.',
-    thumbnail_url: 'https://img.youtube.com/vi/kXYiU_JCYtU/hqdefault.jpg',
+    content: '<p><strong>BANDA ACEH</strong> &mdash; Menjelang perhelatan akbar Pekan Olahraga Nasional (PON), ratusan atlet daerah menjalani pemusatan latihan intensif guna mematangkan kesiapan fisik, teknik, dan mental bertanding. Fasilitas latihan berstandar internasional serta pemantauan gizi terukur menjadi fokus utama tim pelatih.</p><p>Dukungan penuh dari pemerintah daerah dan seluruh elemen masyarakat diharapkan mampu membakar semangat juang para patriot olahraga untuk merebut medali emas dan mengibarkan prestasi daerah di kancah nasional.</p>',
+    thumbnail_url: 'assets/images/berita/olahraga/pekan-olahraga-nasional.jpg',
     created_at: '2026-09-12 11:30:00',
     author: 'Redaksi Japakeh',
     duration: '03:15'
@@ -138,7 +141,8 @@ const DEFAULT_VIDEOS = [
     youtube_id: 'dQw4w9WgXcQ',
     youtube_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     caption: 'Dokumentasi riset terapan kampus mengolah limbah kulit manggis menjadi karbon aktif yang mampu menyaring air rawa menjadi air bersih layak konsumsi.',
-    thumbnail_url: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+    content: '<p><strong>MEULABOH</strong> &mdash; Terobosan ilmiah membanggakan lahir dari tangan mahasiswa daerah yang berhasil mendayagunakan limbah kulit manggis menjadi media bio-adsorben penjernih air gambut. Melalui serangkaian uji laboratorium, karbon aktif berbahan dasar organik ini mampu menurunkan keasaman dan menjernihkan air rawa secara efektif.</p><p>Hasil penelitian ini diharapkan dapat segera diterapkan secara massal di permukiman lahan basah pesisir yang selama ini membutuhkan solusi air bersih yang murah, mandiri, dan ramah lingkungan.</p>',
+    thumbnail_url: 'assets/images/berita/teknologi/peluncuran-satelit-indonesia.jpg',
     created_at: '2026-09-11 14:15:00',
     author: 'Redaksi Japakeh',
     duration: '02:10'
@@ -149,12 +153,57 @@ const DEFAULT_VIDEOS = [
     youtube_id: 'ScMzIvxBSi4',
     youtube_url: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
     caption: 'Liputan video jurnalis Japakeh Post menyoroti apel gelar kesiapsiagaan aparat perlindungan gampong dalam menjaga kamtibmas dan mitigasi bencana.',
-    thumbnail_url: 'https://img.youtube.com/vi/ScMzIvxBSi4/hqdefault.jpg',
+    content: '<p><strong>ACEH BARAT</strong> &mdash; Ratusan personel Satgas Linmas bersama unsur Pageu Gampong berkumpul dalam apel gelar pasukan kesiapsiagaan terpadu di halaman kantor bupati. Kegiatan ini bertujuan memperkuat sinergi pengamanan wilayah, deteksi dini kerawanan sosial, serta ketanggapsegeraan mitigasi bencana alam di tingkat akar rumput.</p><p>Aparatur pemerintah daerah mengapresiasi loyalitas dan dedikasi segenap petugas penjaga keamanan gampong yang senantiasa menjaga ketenangan dan ketertiban lingkungan masyarakat.</p>',
+    thumbnail_url: 'assets/images/berita/daerah/penanganan-banjir-sumatera.jpg',
     created_at: '2026-09-11 16:00:00',
     author: 'Redaksi Japakeh',
     duration: '04:15'
   }
 ];
+
+const DEFAULT_FOTOS = [
+  {
+    title: 'Festival Seni dan Budaya Tradisional Pesisir Barat Meriahkan Akhir Pekan',
+    image: 'assets/images/berita/daerah/festival-budaya-palembang.jpg',
+    thumbnail: 'assets/images/berita/daerah/festival-budaya-palembang.jpg',
+    date: '2026-09-10',
+    author: 'Redaksi Japakeh',
+    slug: 'festival-seni-budaya-pesisir-barat',
+    excerpt: 'Perhelatan akbar parade baju adat nusantara dan atraksi tarian kolosal memukau ribuan penonton yang memadati kawasan pusat kebudayaan daerah pesisir barat.',
+    content: '<p>Pesisir Barat &mdash; Perhelatan seni dan budaya tradisional nusantara kembali memukau ribuan pasang mata masyarakat lokal maupun wisatawan mancanegara. Gelaran karnaval busana adat khas daerah berpadu dengan iringan tabuhan musik etnik tradisional berhasil menghidupkan suasana akhir pekan dengan sangat semarak.</p><p>Acara tahunan yang diselenggarakan oleh Dinas Kebudayaan dan Pariwisata ini bertujuan melestarikan warisan leluhur sekaligus memperkokoh identitas kebudayaan generasi muda di tengah arus modernisasi global.</p>'
+  },
+  {
+    title: 'Semarak Pesta Nelayan dan Lomba Perahu Tradisional di Perairan Aceh',
+    image: 'assets/images/berita/olahraga/pekan-olahraga-nasional.jpg',
+    thumbnail: 'assets/images/berita/olahraga/pekan-olahraga-nasional.jpg',
+    date: '2026-09-10',
+    author: 'Redaksi Japakeh',
+    slug: 'semarak-pesta-nelayan-lomba-perahu',
+    excerpt: 'Ratusan perahu motor hias dan perahu kayuh tradisional nelayan pesisir beradu kecepatan dan ketangkasan dalam tradisi kenduri laot tahunan.',
+    content: '<p>Banda Aceh &mdash; Riak gelombang laut dan gemuruh sorak penonton mewarnai pelaksanaan lomba perahu dayung tradisional yang diikuti oleh puluhan paguyuban nelayan pesisir. Mengusung nilai kearifan lokal Panglima Laot, perahu-perahu kayu dengan corak warna cerah saling beradu ketangkasan dan kekompakan tim.</p><p>Selain perlombaan bahari, festival ini dirangkai dengan tradisi kenduri laot sebagai wujud syukur atas limpahan rezeki hasil tangkapan ikan laut dan doa keselamatan bagi para pelaut nusantara.</p>'
+  },
+  {
+    title: 'Potret Keindahan Panorama Senja dan Gugusan Pesisir Meulaboh',
+    image: 'assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg',
+    thumbnail: 'assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg',
+    date: '2026-09-10',
+    author: 'Redaksi Japakeh',
+    slug: 'keindahan-panorama-senja-meulaboh',
+    excerpt: 'Kilauan cahaya jingga matahari terbenam memantul di permukaan laut Samudera Hindia, menyuguhkan pesona magis lanskap alam garis pantai barat sumatera.',
+    content: '<p>Meulaboh &mdash; Garis pantai barat Aceh selalu menyimpan pesona lanskap yang memanjakan mata penikmat fotografi alam. Menjelang waktu senja, semburat warna jingga kemerahan menghiasi langit cakrawala Samudera Hindia berpadu dengan deburan ombak yang tenang dan deretan pohon cemara laut.</p><p>Kawasan pesisir ini kini menjadi destinasi favorit masyarakat untuk bersantai melepas penat seraya menikmati kuliner laut khas pesisir bersama keluarga.</p>'
+  },
+  {
+    title: 'Gelar Karya Kerajinan Motif Khas Daerah Tarik Perhatian Wisatawan',
+    image: 'assets/images/berita/ekonomi/pertumbuhan-umkm-digital.jpg',
+    thumbnail: 'assets/images/berita/ekonomi/pertumbuhan-umkm-digital.jpg',
+    date: '2026-09-10',
+    author: 'Redaksi Japakeh',
+    slug: 'gelar-karya-kerajinan-motif-daerah',
+    excerpt: 'Ragam tenun songket, kerajinan anyaman pandan, dan suvenir etnik buatan perajin lokal dipamerkan dalam ekspo industri kreatif daerah.',
+    content: '<p>Aceh Barat &mdash; Ragam mahakarya seni kriya dan kerajinan tradisional dipamerkan dalam pameran produk ekonomi kreatif daerah. Keunikan motif pucuk rebung dan sulaman kasab benang emas hasil tangan terampil para perajin lokal berhasil memikat antusiasme pengunjung lokal maupun kurator mancanegara.</p><p>Pemerintah daerah terus berkomitmen memfasilitasi pelaku kriya lokal agar dapat menembus pasar ekspor melalui digitalisasi rantai pasok dan sertifikasi hak cipta karya cipta.</p>'
+  }
+];
+
 
 /* ==========================================================================
    1. BREAKING NEWS TICKER
@@ -432,17 +481,23 @@ function renderBeritaPopuler(articles) {
 
 function renderFotoSection(articles) {
   const container = document.getElementById('home-foto-grid');
-  if (!container || !articles) return;
+  const section = document.getElementById('home-foto-section');
+  if (!container) return;
 
-  const fotoArticles = articles.filter(a => {
-    const cat = (a.name_kategori || a.category || a.categorySlug || '').toLowerCase();
-    return cat.includes('foto');
-  });
+  // Pastikan section foto SELALU tampil (jangan pernah di-hide)
+  if (section) section.style.display = '';
 
+  let fotoArticles = [];
+  if (Array.isArray(articles)) {
+    fotoArticles = articles.filter(a => {
+      const cat = (a.name_kategori || a.category || a.categorySlug || '').toLowerCase();
+      return cat.includes('foto');
+    });
+  }
+
+  // Fallback foto default jika belum ada dari database / API
   if (fotoArticles.length === 0) {
-    const section = document.getElementById('home-foto-section');
-    if (section) section.style.display = 'none';
-    return;
+    fotoArticles = DEFAULT_FOTOS;
   }
 
   // Maksimum 4 foto
@@ -460,8 +515,8 @@ function renderFotoSection(articles) {
     const author = item.author || 'Redaksi Japakeh Post';
 
     html += `
-      <article class="group relative rounded-xl overflow-hidden aspect-[9/13] sm:aspect-[9/14] bg-slate-950 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 select-none foto-card-item" data-foto-index="${index}">
-        <img src="${thumb}" alt="${escapeHtml(cleanTitle)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" onerror="this.src='assets/images/berita/daerah/festival-budaya-palembang.jpg'" />
+      <article class="group relative rounded-xl overflow-hidden aspect-[9/14] w-full bg-slate-950 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 select-none foto-card-item" data-foto-index="${index}" style="aspect-ratio: 9/14; min-height: 240px; max-height: 320px;">
+        <img src="${thumb}" alt="${escapeHtml(cleanTitle)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" onerror="this.src='assets/images/berita/daerah/festival-budaya-palembang.jpg'" />
         
         <!-- Top Gradient -->
         <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/75 to-transparent pointer-events-none"></div>
@@ -570,15 +625,15 @@ async function renderVideoSection(articles) {
   let html = '';
   displayVideos.forEach((item, index) => {
     const ytid = item.youtube_id || extractYouTubeId(item.youtube_url || item.video_url || '') || '';
-    const thumb = item.thumbnail_url || (ytid ? `https://img.youtube.com/vi/${ytid}/hqdefault.jpg` : getThumb(item.thumbnail || item.image));
+    const thumb = item.thumbnail_url || item.thumbnail || item.image || (ytid ? `https://img.youtube.com/vi/${ytid}/hqdefault.jpg` : 'assets/images/berita/daerah/penanganan-banjir-sumatera.jpg');
     const cleanTitle = cleanMediaTitle(item.title);
     const pubDate = formatDateIndo(item.created_at || item.published_at || item.date);
     const author = item.author || 'Redaksi Japakeh';
     const duration = item.duration || '02:45';
 
     html += `
-      <article class="group relative rounded-xl overflow-hidden aspect-[9/13] sm:aspect-[9/14] bg-slate-950 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 select-none video-card-item" data-video-index="${index}">
-        <img src="${thumb}" alt="${escapeHtml(cleanTitle)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" onerror="this.src='assets/images/berita/daerah/penanganan-banjir-sumatera.jpg'" />
+      <article class="group relative rounded-xl overflow-hidden aspect-[9/14] w-full bg-slate-950 cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 select-none video-card-item" data-video-index="${index}" style="aspect-ratio: 9/14; min-height: 240px; max-height: 320px;">
+        <img src="${thumb}" alt="${escapeHtml(cleanTitle)}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" onerror="this.src='assets/images/berita/daerah/penanganan-banjir-sumatera.jpg'" />
         
         <!-- Top Gradient -->
         <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/75 to-transparent pointer-events-none"></div>
@@ -637,15 +692,15 @@ async function renderVideoSection(articles) {
  * Kembalikan class grid adaptif berdasarkan jumlah kartu (1, 2, 3, atau 4)
  */
 function getAdaptiveGridClass(count) {
-  if (count === 1) {
-    return 'grid grid-cols-1 max-w-[220px] mx-auto';
+  if (count <= 1) {
+    return 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 w-full';
   } else if (count === 2) {
-    return 'grid grid-cols-2 max-w-md mx-auto gap-2.5 sm:gap-3.5';
+    return 'grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 w-full';
   } else if (count === 3) {
-    return 'grid grid-cols-3 max-w-2xl mx-auto gap-2.5 sm:gap-3.5';
+    return 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3.5 w-full';
   } else {
     // 4 atau lebih: 2 kolom di mobile, 4 kolom di layar sm ke atas
-    return 'grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5';
+    return 'grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 w-full';
   }
 }
 
@@ -676,6 +731,7 @@ function setupModals() {
 
   // Pasang listener pada kartu statis HTML jika dynamic render belum selesai
   bindStaticVideoCards();
+  bindStaticFotoCards();
 }
 
 function bindStaticVideoCards() {
@@ -687,6 +743,21 @@ function bindStaticVideoCards() {
         const idx = parseInt(card.getAttribute('data-video-index'), 10);
         if (!isNaN(idx) && DEFAULT_VIDEOS[idx]) {
           openVideoModal(DEFAULT_VIDEOS[idx]);
+        }
+      });
+    }
+  });
+}
+
+function bindStaticFotoCards() {
+  const staticFotoCards = document.querySelectorAll('#home-foto-grid .foto-card-item');
+  staticFotoCards.forEach(card => {
+    if (!card.dataset.bound) {
+      card.dataset.bound = 'true';
+      card.addEventListener('click', () => {
+        const idx = parseInt(card.getAttribute('data-foto-index'), 10);
+        if (!isNaN(idx) && DEFAULT_FOTOS[idx]) {
+          openFotoModal(DEFAULT_FOTOS[idx]);
         }
       });
     }
@@ -710,7 +781,7 @@ function openVideoModal(item) {
   const articleUrl = item.slug ? `artikel.html?slug=${encodeURIComponent(item.slug)}` : 'internasional.html?cat=video';
 
   const ytid = item.youtube_id || extractYouTubeId(item.youtube_url || item.video_url || '') || '';
-  const thumb = item.thumbnail_url || (ytid ? `https://img.youtube.com/vi/${ytid}/hqdefault.jpg` : getThumb(item.thumbnail || item.image));
+  const thumb = item.thumbnail_url || item.thumbnail || item.image || (ytid ? `https://img.youtube.com/vi/${ytid}/hqdefault.jpg` : 'assets/images/berita/daerah/penanganan-banjir-sumatera.jpg');
 
   if (titleEl) titleEl.textContent = cleanTitle;
   if (dateEl) dateEl.textContent = pubDate;
@@ -726,7 +797,7 @@ function openVideoModal(item) {
 
   // Bersihkan dan sajikan konten deskripsi
   if (descEl) {
-    const rawDesc = item.caption || item.description || item.content || item.excerpt || 'Liputan video jurnalisme terpercaya Japakeh Post.';
+    const rawDesc = item.content || item.caption || item.description || item.excerpt || 'Liputan video jurnalisme terpercaya Japakeh Post.';
     let cleanContent = typeof rawDesc === 'string' && rawDesc.startsWith('<') ? rawDesc : `<p>${escapeHtml(rawDesc)}</p>`;
     cleanContent = cleanContent.replace(/<div class="my-6 p-4[\s\S]*?<\/div>/gi, '');
     descEl.innerHTML = cleanContent;
