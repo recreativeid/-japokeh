@@ -48,11 +48,13 @@ function handleGetArtikel(PDO $db): void {
         $stmt = $db->prepare("
             SELECT 
                 a.id_artikel,
+                a.id_artikel AS id,
                 a.title,
                 a.slug,
                 a.content,
                 a.thumbnail,
                 a.status,
+                a.views,
                 a.published_at,
                 a.updated_at,
                 k.id_kategori,
@@ -148,11 +150,13 @@ function handleGetArtikel(PDO $db): void {
         $sql = "
             SELECT 
                 a.id_artikel,
+                a.id_artikel AS id,
                 a.title,
                 a.slug,
                 SUBSTRING(a.content, 1, 400) AS raw_excerpt,
                 a.thumbnail,
                 a.status,
+                a.views,
                 a.published_at,
                 a.updated_at,
                 k.id_kategori,
@@ -179,6 +183,8 @@ function handleGetArtikel(PDO $db): void {
 
         // Bersihkan tag HTML untuk excerpt agar rapi dan kompatibel di semua versi MySQL
         foreach ($articles as &$art) {
+            $art['id'] = (int)$art['id_artikel'];
+            $art['views'] = (int)($art['views'] ?? 0);
             $plain = strip_tags($art['raw_excerpt'] ?? '');
             $plain = preg_replace('/\s+/', ' ', $plain);
             $art['excerpt'] = mb_substr(trim($plain), 0, 160);

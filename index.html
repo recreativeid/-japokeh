@@ -15,125 +15,60 @@
   <script src="assets/js/tailwind-config.js"></script>
 
   <!-- Google Fonts & Custom CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20260916_cat_layout_v2">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260917_special_cards_v1">
 </head>
 <body class="bg-[#F1F5F9] text-[#0F172A] antialiased flex flex-col min-h-screen font-sans">
 
-  <!-- MAIN HEADER (Clean White Modern Editorial) -->
-  <header class="bg-white text-slate-900 sticky top-0 z-40 shadow-xs border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-      <div class="flex items-center justify-between h-16 sm:h-20">
-        
-        <!-- Mobile Left: Hamburger Button -->
-        <div class="flex items-center space-x-2">
-          <button type="button" class="mobile-menu-btn lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 focus:outline-none transition-colors" aria-label="Buka Menu Navigasi">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-
-          <!-- BRAND LOGO -->
-          <a href="index.html" class="flex items-center space-x-2.5 sm:space-x-3 shrink-0 group" aria-label="Japakeh Post Beranda">
-            <img src="assets/images/logo/favicon.webp" alt="Japakeh Post Logo" class="h-10 sm:h-12 w-auto object-contain shrink-0 group-hover:scale-105 transition-transform" />
-            <div class="flex flex-col justify-center">
-              <div class="flex items-center space-x-1.5 leading-none">
-                <span class="text-slate-950 font-black text-xl sm:text-2xl tracking-tight uppercase">JAPAKEH</span>
-                <span class="bg-buser-red text-white text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full tracking-wider uppercase shadow-xs">POST</span>
-              </div>
-              <span class="text-[8px] sm:text-[9px] text-slate-500 font-bold tracking-widest uppercase mt-1 whitespace-nowrap">CEPAT, AKURAT, TERPERCAYA</span>
-            </div>
+  <!-- MAIN HEADER (Dark Top Bar + Clean Editorial Category Bar) -->
+  <header class="sticky top-0 z-40 shadow-xs">
+    <!-- Top Dark Brand Bar -->
+    <div class="bg-[#0B0F19] text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-14 sm:h-16">
+          
+          <!-- BRAND LOGO (Left) -->
+          <a href="index.html" class="flex items-center shrink-0 group" aria-label="Japakeh Post Beranda">
+            <img src="assets/images/logo/japakeh-logo.webp" alt="Japakeh Post" class="h-8 sm:h-9 w-auto object-contain group-hover:scale-105 transition-transform" />
           </a>
-        </div>
 
-        <!-- Desktop Quick Search Bar (Modern Rounded) -->
-        <div class="hidden md:flex items-center flex-1 max-w-sm lg:max-w-md mx-8">
-          <form action="cari.html" method="GET" class="w-full relative">
-            <input type="text" name="q" placeholder="Cari topik atau berita terkini..." class="w-full bg-slate-50 text-xs text-slate-800 placeholder-slate-400 pl-4 pr-10 py-2.5 rounded-full border border-slate-200 focus:border-buser-red focus:bg-white focus:outline-none transition-all shadow-2xs" />
-            <button type="submit" class="absolute right-0 top-0 h-full px-3.5 text-slate-400 hover:text-buser-red transition-colors" aria-label="Cari">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- RIGHT UTILITIES: Quick Search & Hamburger Menu (Right) -->
+          <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- Quick Search Button -->
+            <button type="button" class="open-search-modal-btn p-2 rounded-full text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors" aria-label="Cari Berita" title="Cari Berita">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
-          </form>
-        </div>
 
-        <!-- Right Utilities: Quick Search & Saved Bookmarks -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
-          <!-- Quick Search Icon (Mobile) -->
-          <button type="button" class="open-search-modal-btn md:hidden p-2 rounded-full text-slate-600 hover:text-buser-red hover:bg-slate-100 transition-colors" aria-label="Cari Berita">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
-
-          <!-- Bookmarks / Simpan Berita Button -->
-          <button type="button" class="open-bookmark-btn relative p-2 rounded-full text-slate-600 hover:text-buser-red hover:bg-slate-100 flex items-center transition-colors" title="Berita Tersimpan">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-            </svg>
-            <span class="bookmark-count-badge hidden absolute -top-0.5 -right-0.5 bg-buser-red text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">0</span>
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- HORIZONTAL CATEGORY NAVIGATION BAR (Clean Light Sticky Track) -->
-    <div class="bg-white/95 backdrop-blur-md border-t border-slate-200 relative">
-      <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative flex items-center justify-center">
-        
-        <!-- Left Scroll Arrow (Desktop) -->
-        <button id="scroll-nav-left" class="hidden lg:flex absolute left-2 sm:left-4 items-center justify-center w-7 h-7 rounded-full bg-white shadow-md border border-slate-200 hover:bg-rose-50 hover:text-buser-red text-slate-700 z-10 transition-colors" aria-label="Geser Kiri">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <!-- Scrollable Category Track -->
-        <nav id="category-scroll-nav" class="flex items-center justify-start md:justify-center space-x-1.5 sm:space-x-2 overflow-x-auto no-scrollbar py-2 text-xs font-bold uppercase tracking-wider flex-1 md:flex-initial scroll-smooth">
-          <a href="index.html" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full bg-buser-red text-white shadow-xs transition-colors">Home</a>
-          <a href="internasional.html?cat=daerah" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Daerah</a>
-          <a href="internasional.html?cat=nasional" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Nasional</a>
-          <a href="internasional.html?cat=politik" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Politik</a>
-          <a href="internasional.html?cat=hukum" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Hukum</a>
-          <a href="internasional.html?cat=ekonomi" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Ekonomi</a>
-          <a href="internasional.html?cat=bisnis" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Bisnis</a>
-          <a href="internasional.html?cat=pendidikan" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Pendidikan</a>
-          <a href="internasional.html?cat=teknologi" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Teknologi</a>
-          <a href="internasional.html?cat=internasional" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors">Internasional</a>
-        </nav>
-
-        <!-- Tombol Titik/Garis Tiga untuk Kategori Tambahan (Opsional bila > 10 kategori) -->
-        <div id="category-more-container" class="relative shrink-0 ml-1.5 flex items-center">
-          <button id="category-more-btn" type="button" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red font-bold text-xs uppercase tracking-wider bg-slate-100 hover:border-slate-300 border border-slate-200 transition-colors shadow-2xs" aria-expanded="false" aria-haspopup="true" aria-label="Kategori Tambahan">
-            <!-- Icon Titik/Garis Tiga -->
-            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-            <span class="text-[11px] font-bold">Lainnya</span>
-            <svg id="category-more-arrow" class="w-3 h-3 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          <!-- Dropdown Menu -->
-          <div id="category-more-dropdown" class="hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 animate-fadeIn divide-y divide-slate-100">
-            <a href="internasional.html?cat=foto" class="cat-nav-link block px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors whitespace-nowrap">Foto</a>
-            <a href="internasional.html?cat=video" class="cat-nav-link block px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors whitespace-nowrap">Video</a>
+            <!-- Menu / Hamburger Button -->
+            <button type="button" class="mobile-menu-btn p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/80 focus:outline-none transition-colors" aria-label="Buka Menu Navigasi" title="Menu Lengkap">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
+
         </div>
-
-        <!-- Right Scroll Arrow (Desktop) -->
-        <button id="scroll-nav-right" class="hidden lg:flex absolute right-2 sm:right-4 items-center justify-center w-7 h-7 rounded-full bg-white shadow-md border border-slate-200 hover:bg-rose-50 hover:text-buser-red text-slate-700 z-10 transition-colors" aria-label="Geser Kanan">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
       </div>
     </div>
 
-    <!-- BRAND BORDER STRIPE -->
-    <div class="h-1 bg-gradient-to-r from-buser-red via-rose-600 to-slate-900 w-full" aria-hidden="true"></div>
+    <!-- HORIZONTAL CATEGORY NAVIGATION BAR (White Clean Track) -->
+    <div class="bg-white border-b border-slate-200 shadow-2xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav id="category-scroll-nav" class="flex items-center justify-start lg:justify-center space-x-6 sm:space-x-8 overflow-x-auto no-scrollbar py-2.5 text-xs font-bold uppercase tracking-wider scroll-smooth">
+          <a href="index.html" class="cat-nav-link whitespace-nowrap text-[#E60000] border-b-2 border-[#E60000] pb-1 transition-colors">Home</a>
+          <a href="internasional.html?cat=nasional" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Nasional</a>
+          <a href="internasional.html?cat=daerah" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Daerah</a>
+          <a href="internasional.html?cat=hukum" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Hukum</a>
+          <a href="internasional.html?cat=politik" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Politik</a>
+          <a href="internasional.html?cat=ekonomi" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Ekonomi</a>
+          <a href="internasional.html?cat=olahraga" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Olahraga</a>
+          <a href="internasional.html?cat=sosial" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Sosial</a>
+          <a href="internasional.html?cat=liputan-khusus" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Liputan Khusus</a>
+          <a href="internasional.html?cat=editorial" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] transition-colors pb-1">Editorial</a>
+        </nav>
+      </div>
+    </div>
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
@@ -146,113 +81,459 @@
          Dynamic Category Blocks.
          ======================================================================== -->
     <div id="desktop-home-container" class="hidden lg:block space-y-6 sm:space-y-7">
-    <!-- SLOT IKLAN: HEADER LEADERBOARD -->
-    <div data-ad-slot="header" class="w-full"></div>
-
-    <!-- HERO / HEADLINE SECTION -->
-    <section id="home-hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-stretch">
-      <!-- Skeleton Loading Sementara Menunggu Data -->
-      <div class="lg:col-span-8 bg-slate-900 rounded-2xl h-[300px] sm:h-[350px] lg:h-[380px] animate-pulse flex flex-col justify-end p-5 relative overflow-hidden">
-        <div class="w-20 h-5 bg-rose-900/60 rounded-full mb-3"></div>
-        <div class="w-3/4 h-7 bg-slate-800 rounded-lg mb-2"></div>
-        <div class="w-1/2 h-4 bg-slate-800 rounded-lg"></div>
+    <!-- 1. BREAKING NEWS TICKER -->
+    <div class="bg-white border border-slate-200/90 rounded-lg px-3 py-2 flex items-center gap-3 shadow-2xs">
+      <div class="flex items-center gap-1.5 bg-[#E60000] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded shadow-2xs shrink-0">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>BREAKING NEWS</span>
       </div>
-      <aside class="lg:col-span-4 hidden lg:flex flex-col bg-white border border-slate-200/90 rounded-2xl p-4 space-y-3 animate-pulse shadow-soft">
-        <div class="w-28 h-4 bg-slate-200 rounded-full"></div>
-        <div class="space-y-2.5 flex-1 flex flex-col justify-around">
-          <div class="flex gap-2.5"><div class="w-20 h-14 bg-slate-200 rounded-lg"></div><div class="flex-1 space-y-1.5"><div class="w-full h-3 bg-slate-200 rounded"></div><div class="w-2/3 h-2.5 bg-slate-100 rounded"></div></div></div>
-          <div class="flex gap-2.5"><div class="w-20 h-14 bg-slate-200 rounded-lg"></div><div class="flex-1 space-y-1.5"><div class="w-full h-3 bg-slate-200 rounded"></div><div class="w-2/3 h-2.5 bg-slate-100 rounded"></div></div></div>
-          <div class="flex gap-2.5"><div class="w-20 h-14 bg-slate-200 rounded-lg"></div><div class="flex-1 space-y-1.5"><div class="w-full h-3 bg-slate-200 rounded"></div><div class="w-2/3 h-2.5 bg-slate-100 rounded"></div></div></div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- TWO COLUMNS SECTION: BERITA TERBARU (LEFT 70%) & SIDEBAR (RIGHT 30%) -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
-      
-      <!-- MAIN STREAM: BERITA TERBARU (8 cols) -->
-      <div class="lg:col-span-8 space-y-4">
-        
-        <div class="section-heading-bar justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
-            <h2 class="text-base sm:text-lg font-black uppercase tracking-tight text-slate-900">
-              Berita Terbaru
-            </h2>
-          </div>
-          <span class="text-[11px] text-slate-500 font-medium">Update Terus Menerus 24 Jam</span>
-        </div>
-
-        <!-- Two Columns News Grid (Dinamis dari Database - 10 Artikel: Kiri 5, Kanan 5) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3.5 items-start" id="live-berita-terkini-feed">
-          <!-- Diisi otomatis oleh home-live.js -->
-        </div>
-
-        <!-- Tombol Pemisah Indeks Berita Terbaru Lainnya -->
-        <div id="berita-terkini-load-more" class="text-center pt-2">
-          <a href="internasional.html" class="inline-flex items-center justify-center px-4 py-1.5 bg-slate-900 hover:bg-buser-red text-white font-bold text-[10.5px] uppercase tracking-wider rounded-full transition-all shadow-2xs hover:shadow-xs group">
-            <span>Lihat Indeks Berita Terbaru Lainnya</span>
-            <svg class="w-3 h-3 ml-1.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
+      <span class="text-[#E60000] font-bold text-sm shrink-0">&gt;</span>
+      <div class="flex-1 min-w-0 overflow-hidden">
+        <div id="breaking-ticker-track" class="truncate text-xs sm:text-[13px] font-semibold text-slate-900">
+          <a href="artikel.html?slug=banjir-di-pidie-jaya-warga-masih-bertahan-di-posko-pengungsian" class="hover:text-[#E60000] transition-colors">
+            Banjir di Pidie Jaya, Warga Masih Bertahan di Posko Pengungsian
           </a>
         </div>
-
       </div>
-
-      <!-- SIDEBAR: EDITORIAL & HOTLINE (4 cols) -->
-      <aside class="lg:col-span-4 space-y-4">
-
-        <!-- SLOT IKLAN: SIDEBAR -->
-        <div data-ad-slot="sidebar" class="w-full"></div>
-
-        <!-- REDAKSI & INFO BANNER -->
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 sm:p-5 rounded-2xl border-l-4 border-buser-red shadow-md relative overflow-hidden">
-          <div class="flex items-center space-x-2 mb-1.5">
-            <span class="text-[10px] font-black uppercase tracking-wider text-rose-400">EDITORIAL JAPAKEH POST</span>
-          </div>
-          <h3 class="font-bold text-xs sm:text-sm mb-1.5 text-white">Cepat, Akurat, & Terpercaya</h3>
-          <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
-            Japakeh Post berkomitmen menyajikan karya jurnalistik sesuai Pedoman Pemberitaan Media Siber Dewan Pers Republik Indonesia.
-          </p>
-          <a href="tentang.html" class="inline-flex items-center bg-buser-red hover:bg-buser-redHover text-white text-[10px] font-bold px-3 py-1 rounded-full transition-all shadow-2xs group">
-            <span>Profil Redaksi & Legalitas</span>
-            <span class="ml-1 transition-transform group-hover:translate-x-0.5">&rarr;</span>
-          </a>
-        </div>
-
-        <!-- WHATSAPP LAPORAN PENGADUAN WARGA -->
-        <div class="bg-white border border-slate-200/90 p-4 rounded-2xl shadow-soft">
-          <div class="flex items-center space-x-2 mb-2">
-            <span class="p-1.5 bg-rose-50 text-buser-red rounded-full flex items-center justify-center">
-              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
-              </svg>
-            </span>
-            <span class="font-bold text-xs uppercase tracking-wider text-slate-900">Hotline Pengaduan Warga</span>
-          </div>
-          <p class="text-[11px] text-slate-600 leading-relaxed mb-3">
-            Punya informasi peristiwa penting atau aspirasi warga di sekitar Anda? Kirimkan informasi awal ke Redaksi Japakeh Post.
-          </p>
-          <a href="https://wa.me/6282165071114" target="_blank" class="block w-full text-center bg-slate-900 hover:bg-buser-red text-white text-[10px] font-bold py-1.5 rounded-full transition-all uppercase tracking-wider shadow-2xs">
-            Kirim Informasi (0821-6507-1114)
-          </a>
-        </div>
-
-      </aside>
-
-    </section>
-
-    <!-- SLOT IKLAN: BERANDA TENGAH (HOME MIDDLE BANNER) -->
-    <div data-ad-slot="home_middle" class="w-full"></div>
-
-    <!-- CATEGORY BLOCKS (DINAMIS DARI DATABASE) -->
-    <div id="live-category-sections">
-      <!-- Diisi otomatis oleh home-live.js -->
+      <button id="ticker-next-btn" type="button" class="text-[#E60000] hover:text-red-700 font-bold text-sm px-1.5 transition-colors" aria-label="Berita Selanjutnya">&gt;</button>
     </div>
 
-    <!-- SLOT IKLAN: FOOTER BAWAH -->
-    <div data-ad-slot="footer" class="w-full mt-8"></div>
+    <!-- 2. HERO SECTION & TERPOPULER (Top Section) -->
+    <section id="desktop-hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- Left: Main Featured Article (lg:col-span-7) -->
+      <div class="lg:col-span-7 flex flex-col">
+        <article id="desktop-hero-article" class="relative overflow-hidden rounded-xl bg-slate-900 shadow-sm group select-none w-full h-[320px] sm:h-[400px] lg:h-[475px]">
+          <a href="artikel.html?slug=banjir-di-pidie-jaya-warga-masih-bertahan-di-posko-pengungsian" id="desktop-hero-link" class="block w-full h-full">
+            <img id="desktop-hero-img" src="assets/images/berita/daerah/penanganan-banjir-sumatera.jpg" alt="Banjir di Pidie Jaya, Warga Masih Bertahan di Posko Pengungsian" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+          </a>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/45 to-transparent pointer-events-none"></div>
+
+          <div class="absolute bottom-0 inset-x-0 p-4 sm:p-5 lg:p-6 z-20 flex flex-col justify-end pointer-events-auto">
+            <div class="mb-2">
+              <span id="desktop-hero-cat" class="inline-block bg-[#E60000] text-white text-[10px] sm:text-[11px] font-black px-2.5 py-0.5 rounded uppercase tracking-wider shadow-xs">
+                DAERAH
+              </span>
+            </div>
+            <h1 class="text-lg sm:text-xl lg:text-2xl font-black text-white leading-snug mb-2 drop-shadow-md group-hover:text-red-200 transition-colors line-clamp-2">
+              <a href="artikel.html?slug=banjir-di-pidie-jaya-warga-masih-bertahan-di-posko-pengungsian" id="desktop-hero-title">
+                Banjir di Pidie Jaya, Warga Masih Bertahan di Posko Pengungsian
+              </a>
+            </h1>
+            <p id="desktop-hero-excerpt" class="text-xs sm:text-[13px] text-slate-200 line-clamp-2 leading-relaxed mb-3 max-w-xl">
+              Ratusan warga di beberapa gampong di Kabupaten Pidie Jaya masih bertahan di posko pengungsian setelah banjir melanda wilayah mereka beberapa hari terakhir.
+            </p>
+            <div class="flex items-center gap-2.5 text-xs text-slate-300">
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span id="desktop-hero-date">10 September 2026</span>
+              </span>
+              <span>|</span>
+              <span class="flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span id="desktop-hero-time">14:32 WIB</span>
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Right: TERPOPULER (lg:col-span-5) -->
+      <div class="lg:col-span-5 flex flex-col">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="w-1 h-5 bg-[#E60000] inline-block"></span>
+          <h2 class="text-base font-black uppercase tracking-tight text-slate-900">TERPOPULER</h2>
+        </div>
+        <div id="desktop-terpopuler-list" class="space-y-2.5 flex flex-col justify-between">
+          <!-- 01 -->
+          <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+            <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">01</span>
+            <a href="artikel.html?slug=bupati-tarmizi-tegaskan-satlinmas-dan-pageu-gampong-ujung-tombak-keamanan-masyarakat" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/daerah/festival-budaya-palembang.jpg" alt="Bupati Tarmizi Tegaskan Satlinmas dan Pageu Gampong Ujung Tombak Keamanan Masyarakat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">DAERAH</span>
+              <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
+                <a href="artikel.html?slug=bupati-tarmizi-tegaskan-satlinmas-dan-pageu-gampong-ujung-tombak-keamanan-masyarakat">Bupati Tarmizi Tegaskan Satlinmas dan Pageu Gampong Ujung Tombak Keamanan Masyarakat</a>
+              </h3>
+              <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>11 September 2026 | 11:45 WIB</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 02 -->
+          <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+            <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">02</span>
+            <a href="artikel.html?slug=kapolri-mutasi-424-pati-dan-pamen-polri-sejumlah-jabatan-strategis-berganti" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/kriminal/rilis-mabes-polri.jpg" alt="Kapolri Mutasi 424 Pati dan Pamen Polri, Sejumlah Jabatan Strategis Berganti" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">NASIONAL</span>
+              <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
+                <a href="artikel.html?slug=kapolri-mutasi-424-pati-dan-pamen-polri-sejumlah-jabatan-strategis-berganti">Kapolri Mutasi 424 Pati dan Pamen Polri, Sejumlah Jabatan Strategis Berganti</a>
+              </h3>
+              <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>11 September 2026 | 10:30 WIB</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 03 -->
+          <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+            <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">03</span>
+            <a href="artikel.html?slug=prabowo-tegaskan-tidak-boleh-ada-anak-anak-bertarung-nyawa-saat-ke-sekolah" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/nasional/konferensi-pers-istana.jpg" alt="Prabowo Tegaskan Tidak Boleh Ada Anak-Anak Bertarung Nyawa saat ke Sekolah" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">NASIONAL</span>
+              <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
+                <a href="artikel.html?slug=prabowo-tegaskan-tidak-boleh-ada-anak-anak-bertarung-nyawa-saat-ke-sekolah">Prabowo Tegaskan Tidak Boleh Ada Anak-Anak Bertarung Nyawa saat ke Sekolah</a>
+              </h3>
+              <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>11 September 2026 | 09:15 WIB</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 04 -->
+          <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+            <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">04</span>
+            <a href="artikel.html?slug=usk-sambut-8000-an-mahasiswa-baru-dalam-pakarmaru-2026" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/pendidikan/wisuda-universitas-negeri.jpg" alt="USK Sambut 8.000-an Mahasiswa Baru dalam PAKARMARU 2026 di Gelanggang USK" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">PENDIDIKAN</span>
+              <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
+                <a href="artikel.html?slug=usk-sambut-8000-an-mahasiswa-baru-dalam-pakarmaru-2026">USK Sambut 8.000-an Mahasiswa Baru dalam PAKARMARU 2026 di Gelanggang USK</a>
+              </h3>
+              <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 16:20 WIB</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 05 -->
+          <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+            <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">05</span>
+            <a href="artikel.html?slug=mahasiswa-di-aceh-ubah-limbah-kulit-manggis-jadi-teknologi-pengolahan-air" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/teknologi/peluncuran-satelit-indonesia.jpg" alt="Mahasiswa di Aceh Ubah Limbah Kulit Manggis Jadi Teknologi Pengolahan Air Bersih" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">TEKNOLOGI</span>
+              <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
+                <a href="artikel.html?slug=mahasiswa-di-aceh-ubah-limbah-kulit-manggis-jadi-teknologi-pengolahan-air">Mahasiswa di Aceh Ubah Limbah Kulit Manggis Jadi Teknologi Pengolahan Air Bersih</a>
+              </h3>
+              <div class="text-[10px] text-slate-400 flex items-center gap-1">
+                <svg class="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 14:10 WIB</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BERITA TERBARU (10 Articles: 5 Left, 5 Right) -->
+    <section id="desktop-berita-terbaru-section" class="space-y-3 pt-2">
+      <div class="flex items-center space-x-2 mb-3">
+        <span class="w-1 h-5 bg-[#E60000] inline-block"></span>
+        <h2 class="text-base font-black uppercase tracking-tight text-slate-900">BERITA TERBARU</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 items-start" id="live-berita-terkini-feed">
+        <!-- Kolom Kiri (5 Artikel) -->
+        <div class="space-y-4 flex flex-col" id="berita-terbaru-col-left">
+          <!-- 1 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=bupati-pidie-jaya-tinjau-lokasi-banjir-di-meureudu" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg" alt="Bupati Pidie Jaya Tinjau Lokasi Banjir di Meureudu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">DAERAH</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=bupati-pidie-jaya-tinjau-lokasi-banjir-di-meureudu">Bupati Pidie Jaya Tinjau Lokasi Banjir di Meureudu</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 15:10 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 2 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=kejari-pidie-jaya-tahan-tersangka-korupsi-dana-desa" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/kriminal/sidang-tipikor-pn.jpg" alt="Kejari Pidie Jaya Tahan Tersangka Korupsi Dana Desa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">HUKUM</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=kejari-pidie-jaya-tahan-tersangka-korupsi-dana-desa">Kejari Pidie Jaya Tahan Tersangka Korupsi Dana Desa</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 13:45 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 3 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=harga-cabai-di-pidie-jaya-mulai-stabil-jelang-idul-adha" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/ekonomi/pertumbuhan-umkm-digital.jpg" alt="Harga Cabai di Pidie Jaya Mulai Stabil Jelang Idul Adha" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">EKONOMI</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=harga-cabai-di-pidie-jaya-mulai-stabil-jelang-idul-adha">Harga Cabai di Pidie Jaya Mulai Stabil Jelang Idul Adha</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 12:30 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 4 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=pemkab-pidie-jaya-serahkan-bantuan-untuk-korban-banjir" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/pendidikan/kurikulum-merdeka-nasional.jpg" alt="Pemkab Pidie Jaya Serahkan Bantuan untuk Korban Banjir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">PENDIDIKAN</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=pemkab-pidie-jaya-serahkan-bantuan-untuk-korban-banjir">Pemkab Pidie Jaya Serahkan Bantuan untuk Korban Banjir</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 11:05 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 5 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=jalan-penghubung-kecamatan-kembali-dibuka-bertahap" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/daerah/infrastruktur-lrt-sumsel.jpg" alt="Jalan Penghubung Kecamatan Kembali Dibuka Bertahap" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">DAERAH</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=jalan-penghubung-kecamatan-kembali-dibuka-bertahap">Jalan Penghubung Kecamatan Kembali Dibuka Bertahap</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 09:50 WIB</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Kolom Kanan (5 Artikel) -->
+        <div class="space-y-4 flex flex-col" id="berita-terbaru-col-right">
+          <!-- 1 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=psp-pidie-jaya-latihan-perdana-jelang-liga-3-aceh" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/olahraga/pekan-olahraga-nasional.jpg" alt="PSP Pidie Jaya Latihan Perdana Jelang Liga 3 Aceh" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">OLAHRAGA</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=psp-pidie-jaya-latihan-perdana-jelang-liga-3-aceh">PSP Pidie Jaya Latihan Perdana Jelang Liga 3 Aceh</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 09:40 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 2 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=dprk-aceh-bahas-rancangan-qanun-prioritas-2026" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/politik/sidang-paripurna-dpr.jpg" alt="DPRK Aceh Bahas Rancangan Qanun Prioritas 2026" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">POLITIK</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=dprk-aceh-bahas-rancangan-qanun-prioritas-2026">DPRK Aceh Bahas Rancangan Qanun Prioritas 2026</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 08:15 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 3 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=nelayan-pidie-jaya-keluhkan-cuaca-ekstrem-di-laut" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/ekonomi/ekspor-komoditas-sawit.jpg" alt="Nelayan Pidie Jaya Keluhkan Cuaca Ekstrem di Laut" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">PERIKANAN</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=nelayan-pidie-jaya-keluhkan-cuaca-ekstrem-di-laut">Nelayan Pidie Jaya Keluhkan Cuaca Ekstrem di Laut</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 07:50 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 4 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=relawan-tanam-pohon-di-kawasan-hulu-sungai" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/daerah/festival-budaya-palembang.jpg" alt="Relawan Tanam Pohon di Kawasan Hulu Sungai" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">SOSIAL</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=relawan-tanam-pohon-di-kawasan-hulu-sungai">Relawan Tanam Pohon di Kawasan Hulu Sungai</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 07:20 WIB</span>
+              </div>
+            </div>
+          </article>
+          <!-- 5 -->
+          <article class="flex items-center gap-3.5 group">
+            <a href="artikel.html?slug=mqk-pidie-jaya-resmi-ditutup-ini-daftar-juara" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+              <img src="assets/images/berita/nasional/reformasi-birokrasi-kementerian.jpg" alt="MQK Pidie Jaya Resmi Ditutup, Ini Daftar Juara" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            </a>
+            <div class="flex-1 min-w-0">
+              <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">KEAGAMAAN</span>
+              <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+                <a href="artikel.html?slug=mqk-pidie-jaya-resmi-ditutup-ini-daftar-juara">MQK Pidie Jaya Resmi Ditutup, Ini Daftar Juara</a>
+              </h3>
+              <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span>10 September 2026 | 06:45 WIB</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BOTTOM SECTION: EDITORIAL | BERITA VIDEO | BERITA FOTO (3 Columns) -->
+    <section id="desktop-bottom-media-section" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch pt-2">
+      <!-- 1. EDITORIAL -->
+      <div class="flex flex-col h-full">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="w-1 h-5 bg-[#E60000] inline-block"></span>
+          <h2 class="text-base font-black uppercase tracking-tight text-slate-900">EDITORIAL</h2>
+        </div>
+        <div id="desktop-editorial-card" class="bg-white border border-slate-200/90 rounded-xl p-3 sm:p-3.5 shadow-2xs flex flex-col justify-between flex-1">
+          <div>
+            <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" onclick="window.location.href='artikel.html?slug=kebijakan-anggaran-besar-tak-berbanding-dengan-dampak'">
+              <img src="assets/images/berita/pendidikan/kurikulum-merdeka-smk.jpg" alt="Kebijakan Anggaran Besar Tak Berbanding dengan Dampak" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" />
+              <div class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-black/70 backdrop-blur-xs flex items-center justify-center text-amber-300 shadow-md">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              </div>
+              <span class="absolute bottom-2 left-2 bg-[#E60000] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded shadow-xs tracking-wider">TAJUK RENCANA</span>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+              <a href="artikel.html?slug=kebijakan-anggaran-besar-tak-berbanding-dengan-dampak">Kebijakan Anggaran Besar Tak Berbanding dengan Dampak</a>
+            </h3>
+          </div>
+          <div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+              <span class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                10 September 2026 | 08:00 WIB
+              </span>
+            </div>
+            <div class="text-right mt-2">
+              <a href="artikel.html?slug=kebijakan-anggaran-besar-tak-berbanding-dengan-dampak" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+                <span>Baca Selengkapnya</span>
+                <span>&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. BERITA VIDEO -->
+      <div class="flex flex-col h-full">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="w-1 h-5 bg-[#E60000] inline-block"></span>
+          <h2 class="text-base font-black uppercase tracking-tight text-slate-900">BERITA VIDEO</h2>
+        </div>
+        <div id="desktop-video-card" class="bg-white border border-slate-200/90 rounded-xl p-3 sm:p-3.5 shadow-2xs flex flex-col justify-between flex-1">
+          <div>
+            <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" id="desktop-video-player-trigger">
+              <img src="assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg" alt="Bupati Tinjau Lokasi Banjir di Meureudu" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-11 h-11 rounded-full bg-black/70 group-hover:bg-[#E60000] text-white flex items-center justify-center transition-all shadow-md">
+                  <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+              <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] font-mono px-1.5 py-0.5 rounded font-bold">02:48</span>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+              <a href="artikel.html?slug=bupati-pidie-jaya-tinjau-lokasi-banjir-di-meureudu">Bupati Tinjau Lokasi Banjir di Meureudu</a>
+            </h3>
+          </div>
+          <div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+              <span class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                10 September 2026 | 14:20 WIB
+              </span>
+            </div>
+            <div class="text-right mt-2">
+              <a href="internasional.html?cat=video" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+                <span>Lihat Semua Video</span>
+                <span>&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. BERITA FOTO -->
+      <div class="flex flex-col h-full">
+        <div class="flex items-center space-x-2 mb-3">
+          <span class="w-1 h-5 bg-[#E60000] inline-block"></span>
+          <h2 class="text-base font-black uppercase tracking-tight text-slate-900">BERITA FOTO</h2>
+        </div>
+        <div id="desktop-foto-card" class="bg-white border border-slate-200/90 rounded-xl p-3 sm:p-3.5 shadow-2xs flex flex-col justify-between flex-1">
+          <div>
+            <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" id="desktop-foto-player-trigger">
+              <img src="assets/images/berita/daerah/festival-budaya-palembang.jpg" alt="Proses Evakuasi Warga Terdampak Banjir" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-11 h-11 rounded-full bg-black/70 group-hover:bg-[#E60000] text-white flex items-center justify-center transition-all shadow-md">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+              </div>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+              <a href="artikel.html?slug=proses-evakuasi-warga-terdampak-banjir">Proses Evakuasi Warga Terdampak Banjir</a>
+            </h3>
+          </div>
+          <div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+              <span class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                09 September 2026 | 16:35 WIB
+              </span>
+            </div>
+            <div class="text-right mt-2">
+              <a href="internasional.html?cat=foto" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+                <span>Lihat Semua Foto</span>
+                <span>&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hidden Ad Slots for compatibility with ads-loader.js -->
+    <div data-ad-slot="header" class="hidden"></div>
+    <div data-ad-slot="sidebar" class="hidden"></div>
+    <div data-ad-slot="home_middle" class="hidden"></div>
+    <div data-ad-slot="footer" class="hidden"></div>
     </div>
 
 <!-- ========================================================================
@@ -261,9 +542,8 @@
          1. Single compact auto-carousel hero (no time string, no 'Berita Utama' heading)
          2. Berita Terbaru (max 5 items)
          3. Berita Populer (max 5 items + Lihat Semua)
-         4. Berita Foto (3 compact horizontal cards + tall modal)
-         5. Berita Video (3 compact horizontal cards + tall modal)
-         ======================================================================== -->
+          4. Rubrik Khusus: Berita Foto, Video & Editorial (3 compact rectangular cards in 1 row)
+          ======================================================================== -->
     <div id="mobile-home-container" class="block lg:hidden space-y-5">
       <!-- 1. MOBILE HERO CAROUSEL -->
       <section id="mobile-hero-container" class="relative group/hero">
@@ -361,147 +641,62 @@
         </div>
       </section>
 
-      <!-- 4. MOBILE BERITA FOTO (Max 3 Horizontal Compact) -->
-      <section class="space-y-2.5 pt-3 border-t border-slate-200" id="home-foto-section">
-        <div class="flex items-center justify-between pb-0.5">
-          <div class="flex items-center gap-2">
-            <span class="w-1 h-4 bg-[#E60000] rounded-xs inline-block"></span>
-            <h2 class="text-sm font-black uppercase tracking-tight text-slate-900">
-              BERITA FOTO
-            </h2>
-          </div>
-          <a href="internasional.html?cat=foto" class="text-[11px] font-bold text-[#E60000] hover:underline inline-flex items-center gap-1">
-            <span>Lihat Semua Foto</span>
-            <span>&rarr;</span>
-          </a>
-        </div>
-        <div class="grid grid-cols-3 gap-2" id="home-foto-grid">
-          <!-- Injected via JavaScript (3 items) -->
-        </div>
-      </section>
-
-      <!-- 5. MOBILE BERITA VIDEO (Max 3 Horizontal Compact) -->
-      <section class="space-y-2.5 pt-3 border-t border-slate-200" id="home-video-section">
-        <div class="flex items-center justify-between pb-0.5">
-          <div class="flex items-center gap-2">
-            <span class="w-1 h-4 bg-[#E60000] rounded-xs inline-block"></span>
-            <h2 class="text-sm font-black uppercase tracking-tight text-slate-900">
-              BERITA VIDEO
-            </h2>
-          </div>
-          <a href="internasional.html?cat=video" class="text-[11px] font-bold text-[#E60000] hover:underline inline-flex items-center gap-1">
-            <span>Lihat Semua Video</span>
-            <span>&rarr;</span>
-          </a>
-        </div>
-        <div class="grid grid-cols-3 gap-2" id="home-video-grid">
-          <!-- Injected via JavaScript (3 items) -->
+      <!-- 4. MOBILE RUBRIK KHUSUS: BERITA FOTO, VIDEO & EDITORIAL (3 Cards in 1 Row) -->
+      <section class="pt-3 border-t border-slate-200" id="home-special-cards-section">
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 items-stretch" id="home-foto-video-editorial-grid">
+          <!-- Populated by home-live.js: 1 Col Foto, 1 Col Video, 1 Col Editorial -->
         </div>
       </section>
     </div>
   </main>
 
-<!-- ========================================================================
-       FOOTER (Modern Deep Midnight Slate #0F172A, Ruby Red, & Crisp White)
-       ======================================================================== -->
-  <footer class="bg-[#0F172A] text-slate-300 pt-8 pb-6 mt-10 relative z-20 clear-both border-t border-slate-800">
-    <!-- Top Brand Accent Stripe (Ruby & Slate) -->
-    <div class="brand-accent-stripe absolute top-0 left-0 right-0 h-1 flex" aria-hidden="true">
-      <div class="bg-buser-red flex-1"></div>
-      <div class="bg-slate-900 w-24"></div>
-    </div>
-
+  <!-- FOOTER (Modern Deep Midnight Slate with Centered Navigation and Social Icons) -->
+  <footer class="bg-[#0B0F19] text-slate-300 pt-7 pb-6 mt-12 border-t border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 pb-8 border-b border-slate-800/80">
-        
-        <!-- BRAND & DESCRIPTION (4 cols on lg, 2 cols on sm) -->
-        <div class="sm:col-span-2 lg:col-span-4 space-y-3">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-6 pb-6 border-b border-slate-800/80">
+        <!-- Left: Logo & Tagline -->
+        <div class="flex flex-col items-center lg:items-start space-y-1">
           <a href="index.html" class="inline-block" aria-label="Japakeh Post Beranda">
-            <img src="assets/images/logo/japakeh-logo.webp" alt="Japakeh Post" class="h-9 sm:h-10 w-auto object-contain" />
+            <img src="assets/images/logo/japakeh-logo.webp" alt="Japakeh Post" class="h-8 sm:h-9 w-auto object-contain" />
           </a>
-          <p class="text-xs text-slate-400 leading-relaxed text-left">
-            Portal berita digital independen menyajikan laporan peristiwa daerah, nasional, politik, hukum, perekonomian, pendidikan, dan teknologi terkini secara cepat, akurat, dan terpercaya.
-          </p>
-          <div class="flex items-center space-x-3 pt-1">
-            <a href="https://wa.me/6282165071114" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center p-1.5 transition-all shadow-sm hover:scale-105 border border-slate-700/60" aria-label="WhatsApp" title="WhatsApp Japakeh Post">
-              <svg class="w-4 h-4" viewBox="0 0 48 48">
-                <path fill="#fff" d="M4.9,43.3l2.7-9.8C5.9,30.6,5,27.3,5,24C5,13.5,13.5,5,24,5c5.1,0,9.9,2,13.4,5.6C41,14.1,43,18.9,43,24c0,10.5-8.5,19-19,19c-3.2,0-6.3-0.8-9.1-2.3L4.9,43.3z"></path>
-                <path fill="#4caf50" d="M24,40c2.8,0,5.6-0.7,8-2.1l0.6-0.3l5.9,1.5l-1.6-5.8l0.4-0.6c1.5-2.5,2.4-5.4,2.4-8.7c0-8.8-7.2-16-16-16S8,15.2,8,24c0,3.3,0.9,6.2,2.4,8.7l0.4,0.6l-1.6,5.8l5.9-1.5l0.6,0.3C18.4,39.3,21.2,40,24,40z"></path>
-                <path fill="#fff" d="M33.1,28.6c-0.4-0.2-2.4-1.2-2.8-1.3c-0.4-0.2-0.6-0.2-0.9,0.2c-0.3,0.4-1.1,1.3-1.3,1.6c-0.2,0.2-0.5,0.3-0.9,0.1c-0.4-0.2-1.7-0.6-3.3-2c-1.2-1.1-2-2.4-2.3-2.8c-0.2-0.4,0-0.6,0.2-0.8c0.2-0.2,0.4-0.5,0.6-0.7c0.2-0.2,0.3-0.4,0.4-0.6c0.1-0.2,0.1-0.5,0-0.7c-0.1-0.2-0.9-2.2-1.2-3c-0.3-0.8-0.7-0.7-0.9-0.7c-0.2,0-0.5,0-0.7,0c-0.3,0-0.7,0.1-1.1,0.5c-0.4,0.4-1.4,1.4-1.4,3.4c0,2,1.5,4,1.7,4.2c0.2,0.3,2.9,4.5,7.1,6.3c1,0.4,1.8,0.7,2.4,0.9c1,0.3,1.9,0.3,2.7,0.2c0.8-0.1,2.4-1,2.8-1.9c0.4-0.9,0.4-1.7,0.3-1.9C33.7,28.9,33.5,28.8,33.1,28.6z"></path>
-              </svg>
-            </a>
-            <a href="mailto:alb4hri@gmail.com" class="w-8 h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center p-1.5 transition-all shadow-sm hover:scale-105 border border-slate-700/60" aria-label="Email" title="Email Redaksi Japakeh Post">
-              <svg class="w-4 h-4" viewBox="0 0 48 48">
-                <path fill="#4caf50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"></path>
-                <path fill="#1e88e5" d="M3,16.2l3.614,1.71L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"></path>
-                <polygon fill="#e53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.95 35,23.7 36,17"></polygon>
-                <path fill="#c62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C8.132,7.551,5.638,8.134,4.608,10.053L3,12.298z"></path>
-                <path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341c1.744-1.308,4.238-0.725,5.268,1.194L45,12.298z"></path>
-              </svg>
-            </a>
-          </div>
+          <span class="text-xs text-slate-400 font-medium tracking-wide">Tajam Mengabarkan</span>
         </div>
 
-        <!-- INFORMASI PERUSAHAAN & LEGALITAS (3 cols on lg, 1 col on sm) -->
-        <div class="sm:col-span-1 lg:col-span-3 space-y-2.5 text-xs text-slate-300">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
-            Informasi Perusahaan
-          </h3>
-          <div class="space-y-1.5 leading-relaxed">
-            <p class="font-bold text-white text-xs">PT JAPAKEH MEDIA NUSANTARA</p>
-            <p class="text-[11px]"><span class="text-slate-400">Pimpinan:</span> <strong class="text-white">Al Bahri</strong></p>
-            <p class="text-[11px]"><span class="text-slate-400">Jenis Layanan:</span> <strong class="text-white">Portal Berita Siber & Multimedia</strong></p>
-            <p class="text-[10.5px] text-slate-400 pt-1 leading-relaxed text-left">
-              Beroperasi mematuhi Kode Etik Jurnalistik dan UU Pokok Pers No. 40 Tahun 1999.
-            </p>
-          </div>
-        </div>
+        <!-- Center: Horizontal Navigation Links with | -->
+        <nav class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-slate-300 font-medium">
+          <a href="tentang.html" class="hover:text-white transition-colors">Tentang Kami</a>
+          <span class="text-slate-600">|</span>
+          <a href="tentang.html#redaksi" class="hover:text-white transition-colors">Redaksi</a>
+          <span class="text-slate-600">|</span>
+          <a href="tentang.html#kontak" class="hover:text-white transition-colors">Kontak</a>
+          <span class="text-slate-600">|</span>
+          <a href="tentang.html#pedoman" class="hover:text-white transition-colors">Pedoman Media Siber</a>
+          <span class="text-slate-600">|</span>
+          <a href="tentang.html#privasi" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+          <span class="text-slate-600">|</span>
+          <a href="tentang.html#disclaimer" class="hover:text-white transition-colors">Disclaimer</a>
+        </nav>
 
-        <!-- ALAMAT KANTOR REDAKSI (3 cols on lg, 1 col on sm) -->
-        <div class="sm:col-span-1 lg:col-span-3 space-y-2.5 text-xs text-slate-300">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
-            Kantor Redaksi
-          </h3>
-          <address class="not-italic space-y-1 leading-relaxed text-slate-300 text-[11px] text-left">
-            <p class="font-semibold text-white">Gedung PT Japakeh Media Nusantara</p>
-            <p class="text-slate-400">Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh</p>
-            <p class="text-slate-400">Kec. Darul Imarah, Kab. Aceh Besar, Aceh</p>
-            <div class="pt-2 mt-1.5 border-t border-slate-800 space-y-1.5">
-              <div class="flex items-center gap-2">
-                <span class="text-slate-400 font-medium w-16 shrink-0">WhatsApp:</span>
-                <a href="https://wa.me/6282165071114" target="_blank" rel="noopener noreferrer" class="text-slate-200 hover:text-buser-red font-mono font-bold hover:underline transition-colors truncate">082165071114</a>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-slate-400 font-medium w-16 shrink-0">Email:</span>
-                <a href="mailto:alb4hri@gmail.com" class="text-rose-400 font-mono font-bold hover:underline truncate">alb4hri@gmail.com</a>
-              </div>
-            </div>
-          </address>
+        <!-- Right: Social Media Icons -->
+        <div class="flex items-center space-x-2.5">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-[#E60000] text-white flex items-center justify-center transition-colors shadow-xs" aria-label="Facebook">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-[#E60000] text-white flex items-center justify-center transition-colors shadow-xs" aria-label="X (Twitter)">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-[#E60000] text-white flex items-center justify-center transition-colors shadow-xs" aria-label="Instagram">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-7 h-7 rounded-full bg-slate-800 hover:bg-[#E60000] text-white flex items-center justify-center transition-colors shadow-xs" aria-label="YouTube">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
         </div>
-
-        <!-- FOOTER NAVIGATION (2 cols on lg, 2 cols on sm) -->
-        <div class="sm:col-span-2 lg:col-span-2 space-y-2.5 text-xs">
-          <h3 class="text-xs sm:text-sm font-black text-white uppercase tracking-wider border-b border-slate-800 pb-2">
-            Navigasi
-          </h3>
-          <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-1.5 text-[11px] text-slate-400">
-            <li><a href="tentang.html" class="hover:text-white transition-colors block py-0.5">Tentang Kami</a></li>
-            <li><a href="tentang.html#redaksi" class="hover:text-white transition-colors block py-0.5">Susunan Redaksi</a></li>
-            <li><a href="tentang.html#pedoman" class="hover:text-white transition-colors block py-0.5">Pedoman Media</a></li>
-            <li><a href="tentang.html#kontak" class="hover:text-white transition-colors block py-0.5">Kontak & Hotline</a></li>
-            <li><a href="internasional.html?cat=daerah" class="hover:text-white transition-colors block py-0.5">Kanal Daerah</a></li>
-            <li><a href="internasional.html?cat=nasional" class="hover:text-white transition-colors block py-0.5">Kanal Nasional</a></li>
-          </ul>
-        </div>
-
       </div>
 
-      <!-- BOTTOM FOOTER -->
-      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
-        <p>&copy; 2026 Japakeh Post. All Rights Reserved. Dikelola oleh PT Japakeh Media Nusantara.</p>
-        <p class="text-[10.5px] text-slate-400">
-          Portal Berita Terpercaya
-        </p>
+      <!-- Bottom: Copyright aligned to right -->
+      <div class="pt-4 text-center lg:text-right text-[11px] text-slate-400">
+        &copy; 2026 Japakeh Post. All Rights Reserved.
       </div>
     </div>
   </footer>
@@ -537,6 +732,7 @@
           <a href="internasional.html?cat=pendidikan" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Pendidikan</a>
           <a href="internasional.html?cat=teknologi" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Teknologi</a>
           <a href="internasional.html?cat=internasional" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Internasional</a>
+          <a href="internasional.html?cat=editorial" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Editorial</a>
           <a href="internasional.html?cat=foto" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Foto</a>
           <a href="internasional.html?cat=video" class="block px-3 py-2 rounded-xl hover:bg-slate-800/60 text-slate-300 hover:text-white transition-colors">Video</a>
         </div>
@@ -557,7 +753,7 @@
           <span>WhatsApp Redaksi: 082165071114</span>
         </a>
         <div class="text-[10px] text-slate-500 text-center">
-          &copy; 2026 PT Japakeh Media Nusantara
+          &copy; 2026 Japakeh Post. All Rights Reserved.
         </div>
       </div>
     </div>
@@ -699,7 +895,7 @@
   <script src="assets/js/news-data.js"></script>
   <script src="assets/js/api-client.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/home-live.js?v=20260916_cat_layout_v2"></script>
+  <script src="assets/js/home-live.js?v=20260917_special_cards_v1"></script>
   <script src="assets/js/ads-loader.js"></script>
 </body>
 </html>

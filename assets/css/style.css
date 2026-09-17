@@ -344,34 +344,23 @@ body {
   box-shadow: 0 0 8px rgba(230, 0, 0, 0.8);
 }
 
-/* Harmonized Video & Foto Card Dimensions (Compact 9:14 Shorts Style for Mobile) */
-.video-card-item,
-.foto-card-item {
+/* Harmonized Video, Foto & Editorial Card Dimensions (Horizontal Landscape Orientation for Mobile) */
+.special-media-thumb {
   position: relative !important;
-  aspect-ratio: 9 / 14 !important;
+  aspect-ratio: 16 / 10 !important;
   width: 100% !important;
-  min-height: 150px !important;
-  max-height: 240px !important;
-  display: block !important;
   overflow: hidden !important;
-  border-radius: 0.65rem !important;
-  box-sizing: border-box !important;
+  border-radius: 0.375rem !important;
+  background-color: #0f172a !important;
 }
 
-@media (max-width: 639.98px) {
-  .video-card-item,
-  .foto-card-item {
-    aspect-ratio: 9 / 14 !important;
-    min-height: 150px !important;
-    max-height: 195px !important;
-    height: auto !important;
-    width: 100% !important;
-    border-radius: 0.5rem !important;
+@media (min-width: 640px) {
+  .special-media-thumb {
+    aspect-ratio: 16 / 9 !important;
   }
 }
 
-.video-card-item > img,
-.foto-card-item > img {
+.special-media-thumb > img {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
@@ -382,7 +371,8 @@ body {
 }
 
 #home-foto-grid,
-#home-video-grid {
+#home-video-grid,
+#home-foto-video-editorial-grid {
   width: 100% !important;
   display: grid !important;
   max-width: 42rem !important;

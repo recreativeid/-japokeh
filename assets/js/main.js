@@ -94,7 +94,8 @@ function initMobileDrawer() {
    -------------------------------------------------------------------------- */
 async function initBreakingNewsTicker() {
   const track = document.getElementById('breaking-ticker-track');
-  if (!track) return;
+  const nextBtn = document.getElementById('ticker-next-btn');
+  if (!track || nextBtn) return; // If nextBtn is present, home-live.js handles single-headline rotator ticker
 
   let items = [];
 
@@ -302,10 +303,10 @@ function initBookmarkSystem() {
    -------------------------------------------------------------------------- */
 function initQuickSearch() {
   const triggerBtns = document.querySelectorAll('.open-search-modal-btn');
-  const searchModal = document.getElementById('quick-search-modal');
+  const searchModal = document.getElementById('search-modal') || document.getElementById('quick-search-modal');
   const searchBackdrop = document.getElementById('search-modal-backdrop');
-  const searchInput = document.getElementById('quick-search-input');
-  const searchForm = document.getElementById('quick-search-form');
+  const searchInput = (searchModal ? searchModal.querySelector('input[name="q"]') : null) || document.getElementById('quick-search-input');
+  const searchForm = (searchModal ? searchModal.querySelector('form') : null) || document.getElementById('quick-search-form');
   const closeBtn = document.getElementById('close-search-modal-btn');
 
   if (!searchModal) return;
@@ -321,6 +322,8 @@ function initQuickSearch() {
 
   function openSearch() {
     searchModal.classList.remove('hidden');
+    searchModal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
     setTimeout(() => {
       if (searchInput) searchInput.focus();
     }, 50);
@@ -328,6 +331,8 @@ function initQuickSearch() {
 
   function closeSearch() {
     searchModal.classList.add('hidden');
+    searchModal.classList.remove('flex');
+    document.body.style.overflow = '';
     if (liveResultsContainer) {
       liveResultsContainer.classList.add('hidden');
       liveResultsContainer.innerHTML = '';
@@ -582,15 +587,15 @@ async function loadDynamicCategoriesNav() {
     const trackCategories = filtered.slice(0, MAX_TRACK_ITEMS - 1);
     const overflowCategories = filtered.slice(MAX_TRACK_ITEMS - 1);
 
-    // 1. Render Track Utama
+    // 1. Render Track Utama (Clean underline style matching UI DESKTOP.jpeg)
     let trackHtml = `
-      <a href="index.html" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full bg-buser-red text-white shadow-xs transition-colors text-xs font-bold uppercase tracking-wider">Home</a>
+      <a href="index.html" class="cat-nav-link whitespace-nowrap text-[#E60000] border-b-2 border-[#E60000] pb-1 transition-colors text-xs font-bold uppercase tracking-wider">Home</a>
     `;
     trackCategories.forEach(cat => {
       const name = cat.name_kategori || cat.name || cat.slug;
       const slug = (cat.slug || '').toLowerCase();
       trackHtml += `
-        <a href="internasional.html?cat=${encodeURIComponent(slug)}" class="cat-nav-link whitespace-nowrap px-3.5 py-1.5 rounded-full text-slate-700 hover:bg-rose-50 hover:text-buser-red transition-colors text-xs font-bold uppercase tracking-wider">${escapeQuickHtml(name)}</a>
+        <a href="internasional.html?cat=${encodeURIComponent(slug)}" class="cat-nav-link whitespace-nowrap text-slate-800 hover:text-[#E60000] border-b-2 border-transparent pb-1 transition-colors text-xs font-bold uppercase tracking-wider">${escapeQuickHtml(name)}</a>
       `;
     });
     navContainer.innerHTML = trackHtml;
@@ -671,13 +676,21 @@ function highlightActiveNav() {
     }
 
     if (isActive) {
-      link.classList.add('bg-buser-red', 'text-white', 'shadow-xs');
-      link.classList.remove('text-slate-700', 'hover:bg-rose-50', 'hover:text-buser-red');
+      if (link.closest('#category-scroll-nav')) {
+        link.classList.add('text-[#E60000]', 'border-[#E60000]');
+        link.classList.remove('text-slate-800', 'border-transparent');
+      } else {
+        link.classList.add('bg-buser-red', 'text-white', 'shadow-xs');
+        link.classList.remove('text-slate-700', 'hover:bg-rose-50', 'hover:text-buser-red');
+      }
       if (link.closest('#category-more-dropdown')) {
         hasActiveInMore = true;
       }
     } else {
-      if (!link.closest('#category-more-dropdown')) {
+      if (link.closest('#category-scroll-nav')) {
+        link.classList.remove('text-[#E60000]', 'border-[#E60000]');
+        link.classList.add('text-slate-800', 'border-transparent');
+      } else if (!link.closest('#category-more-dropdown')) {
         link.classList.remove('bg-buser-red', 'text-white', 'shadow-xs');
         link.classList.add('text-slate-700', 'hover:bg-rose-50', 'hover:text-buser-red');
       }

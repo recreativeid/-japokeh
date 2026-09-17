@@ -16,6 +16,8 @@ async function renderAllLiveContentFromDB() {
     const rawArticles = data.articles || [];
     const articles = rawArticles.map(a => ({
       ...a,
+      id: a.id || a.id_artikel,
+      views: typeof a.views === 'number' ? a.views : (parseInt(String(a.views || '0').replace(/\D/g, ''), 10) || 0),
       title: cleanMediaTitle(a.title)
     }));
 
@@ -31,12 +33,11 @@ async function renderAllLiveContentFromDB() {
     const trendingArticles = [...articles].sort((a, b) => (b.views || 0) - (a.views || 0));
 
     // =========================================================================
-    // A. DESKTOP LIVE RENDERING (Pre-session 100% desktop fidelity)
+    // A. DESKTOP LIVE RENDERING (Strictly Matching UI DESKTOP.jpeg)
     // =========================================================================
     renderDesktopHeroSection(articles, trendingArticles);
     renderDesktopBeritaTerkini(articles);
-    renderDesktopTrending(trendingArticles);
-    await renderDesktopCategorySections(articles);
+    renderDesktopBottomSection(articles);
 
     // =========================================================================
     // B. MOBILE LIVE RENDERING (Approved mobile-first revisions)
@@ -44,6 +45,7 @@ async function renderAllLiveContentFromDB() {
     try { setupMobileHeroCarousel(articles); } catch (e) { console.error('[setupMobileHeroCarousel] Error:', e); }
     try { renderMobileBeritaTerbaru(articles); } catch (e) { console.error('[renderMobileBeritaTerbaru] Error:', e); }
     try { renderMobileBeritaPopuler(trendingArticles); } catch (e) { console.error('[renderMobileBeritaPopuler] Error:', e); }
+    try { await renderSpecialCardsSection(articles); } catch (e) { console.error('[renderSpecialCardsSection] Error:', e); }
     try { renderFotoSection(articles); } catch (e) { console.error('[renderFotoSection] Error:', e); }
     try { renderVideoSection(articles); } catch (e) { console.error('[renderVideoSection] Error:', e); }
     try { setupModals(); } catch (e) { console.error('[setupModals] Error:', e); }
@@ -141,21 +143,55 @@ function extractYouTubeId(url) {
   return match ? match[1] : null;
 }
 
-// Breaking News Ticker
+// =============================================================================
+// BREAKING NEWS TICKER (Matching UI DESKTOP.jpeg Single Headline Rotator)
+// =============================================================================
+let tickerArticlesList = [];
+let tickerCurrentIdx = 0;
+let tickerTimer = null;
+
 function renderTicker(articles) {
   const track = document.getElementById('breaking-ticker-track');
+  const nextBtn = document.getElementById('ticker-next-btn');
   if (!track || !articles || articles.length === 0) return;
 
-  const tickerArticles = articles.slice(0, 8);
-  let html = '';
-  tickerArticles.forEach(item => {
-    html += `
-      <a href="artikel.html?slug=${encodeURIComponent(item.slug)}" class="hover:text-buser-red transition-colors inline-block whitespace-nowrap mr-8">
-        ${escapeHtml(item.title)}
-      </a>
-    `;
-  });
-  track.innerHTML = html;
+  tickerArticlesList = articles.slice(0, 10);
+  tickerCurrentIdx = 0;
+
+  function showTickerItem(idx) {
+    if (!tickerArticlesList || tickerArticlesList.length === 0) return;
+    tickerCurrentIdx = (idx + tickerArticlesList.length) % tickerArticlesList.length;
+    const item = tickerArticlesList[tickerCurrentIdx];
+    track.style.opacity = '0';
+    setTimeout(() => {
+      track.innerHTML = `
+        <a href="artikel.html?slug=${encodeURIComponent(item.slug)}" class="hover:text-[#E60000] transition-colors truncate block">
+          ${escapeHtml(item.title)}
+        </a>
+      `;
+      track.style.opacity = '1';
+    }, 150);
+  }
+
+  showTickerItem(0);
+
+  if (tickerTimer) clearInterval(tickerTimer);
+  tickerTimer = setInterval(() => {
+    showTickerItem(tickerCurrentIdx + 1);
+  }, 6000);
+
+  if (nextBtn && !nextBtn.dataset.bound) {
+    nextBtn.dataset.bound = 'true';
+    nextBtn.addEventListener('click', () => {
+      showTickerItem(tickerCurrentIdx + 1);
+      if (tickerTimer) {
+        clearInterval(tickerTimer);
+        tickerTimer = setInterval(() => {
+          showTickerItem(tickerCurrentIdx + 1);
+        }, 6000);
+      }
+    });
+  }
 }
 
 // Empty state fallback
@@ -163,7 +199,7 @@ function showEmptyState() {
   const container = document.getElementById('live-berita-terkini-feed');
   if (container) {
     container.innerHTML = `
-      <div class="text-center py-12 bg-white rounded-2xl border border-slate-200">
+      <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200">
         <p class="text-slate-500 font-medium">Belum ada berita yang diterbitkan saat ini.</p>
       </div>
     `;
@@ -171,267 +207,94 @@ function showEmptyState() {
 }
 
 // =============================================================================
-// 1. DESKTOP HERO SECTION (Antaranews 8-col Slider + 4-col Terpopuler)
+// 1. DESKTOP HERO & TERPOPULER (col-span-7 Hero + col-span-5 01-05 Terpopuler)
 // =============================================================================
-let topSliderInterval = null;
-let topSliderIsPaused = false;
-let topSliderCurrentIndex = 0;
-
 function renderDesktopHeroSection(articles, trendingArticles = []) {
-  const heroSection = document.getElementById('home-hero-section');
-  if (!heroSection || !articles || articles.length === 0) return;
+  if (!articles || articles.length === 0) return;
 
-  if (topSliderInterval) {
-    clearInterval(topSliderInterval);
-    topSliderInterval = null;
+  // 1. Hero Article (Left col-span-7)
+  const heroArticle = articles.find(a => a.isHero) || articles[0];
+  const heroLink = document.getElementById('desktop-hero-link');
+  const heroImg = document.getElementById('desktop-hero-img');
+  const heroCat = document.getElementById('desktop-hero-cat');
+  const heroTitle = document.getElementById('desktop-hero-title');
+  const heroExcerpt = document.getElementById('desktop-hero-excerpt');
+  const heroDate = document.getElementById('desktop-hero-date');
+  const heroTime = document.getElementById('desktop-hero-time');
+
+  const hLinkUrl = `artikel.html?slug=${encodeURIComponent(heroArticle.slug)}`;
+  const hCat = (heroArticle.name_kategori || heroArticle.category || 'DAERAH').toUpperCase();
+
+  if (heroLink) heroLink.href = hLinkUrl;
+  if (heroImg) {
+    heroImg.src = getThumb(heroArticle.thumbnail || heroArticle.image);
+    heroImg.alt = heroArticle.title;
   }
+  if (heroCat) heroCat.textContent = hCat;
+  if (heroTitle) {
+    heroTitle.href = hLinkUrl;
+    heroTitle.textContent = heroArticle.title;
+  }
+  if (heroExcerpt) {
+    heroExcerpt.textContent = heroArticle.excerpt || 'Ratusan warga di beberapa gampong di Kabupaten Pidie Jaya masih bertahan di posko pengungsian.';
+  }
+  if (heroDate) heroDate.textContent = formatDateOnlyIndo(heroArticle.published_at || heroArticle.date);
+  if (heroTime) heroTime.textContent = formatTimeIndo(heroArticle.published_at || heroArticle.date || heroArticle.time);
 
-  const sliderArticles = articles.slice(0, Math.min(5, articles.length));
-  const sideArticles = (trendingArticles && trendingArticles.length > 0)
-    ? trendingArticles.slice(0, 4)
-    : (articles.length > sliderArticles.length ? articles.slice(sliderArticles.length, sliderArticles.length + 4) : []);
+  // 2. Terpopuler Ranked List 01-05 (Right col-span-5)
+  const terpopulerContainer = document.getElementById('desktop-terpopuler-list');
+  if (terpopulerContainer) {
+    const pool = (trendingArticles && trendingArticles.length > 0) ? trendingArticles : articles;
+    let popularList = pool.filter(a => a.slug !== heroArticle.slug);
+    if (popularList.length < 5) {
+      const extra = articles.filter(a => a.slug !== heroArticle.slug && !popularList.some(p => p.slug === a.slug));
+      popularList = popularList.concat(extra);
+    }
+    const top5 = popularList.slice(0, 5);
 
-  const hasMultiple = sliderArticles.length > 1;
-
-  let slidesHtml = '';
-  sliderArticles.forEach((item, index) => {
-    const catName = (item.name_kategori || 'BERITA UTAMA').toUpperCase();
-    const author = item.author_name || 'Redaksi Japakeh Post';
-    const pubDate = formatDateIndo(item.published_at);
-    const excerpt = item.excerpt || 'Baca laporan selengkapnya seputar peristiwa terpercaya hanya di portal berita Japakeh Post.';
-    const link = `artikel.html?slug=${encodeURIComponent(item.slug)}`;
-
-    slidesHtml += `
-      <div class="top-slider-item w-full h-full flex-shrink-0 relative overflow-hidden group/slide select-none" data-slide-index="${index}">
-        <a href="${link}" class="block w-full h-full">
-          <img src="${getThumb(item.thumbnail)}" 
-               alt="${escapeHtml(item.title)}" 
-               class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/slide:scale-105"
-               onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-        </a>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none"></div>
-
-        <div class="absolute bottom-0 inset-x-0 p-4 sm:p-5 lg:p-6 z-20 flex flex-col justify-end pointer-events-auto">
-          <div class="mb-1.5">
-            <a href="internasional.html?cat=${encodeURIComponent(item.kategori_slug || 'berita')}" 
-               class="inline-block bg-buser-red hover:bg-buser-redHover text-white text-[9px] sm:text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm transition-colors">
-              ${escapeHtml(catName)}
-            </a>
-          </div>
-
-          <div class="flex items-center space-x-2 text-[11px] text-slate-300 mb-1.5">
-            <span class="font-bold text-white">${escapeHtml(author)}</span>
-            <span>&bull;</span>
-            <span>${pubDate}</span>
-            <span>&bull;</span>
-            <span class="text-rose-300 font-semibold">3 menit baca</span>
-          </div>
-
-          <h2 class="text-base sm:text-xl lg:text-2xl font-black text-white leading-tight mb-1.5 sm:mb-2 drop-shadow-md group-hover/slide:text-rose-200 transition-colors line-clamp-2">
-            <a href="${link}">
-              ${escapeHtml(item.title)}
-            </a>
-          </h2>
-
-          <p class="text-xs sm:text-[13px] text-slate-200 line-clamp-2 leading-relaxed hidden sm:block max-w-xl mb-2">
-            ${escapeHtml(excerpt)}
-          </p>
-
-          <div class="flex items-center justify-between pt-2 border-t border-white/15 text-xs">
-            <div class="flex items-center space-x-1.5">
-              <span class="text-[10px] bg-white/15 backdrop-blur-md text-white px-2 py-0.5 rounded-full font-medium">#${escapeHtml(item.name_kategori || 'Headline')}</span>
-              <span class="text-[10px] bg-buser-red text-white px-2 py-0.5 rounded-full font-bold">#JapakehPost</span>
-            </div>
-            <a href="${link}" class="inline-flex items-center text-xs font-bold text-rose-300 hover:text-white transition-colors group/cta">
-              Baca Selengkapnya
-              <svg class="w-3 h-3 ml-1 transition-transform group-hover/cta:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  let dotsHtml = '';
-  sliderArticles.forEach((_, idx) => {
-    dotsHtml += `
-      <button type="button" 
-              class="top-slider-dot ${idx === 0 ? 'active' : ''}" 
-              data-dot-index="${idx}" 
-              aria-label="Ke Sorotan Berita ${idx + 1}">
-      </button>
-    `;
-  });
-
-  const controlsHtml = hasMultiple ? `
-    <button type="button" 
-            class="top-slider-prev absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900/60 hover:bg-buser-red text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-xl border border-white/15 hover:scale-110 opacity-85 hover:opacity-100 focus:outline-none" 
-            aria-label="Berita Sebelumnya">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    <button type="button" 
-            class="top-slider-next absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-900/60 hover:bg-buser-red text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 shadow-xl border border-white/15 hover:scale-110 opacity-85 hover:opacity-100 focus:outline-none" 
-            aria-label="Berita Selanjutnya">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-    <div class="top-slider-dots absolute bottom-2.5 sm:bottom-3 left-1/2 -translate-x-1/2 z-30 flex items-center space-x-1.5 bg-slate-950/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/15">
-      ${dotsHtml}
-    </div>
-  ` : '';
-
-  const sliderContainerHtml = `
-    <div class="${sideArticles.length > 0 ? 'lg:col-span-8' : 'lg:col-span-12'} flex flex-col">
-      <div id="top-slider" 
-           class="relative overflow-hidden rounded-2xl bg-slate-900 shadow-sm hover:shadow-md transition-shadow group select-none w-full h-[320px] sm:h-[360px] lg:h-[390px]">
-        <div class="top-slider-track flex w-full h-full transition-transform duration-500 ease-out" style="transform: translateX(0%);">
-          ${slidesHtml}
-        </div>
-        ${controlsHtml}
-      </div>
-    </div>
-  `;
-
-  let sidebarHtml = '';
-  if (sideArticles.length > 0) {
-    let sideItemsHtml = '';
-    sideArticles.forEach((item, index) => {
+    let popHtml = '';
+    top5.forEach((item, idx) => {
+      const rankNum = String(idx + 1).padStart(2, '0');
       const link = `artikel.html?slug=${encodeURIComponent(item.slug)}`;
-      const pubDate = formatDateOnlyIndo(item.published_at || item.date);
-      sideItemsHtml += `
-        <article class="py-2 first:pt-0 last:pb-0 flex items-center gap-2.5 group">
-          <span class="w-5 h-5 rounded-full bg-rose-50 text-buser-red font-black text-[10px] flex items-center justify-center flex-shrink-0 border border-rose-200/60 group-hover:bg-buser-red group-hover:text-white transition-all shadow-2xs">
-            ${index + 1}
-          </span>
-          <a href="${link}" class="w-18 sm:w-20 h-13 sm:h-14 flex-shrink-0 relative overflow-hidden rounded-lg block bg-slate-100 shadow-2xs">
-            <img src="${getThumb(item.thumbnail)}" 
-                 alt="${escapeHtml(item.title)}" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                 onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
+      const thumb = getThumb(item.thumbnail || item.image);
+      const cat = escapeHtml((item.name_kategori || item.category || item.categorySlug || 'BERITA').toUpperCase());
+      const date = formatDateOnlyIndo(item.published_at || item.date);
+      const time = formatTimeIndo(item.published_at || item.date || item.time);
+
+      popHtml += `
+        <article class="flex items-center gap-3 py-1.5 border-b border-slate-100 last:border-b-0 group">
+          <span class="text-[#E60000] font-extrabold text-2xl sm:text-3xl w-8 text-center shrink-0">${rankNum}</span>
+          <a href="${link}" class="w-24 h-16 sm:w-26 sm:h-17 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+            <img src="${thumb}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
           </a>
           <div class="flex-1 min-w-0">
-            <div class="flex items-center space-x-1 text-[9.5px] text-slate-400 mb-0.5">
-              <span class="font-bold text-buser-red uppercase tracking-wider">${escapeHtml(item.name_kategori || 'News')}</span>
-              <span>&bull;</span>
-              <span class="whitespace-nowrap text-slate-500">${pubDate}</span>
-            </div>
-            <h4 class="font-bold text-xs sm:text-[12.5px] text-slate-900 group-hover:text-buser-red leading-snug line-clamp-2 transition-colors">
+            <span class="text-[#E60000] font-bold text-[10.5px] uppercase tracking-wider block mb-0.5">${cat}</span>
+            <h3 class="font-bold text-xs lg:text-[12px] text-slate-900 leading-snug line-clamp-2 hover:text-[#E60000] transition-colors mb-1">
               <a href="${link}">${escapeHtml(item.title)}</a>
-            </h4>
+            </h3>
+            <div class="text-[10px] text-slate-400 flex items-center gap-1">
+              <svg class="w-2.5 h-2.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span>${date} | ${time}</span>
+            </div>
           </div>
         </article>
       `;
     });
-
-    sidebarHtml = `
-      <aside class="lg:col-span-4 flex flex-col h-full">
-        <div class="bg-white border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-soft flex flex-col justify-between h-full">
-          <div>
-            <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-100">
-              <div class="flex items-center space-x-2">
-                <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
-                <h3 class="font-black text-xs sm:text-sm uppercase tracking-tight text-slate-900">Terpopuler</h3>
-              </div>
-              <span class="text-[9px] bg-rose-50 text-buser-red border border-rose-200 font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                TRENDING
-              </span>
-            </div>
-            <div class="divide-y divide-slate-100" id="live-trending-feed">
-              ${sideItemsHtml}
-            </div>
-          </div>
-          <div class="pt-1.5 mt-1.5 border-t border-slate-100 text-center">
-            <a href="internasional.html" class="inline-flex items-center text-[10px] font-bold text-buser-red hover:text-buser-redHover uppercase tracking-wider transition-colors group">
-              <span>Lihat Semua Berita Terpopuler</span>
-              <svg class="w-2.5 h-2.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
-      </aside>
-    `;
-  }
-
-  heroSection.className = 'grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-stretch';
-  heroSection.innerHTML = sliderContainerHtml + sidebarHtml;
-
-  if (hasMultiple) {
-    initTopSlider(sliderArticles.length);
-  }
-}
-
-function initTopSlider(totalSlides) {
-  const sliderEl = document.getElementById('top-slider');
-  if (!sliderEl || totalSlides <= 1) return;
-
-  const trackEl = sliderEl.querySelector('.top-slider-track');
-  const dots = sliderEl.querySelectorAll('.top-slider-dot');
-  const prevBtn = sliderEl.querySelector('.top-slider-prev');
-  const nextBtn = sliderEl.querySelector('.top-slider-next');
-
-  topSliderCurrentIndex = 0;
-  topSliderIsPaused = false;
-
-  function updateSlide(newIndex) {
-    topSliderCurrentIndex = (newIndex + totalSlides) % totalSlides;
-    if (trackEl) {
-      trackEl.style.transform = `translateX(-${topSliderCurrentIndex * 100}%)`;
-    }
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === topSliderCurrentIndex);
-    });
-  }
-
-  function nextSlide() { updateSlide(topSliderCurrentIndex + 1); }
-  function prevSlide() { updateSlide(topSliderCurrentIndex - 1); }
-
-  function startAutoplay() {
-    if (topSliderInterval) clearInterval(topSliderInterval);
-    topSliderInterval = setInterval(() => {
-      if (!topSliderIsPaused) nextSlide();
-    }, 6000);
-  }
-
-  function stopAutoplay() {
-    if (topSliderInterval) {
-      clearInterval(topSliderInterval);
-      topSliderInterval = null;
+    if (popHtml) {
+      terpopulerContainer.innerHTML = popHtml;
     }
   }
-
-  if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
-  if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetIndex = parseInt(dot.getAttribute('data-dot-index'), 10);
-      if (!isNaN(targetIndex)) updateSlide(targetIndex);
-    });
-  });
-
-  sliderEl.addEventListener('mouseenter', () => { topSliderIsPaused = true; });
-  sliderEl.addEventListener('mouseleave', () => { topSliderIsPaused = false; });
-
-  startAutoplay();
 }
 
 // =============================================================================
-// 2. DESKTOP BERITA TERKINI & TRENDING
+// 2. DESKTOP BERITA TERBARU (2 Columns of 5 Horizontal Cards = 10 Total)
 // =============================================================================
 function renderDesktopBeritaTerkini(articles) {
   const feedContainer = document.getElementById('live-berita-terkini-feed');
-  if (!feedContainer) return;
+  if (!feedContainer || !articles || articles.length === 0) return;
 
-  feedContainer.innerHTML = '';
-  const MAX_TERKINI = 10;
-  const list = (articles || []).slice(0, MAX_TERKINI);
+  const heroArticle = articles.find(a => a.isHero) || articles[0];
+  const list = articles.filter(a => a !== heroArticle).slice(0, 10);
   if (list.length === 0) return;
 
   const leftCount = Math.ceil(list.length / 2);
@@ -440,422 +303,230 @@ function renderDesktopBeritaTerkini(articles) {
 
   function createCardHtml(item) {
     const link = `artikel.html?slug=${encodeURIComponent(item.slug)}`;
-    const cat = escapeHtml(item.name_kategori || 'Nasional');
-    const author = escapeHtml(item.author_name || 'Redaksi');
-    const date = formatDateOnlyIndo(item.published_at);
+    const cat = escapeHtml((item.name_kategori || item.category || 'BERITA').toUpperCase());
+    const date = formatDateOnlyIndo(item.published_at || item.date);
+    const time = formatTimeIndo(item.published_at || item.date || item.time);
+    const thumb = getThumb(item.thumbnail || item.image);
 
     return `
-      <article class="bg-white border border-slate-200/90 hover:border-buser-red/40 rounded-xl p-3 sm:p-3.5 flex items-center gap-3 sm:gap-3.5 shadow-2xs hover:shadow-md transition-all group">
-        <a href="${link}" class="w-24 sm:w-28 lg:w-32 h-18 sm:h-20 lg:h-22 shrink-0 relative overflow-hidden rounded-xl block bg-slate-100 shadow-2xs">
-          <img src="${getThumb(item.thumbnail)}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-          <span class="absolute top-1.5 left-1.5 bg-buser-red text-white text-[8px] font-bold px-2 py-0.5 uppercase tracking-wider rounded-md shadow-xs">${cat}</span>
+      <article class="flex items-center gap-3.5 group">
+        <a href="${link}" class="w-36 sm:w-40 h-22 sm:h-24 shrink-0 rounded-lg overflow-hidden block bg-slate-100 shadow-2xs">
+          <img src="${thumb}" alt="${escapeHtml(item.title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
         </a>
-        <div class="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5">
-          <div>
-            <div class="flex items-center gap-1.5 text-[10px] sm:text-[10.5px] text-slate-400 mb-1">
-              <span class="font-semibold text-slate-600 truncate max-w-[95px]">${author}</span>
-              <span>&bull;</span>
-              <span class="whitespace-nowrap">${date}</span>
-            </div>
-            <h3 class="font-bold text-xs sm:text-[13px] lg:text-[13.5px] text-slate-900 group-hover:text-buser-red line-clamp-2 leading-snug transition-colors">
-              <a href="${link}">
-                ${escapeHtml(item.title)}
-              </a>
-            </h3>
-          </div>
-          <div class="flex items-center justify-end pt-1.5 mt-1 border-t border-slate-100 text-[10px]">
-            <a href="${link}" class="font-bold text-buser-red hover:underline inline-flex items-center gap-1">
-              <span>Baca Selengkapnya</span>
-              <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </a>
+        <div class="flex-1 min-w-0">
+          <span class="text-[#E60000] font-bold text-[11px] uppercase tracking-wider block mb-1">${cat}</span>
+          <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 group-hover:text-[#E60000] transition-colors mb-1.5">
+            <a href="${link}">${escapeHtml(item.title)}</a>
+          </h3>
+          <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+            <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>${date} | ${time}</span>
           </div>
         </div>
       </article>
     `;
   }
 
-  feedContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-3.5 items-start';
+  feedContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 items-start';
   feedContainer.innerHTML = `
-    <div class="space-y-3 flex flex-col">
+    <div class="space-y-4 flex flex-col" id="berita-terbaru-col-left">
       ${leftArticles.map(createCardHtml).join('')}
     </div>
-    <div class="space-y-3 flex flex-col">
+    <div class="space-y-4 flex flex-col" id="berita-terbaru-col-right">
       ${rightArticles.map(createCardHtml).join('')}
     </div>
   `;
 }
 
-function renderDesktopTrending(articles) {
-  const trendingContainer = document.getElementById('live-trending-feed');
-  if (!trendingContainer) return;
+// =============================================================================
+// 3. DESKTOP BOTTOM SECTION (Editorial, Berita Video, Berita Foto)
+// =============================================================================
+function renderDesktopBottomSection(articles) {
+  if (!articles || articles.length === 0) return;
 
-  trendingContainer.innerHTML = '';
-  const trendingList = (articles || []).slice(0, 4);
+  // 1. EDITORIAL
+  const editorialCard = document.getElementById('desktop-editorial-card');
+  if (editorialCard) {
+    const editItem = articles.find(a => {
+      const cat = (a.name_kategori || a.category || '').toLowerCase();
+      return cat.includes('editorial') || cat.includes('opini');
+    }) || articles.find(a => a.id === 117) || articles[articles.length - 1];
 
-  trendingList.forEach((item, index) => {
-    const link = `artikel.html?slug=${encodeURIComponent(item.slug)}`;
-    const pubDate = formatDateOnlyIndo(item.published_at || item.date);
-    const art = document.createElement('article');
-    art.className = 'py-2 first:pt-0 last:pb-0 flex items-center gap-2.5 group';
-    art.innerHTML = `
-      <span class="w-5 h-5 rounded-full bg-rose-50 text-buser-red font-black text-[10px] flex items-center justify-center flex-shrink-0 border border-rose-200/60 group-hover:bg-buser-red group-hover:text-white transition-all shadow-2xs">
-        ${index + 1}
-      </span>
-      <a href="${link}" class="w-20 sm:w-22 h-14 sm:h-15 flex-shrink-0 relative overflow-hidden rounded-lg block bg-slate-100 shadow-2xs">
-        <img src="${getThumb(item.thumbnail)}" 
-             alt="${escapeHtml(item.title)}" 
-             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-             onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-      </a>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center space-x-1 text-[9.5px] text-slate-400 mb-0.5">
-          <span class="font-bold text-buser-red uppercase tracking-wider">${escapeHtml(item.name_kategori || 'News')}</span>
-          <span>&bull;</span>
-          <span class="whitespace-nowrap text-slate-500">${pubDate}</span>
+    if (editItem) {
+      const link = `artikel.html?slug=${encodeURIComponent(editItem.slug)}`;
+      const thumb = getThumb(editItem.thumbnail || editItem.image);
+      const title = cleanMediaTitle(editItem.title);
+      const date = formatDateOnlyIndo(editItem.published_at || editItem.date);
+      const time = formatTimeIndo(editItem.published_at || editItem.date || editItem.time);
+
+      editorialCard.className = 'bg-white border border-slate-200/90 rounded-xl p-3 sm:p-3.5 shadow-2xs flex flex-col justify-between flex-1';
+      editorialCard.innerHTML = `
+        <div>
+          <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" onclick="window.location.href='${link}'">
+            <img src="${thumb}" alt="${escapeHtml(title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" onerror="this.src='assets/images/berita/pendidikan/kurikulum-merdeka-smk.jpg'" />
+            <div class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-black/70 backdrop-blur-xs flex items-center justify-center text-amber-300 shadow-md">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+            </div>
+            <span class="absolute bottom-2 left-2 bg-[#E60000] text-white text-[9px] font-black uppercase px-2 py-0.5 rounded shadow-xs tracking-wider">TAJUK RENCANA</span>
+          </div>
+          <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+            <a href="${link}">${escapeHtml(title)}</a>
+          </h3>
         </div>
-        <h4 class="font-bold text-xs sm:text-[12.5px] text-slate-900 group-hover:text-buser-red leading-snug line-clamp-2 transition-colors">
-          <a href="${link}">${escapeHtml(item.title)}</a>
-        </h4>
+        <div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+            <span class="flex items-center gap-1">
+              <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span>${date} | ${time}</span>
+            </span>
+          </div>
+          <div class="text-right mt-2">
+            <a href="${link}" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+              <span>Baca Selengkapnya</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // 2. BERITA VIDEO
+  const videoCard = document.getElementById('desktop-video-card');
+  if (videoCard) {
+    const videoItem = articles.find(a => {
+      const cat = (a.name_kategori || a.category || '').toLowerCase();
+      return cat.includes('video') || a.youtube_id || a.youtube_url;
+    }) || articles.find(a => a.id === 46) || {
+      title: 'Bupati Tinjau Lokasi Banjir di Meureudu',
+      thumbnail: 'assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg',
+      duration: '02:48',
+      slug: 'video-penanganan-cepat-tanggap-banjir-pidie-jaya-dan-bantuan-dapur-umum',
+      date: '10 September 2026',
+      time: '14:20 WIB',
+      author: 'Al Bahri'
+    };
+
+    const link = videoItem.slug ? `artikel.html?slug=${encodeURIComponent(videoItem.slug)}` : 'internasional.html?cat=video';
+    const thumb = getThumb(videoItem.thumbnail || videoItem.image);
+    const title = cleanMediaTitle(videoItem.title);
+    const duration = videoItem.duration || videoItem.durasi || '02:48';
+    const date = formatDateOnlyIndo(videoItem.published_at || videoItem.date);
+    const time = formatTimeIndo(videoItem.published_at || videoItem.date || videoItem.time);
+
+    videoCard.innerHTML = `
+      <div>
+        <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" id="desktop-video-player-trigger">
+          <img src="${thumb}" alt="${escapeHtml(title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" onerror="this.src='assets/images/berita/daerah/revitalisasi-pelabuhan-banyuasin.jpg'" />
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-11 h-11 rounded-full bg-black/70 group-hover:bg-[#E60000] text-white flex items-center justify-center transition-all shadow-md">
+              <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <span class="absolute bottom-2 right-2 bg-black/80 text-white text-[10px] font-mono px-1.5 py-0.5 rounded font-bold">${escapeHtml(duration)}</span>
+        </div>
+        <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+          <a href="${link}">${escapeHtml(title)}</a>
+        </h3>
+      </div>
+      <div>
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+          <span class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>${date} | ${time}</span>
+          </span>
+        </div>
+        <div class="text-right mt-2">
+          <a href="internasional.html?cat=video" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+            <span>Lihat Semua Video</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
       </div>
     `;
-    trendingContainer.appendChild(art);
-  });
-}
 
-async function renderDesktopCategorySections(articles) {
-  const container = document.getElementById('live-category-sections');
-  if (!container) return;
-
-  container.innerHTML = '';
-
-  // 1. Ambil daftar seluruh kategori dari Database (REST API) secara dinamis
-  let dbCategories = [];
-  if (window.BuserInfoAPI && typeof window.BuserInfoAPI.getCategories === 'function') {
-    try {
-      const res = await window.BuserInfoAPI.getCategories();
-      if (Array.isArray(res) && res.length > 0) {
-        dbCategories = res;
-      }
-    } catch (e) {
-      console.warn('[renderDesktopCategorySections] Gagal fetch kategori dari API:', e);
-    }
-  }
-
-  // Fallback kategori bawaan jika API offline
-  if (dbCategories.length === 0) {
-    const defaultCats = window.JAPAKEH_CATEGORIES || window.BUSER_CATEGORIES || [];
-    dbCategories = defaultCats.filter(c => c.id !== 'home' && c.slug !== 'home').map((c, i) => ({
-      id_kategori: i + 1,
-      name_kategori: c.name,
-      slug: c.slug
-    }));
-  }
-
-  // 2. Kumpulkan seluruh kategori unik (sinkronisasi Database + data Artikel aktif)
-  const categoryMap = new Map();
-
-  // Masukkan dari database terlebih dahulu
-  dbCategories.forEach(cat => {
-    const slug = (cat.slug || '').toLowerCase().trim();
-    if (slug && slug !== 'home' && slug !== 'opini') {
-      categoryMap.set(slug, {
-        id_kategori: cat.id_kategori || 999,
-        name_kategori: cat.name_kategori || cat.name || (slug.charAt(0).toUpperCase() + slug.slice(1)),
-        slug: slug
+    const videoTrigger = document.getElementById('desktop-video-player-trigger');
+    if (videoTrigger) {
+      videoTrigger.addEventListener('click', () => {
+        openVideoModal({
+          title: title,
+          url: videoItem.video_url || videoItem.url || videoItem.youtube_url || '',
+          thumb: thumb,
+          durasi: duration,
+          date: date,
+          desc: videoItem.excerpt || videoItem.content || `Laporan video eksklusif Japakeh Post mengenai "${title}".`,
+          author: videoItem.author || videoItem.author_name || 'Redaksi Japakeh Post',
+          slug: videoItem.slug || ''
+        });
       });
     }
-  });
-
-  // Masukkan kategori tambahan yang ditemukan dari data artikel aktif
-  (articles || []).forEach(art => {
-    const rawSlug = (art.kategori_slug || art.categorySlug || art.name_kategori || art.category || '').toLowerCase().trim();
-    const rawName = art.name_kategori || art.category || rawSlug;
-    if (rawSlug && rawSlug !== 'home' && rawSlug !== 'opini' && !categoryMap.has(rawSlug)) {
-      categoryMap.set(rawSlug, {
-        id_kategori: art.id_kategori || art.kategori_id || 999,
-        name_kategori: rawName.charAt(0).toUpperCase() + rawName.slice(1),
-        slug: rawSlug
-      });
-    }
-  });
-
-  // Pastikan rubrik Video dan Foto selalu terdaftar
-  if (!categoryMap.has('video')) {
-    categoryMap.set('video', { id_kategori: 9998, name_kategori: 'Video', slug: 'video' });
-  }
-  if (!categoryMap.has('foto')) {
-    categoryMap.set('foto', { id_kategori: 9999, name_kategori: 'Foto', slug: 'foto' });
   }
 
-  // 3. Pisahkan kategori umum dengan Video dan Foto
-  const PRIMARY_ORDER = [
-    'daerah', 'nasional', 'politik', 'hukum', 'ekonomi', 
-    'bisnis', 'pendidikan', 'teknologi', 'olahraga', 'internasional', 'tokoh'
-  ];
-
-  const normalCategories = [];
-  let videoCat = null;
-  let fotoCat = null;
-
-  categoryMap.forEach((catObj, slug) => {
-    if (slug === 'video') {
-      videoCat = catObj;
-    } else if (slug === 'foto') {
-      fotoCat = catObj;
-    } else {
-      normalCategories.push(catObj);
-    }
-  });
-
-  // Urutkan kategori umum: Prioritas redaksi terlebih dahulu, lalu kategori baru tambahan dari DB/Admin
-  normalCategories.sort((a, b) => {
-    const idxA = PRIMARY_ORDER.indexOf(a.slug);
-    const idxB = PRIMARY_ORDER.indexOf(b.slug);
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-    if (idxA !== -1) return -1;
-    if (idxB !== -1) return 1;
-    return (a.id_kategori || 999) - (b.id_kategori || 999);
-  });
-
-  // OTOMATIS TAMPILKAN VIDEO & FOTO DI PALING AKHIR BARISAN (meskipun kategori bertambah)
-  const sortedCategories = [...normalCategories];
-  if (videoCat) sortedCategories.push(videoCat);
-  if (fotoCat) sortedCategories.push(fotoCat);
-
-  // 4. Kelompokkan artikel berdasarkan slug kategori
-  const articlesByCategory = {};
-  (articles || []).forEach(art => {
-    const catSlug = (art.kategori_slug || art.categorySlug || art.name_kategori || art.category || '').toLowerCase().trim();
-    if (!articlesByCategory[catSlug]) articlesByCategory[catSlug] = [];
-    articlesByCategory[catSlug].push(art);
-  });
-
-  // 5. Siapkan data terbaik untuk Video dan Foto
-  let videoItem = (articlesByCategory['video'] && articlesByCategory['video'][0]) || null;
-  if (!videoItem && window.BuserInfoAPI && typeof window.BuserInfoAPI.getVideos === 'function') {
-    try {
-      const res = await window.BuserInfoAPI.getVideos({ status: 'active', limit: 1 });
-      if (res && res.videos && res.videos.length > 0) {
-        const v = res.videos[0];
-        videoItem = {
-          title: cleanMediaTitle(v.judul || v.title),
-          thumbnail: v.thumbnail || (v.youtube_id ? `https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg` : ''),
-          author_name: v.penulis || 'Redaksi Japakeh Post',
-          published_at: v.created_at || '2026-09-10 14:00:00',
-          slug: v.slug || '',
-          duration: v.durasi || '02:15'
-        };
-      }
-    } catch (e) {}
-  }
-  if (!videoItem) {
-    videoItem = {
-      title: 'Penerbangan Drone Pantau Kondisi Tanggul Pasca Banjir Surut',
-      thumbnail: 'assets/images/berita/daerah/penanganan-banjir-sumatera.jpg',
-      author_name: 'Redaksi Japakeh Post',
-      published_at: '2026-09-10 14:00:00',
-      slug: 'video-dokumentasi-sains-kampus-inovasi-olahan-kulit-manggis-jadi-penjernih-air-gambut',
-      duration: '01:45'
-    };
-  }
-
-  let fotoItem = (articlesByCategory['foto'] && articlesByCategory['foto'][0]) || null;
-  if (!fotoItem) {
-    const photoArticles = (articles || []).filter(a => {
-      const cat = String(a.name_kategori || a.category || '').toLowerCase();
+  // 3. BERITA FOTO
+  const fotoCard = document.getElementById('desktop-foto-card');
+  if (fotoCard) {
+    const fotoItem = articles.find(a => {
+      const cat = (a.name_kategori || a.category || '').toLowerCase();
       return cat.includes('foto') || cat.includes('galeri');
-    });
-    if (photoArticles.length > 0) {
-      fotoItem = photoArticles[0];
-    } else {
-      fotoItem = {
-        title: 'Parade Budaya Nusantara Meriahkan HUT Aceh',
-        thumbnail: 'assets/images/berita/daerah/festival-budaya-palembang.jpg',
-        author_name: 'Zulkifli M. (Pewarta Foto)',
-        published_at: '2026-09-10 10:00:00',
-        slug: 'festival-budaya-dan-pawai-adat-di-tanah-rencong'
-      };
-    }
-  }
-
-  // 6. Bangun HTML untuk masing-masing kartu kategori
-  let cardsHtml = '';
-  let validCategoryCount = 0;
-
-  sortedCategories.forEach(catObj => {
-    const catName = catObj.name_kategori;
-    const catSlug = catObj.slug;
-
-    // A. KARTU KHUSUS: BERITA VIDEO (Di paling akhir barisan)
-    if (catSlug === 'video') {
-      validCategoryCount++;
-      const videoLink = videoItem.slug ? `artikel.html?slug=${encodeURIComponent(videoItem.slug)}` : 'internasional.html?cat=video';
-      const videoPubDate = formatDateOnlyIndo(videoItem.published_at || videoItem.date);
-      const videoAuthor = videoItem.author_name || videoItem.author || 'Redaksi Japakeh';
-      const videoTitle = cleanMediaTitle(videoItem.title);
-
-      cardsHtml += `
-        <article class="bg-white border border-slate-200/90 hover:border-buser-red/40 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group h-full">
-          <div>
-            <!-- Header Kategori Video (Tanpa tombol Lihat Semua di atas) -->
-            <div class="flex items-center space-x-1.5 pb-2 mb-2.5 border-b border-slate-100">
-              <span class="w-1.5 h-3.5 bg-buser-red rounded-full inline-block"></span>
-              <h3 class="font-black text-xs sm:text-[13px] uppercase tracking-tight text-slate-900">Video</h3>
-            </div>
-
-            <!-- Thumbnail Video (Ukuran Layout Ditinggikan) -->
-            <a href="${videoLink}" class="block relative overflow-hidden rounded-xl h-44 sm:h-48 lg:h-52 w-full bg-slate-100 mb-2.5 shadow-2xs">
-              <img src="${getThumb(videoItem.thumbnail || videoItem.image)}" 
-                   alt="${escapeHtml(videoTitle)}" 
-                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                   onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-            </a>
-
-            <!-- Meta Video -->
-            <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mb-1.5">
-              <span class="font-semibold text-slate-600 truncate max-w-[85px]">${escapeHtml(videoAuthor)}</span>
-              <span>&bull;</span>
-              <span class="whitespace-nowrap">${videoPubDate}</span>
-            </div>
-
-            <!-- Judul Video -->
-            <h4 class="font-bold text-xs sm:text-[13px] text-slate-900 group-hover:text-buser-red leading-snug line-clamp-3 transition-colors">
-              <a href="${videoLink}">${escapeHtml(videoTitle)}</a>
-            </h4>
-          </div>
-
-          <!-- Tombol Aksi Video: Lihat Semua Video -->
-          <div class="pt-2.5 mt-3 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
-            <a href="internasional.html?cat=video" class="font-bold text-buser-red hover:text-buser-redHover inline-flex items-center gap-1 group/btn">
-              <span>Lihat Semua Video</span>
-              <svg class="w-2.5 h-2.5 transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-            </a>
-          </div>
-        </article>
-      `;
-      return;
-    }
-
-    // B. KARTU KHUSUS: BERITA FOTO (Di paling akhir barisan)
-    if (catSlug === 'foto') {
-      validCategoryCount++;
-      const fotoLink = fotoItem.slug ? `artikel.html?slug=${encodeURIComponent(fotoItem.slug)}` : 'internasional.html?cat=foto';
-      const fotoPubDate = formatDateOnlyIndo(fotoItem.published_at || fotoItem.date);
-      const fotoAuthor = fotoItem.author_name || fotoItem.author || 'Foto: Redaksi';
-      const fotoTitle = cleanMediaTitle(fotoItem.title);
-
-      cardsHtml += `
-        <article class="bg-white border border-slate-200/90 hover:border-buser-red/40 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group h-full">
-          <div>
-            <!-- Header Kategori Foto (Tanpa tombol Lihat Semua di atas) -->
-            <div class="flex items-center space-x-1.5 pb-2 mb-2.5 border-b border-slate-100">
-              <span class="w-1.5 h-3.5 bg-buser-red rounded-full inline-block"></span>
-              <h3 class="font-black text-xs sm:text-[13px] uppercase tracking-tight text-slate-900">Foto</h3>
-            </div>
-
-            <!-- Thumbnail Foto (Ukuran Layout Ditinggikan) -->
-            <a href="${fotoLink}" class="block relative overflow-hidden rounded-xl h-44 sm:h-48 lg:h-52 w-full bg-slate-100 mb-2.5 shadow-2xs">
-              <img src="${getThumb(fotoItem.thumbnail || fotoItem.image)}" 
-                   alt="${escapeHtml(fotoTitle)}" 
-                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                   onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-            </a>
-
-            <!-- Meta Foto -->
-            <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mb-1.5">
-              <span class="font-semibold text-slate-600 truncate max-w-[85px]">${escapeHtml(fotoAuthor)}</span>
-              <span>&bull;</span>
-              <span class="whitespace-nowrap">${fotoPubDate}</span>
-            </div>
-
-            <!-- Judul Foto -->
-            <h4 class="font-bold text-xs sm:text-[13px] text-slate-900 group-hover:text-buser-red leading-snug line-clamp-3 transition-colors">
-              <a href="${fotoLink}">${escapeHtml(fotoTitle)}</a>
-            </h4>
-          </div>
-
-          <!-- Tombol Aksi Foto: Lihat Semua Foto -->
-          <div class="pt-2.5 mt-3 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
-            <a href="internasional.html?cat=foto" class="font-bold text-buser-red hover:text-buser-redHover inline-flex items-center gap-1 group/btn">
-              <span>Lihat Semua Foto</span>
-              <svg class="w-2.5 h-2.5 transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-            </a>
-          </div>
-        </article>
-      `;
-      return;
-    }
-
-    // C. KARTU BERITA KATEGORI UMUM (Dinamis dari Database / Admin)
-    const catArticles = articlesByCategory[catSlug] || [];
-    const item = catArticles.length > 0 ? catArticles[0] : {
-      title: `Kabar terbaru dan perkembangan seputar rubrik ${catName}`,
-      thumbnail: 'assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg',
-      author_name: 'Redaksi Japakeh Post',
-      published_at: new Date().toISOString(),
-      slug: ''
+    }) || articles.find(a => a.id === 118 || a.id === 48) || {
+      title: 'Proses Evakuasi Warga Terdampak Banjir',
+      thumbnail: 'assets/images/berita/daerah/festival-budaya-palembang.jpg',
+      slug: 'proses-evakuasi-warga-terdampak-banjir',
+      date: '09 September 2026',
+      time: '16:35 WIB',
+      author: 'Pewarta Foto Redaksi'
     };
 
-    validCategoryCount++;
+    const link = fotoItem.slug ? `artikel.html?slug=${encodeURIComponent(fotoItem.slug)}` : 'internasional.html?cat=foto';
+    const thumb = getThumb(fotoItem.thumbnail || fotoItem.image);
+    const title = cleanMediaTitle(fotoItem.title);
+    const date = formatDateOnlyIndo(fotoItem.published_at || fotoItem.date);
+    const time = formatTimeIndo(fotoItem.published_at || fotoItem.date || fotoItem.time);
 
-    const link = item.slug ? `artikel.html?slug=${encodeURIComponent(item.slug)}` : `internasional.html?cat=${encodeURIComponent(catSlug)}`;
-    const pubDate = formatDateOnlyIndo(item.published_at || item.date);
-    const author = item.author_name || item.author || 'Redaksi';
-    const itemTitle = cleanMediaTitle(item.title);
-
-    cardsHtml += `
-      <article class="bg-white border border-slate-200/90 hover:border-buser-red/40 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group h-full">
-        <div>
-          <!-- Header Kategori (Tanpa tombol Lihat Semua di atas) -->
-          <div class="flex items-center space-x-1.5 pb-2 mb-2.5 border-b border-slate-100">
-            <span class="w-1.5 h-3.5 bg-buser-red rounded-full inline-block"></span>
-            <h3 class="font-black text-xs sm:text-[13px] uppercase tracking-tight text-slate-900">${escapeHtml(catName)}</h3>
+    fotoCard.innerHTML = `
+      <div>
+        <div class="relative rounded-lg overflow-hidden aspect-video bg-black group cursor-pointer shadow-2xs" id="desktop-foto-player-trigger">
+          <img src="${thumb}" alt="${escapeHtml(title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90" onerror="this.src='assets/images/berita/daerah/festival-budaya-palembang.jpg'" />
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-11 h-11 rounded-full bg-black/70 group-hover:bg-[#E60000] text-white flex items-center justify-center transition-all shadow-md">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
           </div>
-
-          <!-- 1 Berita Utama Kategori (Ukuran Layout Ditinggikan) -->
-          <a href="${link}" class="block relative overflow-hidden rounded-xl h-44 sm:h-48 lg:h-52 w-full bg-slate-100 mb-2.5 shadow-2xs">
-            <img src="${getThumb(item.thumbnail || item.image)}" 
-                 alt="${escapeHtml(itemTitle)}" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                 onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
-          </a>
-
-          <!-- Meta Berita -->
-          <div class="flex items-center gap-1.5 text-[10px] text-slate-400 mb-1.5">
-            <span class="font-semibold text-slate-600 truncate max-w-[85px]">${escapeHtml(author)}</span>
-            <span>&bull;</span>
-            <span class="whitespace-nowrap">${pubDate}</span>
-          </div>
-
-          <!-- Judul Berita -->
-          <h4 class="font-bold text-xs sm:text-[13px] text-slate-900 group-hover:text-buser-red leading-snug line-clamp-3 transition-colors">
-            <a href="${link}">${escapeHtml(itemTitle)}</a>
-          </h4>
         </div>
-
-        <!-- Tombol Aksi Berita (Baca Selengkapnya) -->
-        <div class="pt-2.5 mt-3 border-t border-slate-100 flex items-center justify-between text-[10.5px]">
-          <a href="${link}" class="font-bold text-buser-red hover:text-buser-redHover inline-flex items-center gap-1 group/btn">
-            <span>Baca Selengkapnya</span>
-            <svg class="w-2.5 h-2.5 transition-transform group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        <h3 class="font-bold text-xs sm:text-sm text-slate-900 leading-snug line-clamp-2 mt-2.5 mb-1 hover:text-[#E60000] transition-colors">
+          <a href="${link}">${escapeHtml(title)}</a>
+        </h3>
+      </div>
+      <div>
+        <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-[10.5px] text-slate-400">
+          <span class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>${date} | ${time}</span>
+          </span>
+        </div>
+        <div class="text-right mt-2">
+          <a href="internasional.html?cat=foto" class="text-xs font-bold text-[#E60000] hover:text-red-700 inline-flex items-center gap-1">
+            <span>Lihat Semua Foto</span>
+            <span>&rarr;</span>
           </a>
         </div>
-      </article>
+      </div>
     `;
-  });
 
-  if (validCategoryCount === 0) return;
-
-  const sectionWrapper = document.createElement('section');
-  sectionWrapper.className = 'w-full my-2';
-  sectionWrapper.innerHTML = `
-    <!-- Grid 5 Kolom per Baris di Desktop, Otomatis Lanjut ke Baris Berikutnya (Video & Foto di Akhir) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-4.5 items-stretch">
-      ${cardsHtml}
-    </div>
-  `;
-
-  container.appendChild(sectionWrapper);
+    const fotoTrigger = document.getElementById('desktop-foto-player-trigger');
+    if (fotoTrigger) {
+      fotoTrigger.addEventListener('click', () => {
+        openFotoModal({
+          title: title,
+          img: thumb,
+          date: date,
+          desc: fotoItem.excerpt || fotoItem.content || `Dokumentasi foto eksklusif Japakeh Post: ${title}.`,
+          author: fotoItem.author || fotoItem.author_name || 'Pewarta Foto Redaksi',
+          slug: fotoItem.slug || ''
+        });
+      });
+    }
+  }
 }
 
 // =============================================================================
@@ -1047,6 +718,210 @@ function renderMobileBeritaPopuler(articles) {
   });
 }
 
+// Mobile Rubrik Khusus: Berita Foto, Video & Editorial (3 Card Horizontal dalam 1 Baris dengan Judul Masing-masing Terpisah)
+async function renderSpecialCardsSection(articles) {
+  const container = document.getElementById('home-foto-video-editorial-grid') || document.getElementById('home-special-cards-grid');
+  if (!container) return;
+
+  container.className = 'grid grid-cols-3 gap-2 sm:gap-3 items-stretch';
+  container.innerHTML = '';
+
+  // 1. DATA BERITA FOTO
+  const photoArticles = (articles || []).filter(a => {
+    const cat = String(a.name_kategori || a.category || a.categorySlug || '').toLowerCase();
+    return cat.includes('foto') || cat.includes('galeri');
+  });
+
+  const photoItem = photoArticles.length > 0 ? photoArticles[0] : {
+    title: 'Parade Budaya Nusantara Meriahkan HUT Aceh',
+    thumbnail: 'assets/images/berita/daerah/festival-budaya-palembang.jpg',
+    category: 'FOTO',
+    author: 'Zulkifli M.',
+    date: '10 September 2026',
+    slug: 'festival-budaya-dan-pawai-adat-di-tanah-rencong',
+    excerpt: 'Ratusan peserta menampilkan pakaian tradisional Aceh yang memukau ribuan penonton di sepanjang jalan protokol Banda Aceh.'
+  };
+
+  const photoTitle = cleanMediaTitle(photoItem.title || 'Dokumentasi Foto Japakeh');
+  const photoThumb = getThumb(photoItem.thumbnail || photoItem.image);
+  const photoDate = photoItem.date || formatDateOnlyIndo(photoItem.published_at);
+  const photoAuthor = photoItem.author_name || photoItem.author || 'Pewarta Foto';
+
+  // 2. DATA BERITA VIDEO
+  let videos = [];
+  if (window.BuserInfoAPI && typeof window.BuserInfoAPI.getVideos === 'function') {
+    try {
+      const res = await window.BuserInfoAPI.getVideos({ status: 'active', limit: 1 });
+      if (res && res.videos && res.videos.length > 0) {
+        videos = res.videos;
+      }
+    } catch (e) {
+      console.warn('[renderSpecialCardsSection] API getVideos error:', e);
+    }
+  }
+
+  const videoItem = (videos && videos.length > 0) ? videos[0] : {
+    id: 1,
+    judul: 'Penerbangan Drone Pantau Kondisi Tanggul Pasca Banjir Surut',
+    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail: 'assets/images/berita/daerah/penanganan-banjir-sumatera.jpg',
+    durasi: '01:45',
+    keterangan: 'Laporan visual udara memetakan titik tanggul dan permukiman warga untuk memastikan percepatan bantuan logistik dan pemulihan infrastruktur.',
+    created_at: '2026-09-10 14:00:00'
+  };
+
+  const videoTitle = cleanMediaTitle(videoItem.judul || videoItem.title || 'Liputan Berita Video');
+  const videoThumb = getThumb(videoItem.thumbnail || videoItem.image);
+  const videoDuration = videoItem.durasi || videoItem.duration || '02:00';
+  const videoDate = formatDateOnlyIndo(videoItem.created_at || videoItem.published_at);
+
+  // 3. DATA EDITORIAL
+  const editorialArticles = (articles || []).filter(a => {
+    const cat = String(a.name_kategori || a.category || a.categorySlug || a.kategori_slug || '').toLowerCase().trim();
+    return cat === 'editorial' || cat.includes('editorial') || cat.includes('tajuk');
+  });
+
+  const editorialItem = editorialArticles.length > 0 ? editorialArticles[0] : {
+    title: 'Kebijakan Anggaran Besar Tak Berbanding dengan Dampak',
+    thumbnail: 'assets/images/berita/pendidikan/kurikulum-merdeka-smk.jpg',
+    category: 'Editorial',
+    author: 'Dewan Redaksi',
+    date: '10 September 2026',
+    slug: 'kebijakan-anggaran-besar-tak-berbanding-dengan-dampak',
+    excerpt: 'Sudah saatnya pemerintah dan seluruh pemangku kepentingan memiliki ukuran mekanisme pengelolaan anggaran yang terukur dan akuntabel.'
+  };
+
+  const editorialTitle = cleanMediaTitle(editorialItem.title || 'Tajuk Rencana Editorial');
+  const editorialThumb = getThumb(editorialItem.thumbnail || editorialItem.image);
+  const editorialDate = editorialItem.date || formatDateOnlyIndo(editorialItem.published_at);
+  const editorialAuthor = editorialItem.author_name || editorialItem.author || 'Dewan Redaksi';
+  const editorialSlug = editorialItem.slug || '';
+
+  // === BANGUN 3 CARD DENGAN JUDUL MASING-MASING TERPISAH & BENTUK PERSEGI PANJANG HORIZONTAL ===
+
+  // A. KOLOM / CARD BERITA FOTO
+  const fotoCol = document.createElement('div');
+  fotoCol.className = 'flex flex-col h-full';
+  fotoCol.innerHTML = `
+    <div class="flex items-center gap-1 sm:gap-1.5 pb-1 mb-1">
+      <span class="w-1 h-3 sm:h-3.5 bg-[#E60000] rounded-xs inline-block shrink-0"></span>
+      <h3 class="text-[9.5px] sm:text-xs font-black uppercase tracking-tight text-slate-900 truncate">
+        BERITA FOTO
+      </h3>
+    </div>
+    <article class="bg-white border border-slate-200/90 hover:border-[#E60000]/40 rounded-lg sm:rounded-xl p-1.5 sm:p-2 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between flex-1 group cursor-pointer" role="button" tabindex="0" aria-label="Lihat Foto: ${escapeHtml(photoTitle)}">
+      <div>
+        <div class="special-media-thumb relative overflow-hidden rounded-md aspect-[16/10] w-full bg-slate-900 shadow-2xs group/thumb">
+          <img src="${photoThumb}" alt="${escapeHtml(photoTitle)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
+          <div class="absolute top-1 right-1 z-10 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-black/65 backdrop-blur-xs flex items-center justify-center text-white shadow-xs">
+            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+          </div>
+        </div>
+        <h4 class="font-bold text-[9.5px] sm:text-[11px] text-slate-900 leading-snug line-clamp-2 mt-1.5 group-hover:text-[#E60000] transition-colors">
+          ${escapeHtml(photoTitle)}
+        </h4>
+      </div>
+      <div class="flex items-center gap-1 text-[8px] sm:text-[9px] text-slate-400 mt-1 pt-1 border-t border-slate-100">
+        <span class="truncate">${escapeHtml(photoAuthor)}</span>
+      </div>
+    </article>
+  `;
+
+  fotoCol.querySelector('article').addEventListener('click', () => {
+    openFotoModal({
+      title: photoTitle,
+      img: photoThumb,
+      date: photoDate,
+      author: photoAuthor,
+      desc: photoItem.content || photoItem.excerpt || photoItem.description || `Dokumentasi jurnalistik foto Japakeh Post meliput peristiwa "${photoTitle}" secara aktual dan berimbang langsung dari lapangan.`,
+      slug: photoItem.slug || ''
+    });
+  });
+  container.appendChild(fotoCol);
+
+  // B. KOLOM / CARD BERITA VIDEO
+  const videoCol = document.createElement('div');
+  videoCol.className = 'flex flex-col h-full';
+  videoCol.innerHTML = `
+    <div class="flex items-center gap-1 sm:gap-1.5 pb-1 mb-1">
+      <span class="w-1 h-3 sm:h-3.5 bg-[#E60000] rounded-xs inline-block shrink-0"></span>
+      <h3 class="text-[9.5px] sm:text-xs font-black uppercase tracking-tight text-slate-900 truncate">
+        BERITA VIDEO
+      </h3>
+    </div>
+    <article class="bg-white border border-slate-200/90 hover:border-[#E60000]/40 rounded-lg sm:rounded-xl p-1.5 sm:p-2 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between flex-1 group cursor-pointer" role="button" tabindex="0" aria-label="Tonton Video: ${escapeHtml(videoTitle)}">
+      <div>
+        <div class="special-media-thumb relative overflow-hidden rounded-md aspect-[16/10] w-full bg-slate-900 shadow-2xs group/thumb">
+          <img src="${videoThumb}" alt="${escapeHtml(videoTitle)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-black/70 group-hover:bg-[#E60000] text-white flex items-center justify-center transition-all shadow-md">
+              <svg class="w-3 h-3 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+          </div>
+          <span class="absolute bottom-1 right-1 bg-black/80 text-white text-[7px] sm:text-[8px] font-mono px-1 py-0.2 rounded font-bold">${escapeHtml(videoDuration)}</span>
+        </div>
+        <h4 class="font-bold text-[9.5px] sm:text-[11px] text-slate-900 leading-snug line-clamp-2 mt-1.5 group-hover:text-[#E60000] transition-colors">
+          ${escapeHtml(videoTitle)}
+        </h4>
+      </div>
+      <div class="flex items-center gap-1 text-[8px] sm:text-[9px] text-slate-400 mt-1 pt-1 border-t border-slate-100">
+        <span class="truncate">Redaksi Japakeh</span>
+      </div>
+    </article>
+  `;
+
+  videoCol.querySelector('article').addEventListener('click', () => {
+    openVideoModal({
+      title: videoTitle,
+      url: videoItem.video_url || videoItem.url || '',
+      thumb: videoThumb,
+      durasi: videoDuration,
+      date: videoDate,
+      desc: videoItem.keterangan || videoItem.description || videoItem.excerpt || `Laporan video jurnalisme Japakeh Post seputar "${videoTitle}". Sajian investigasi dan dokumentasi visual terpercaya untuk masyarakat.`,
+      author: videoItem.penulis || 'Redaksi Japakeh Post',
+      slug: videoItem.slug || ''
+    });
+  });
+  container.appendChild(videoCol);
+
+  // C. KOLOM / CARD EDITORIAL
+  const editorialCol = document.createElement('div');
+  editorialCol.className = 'flex flex-col h-full';
+  editorialCol.innerHTML = `
+    <div class="flex items-center gap-1 sm:gap-1.5 pb-1 mb-1">
+      <span class="w-1 h-3 sm:h-3.5 bg-[#E60000] rounded-xs inline-block shrink-0"></span>
+      <h3 class="text-[9.5px] sm:text-xs font-black uppercase tracking-tight text-slate-900 truncate">
+        EDITORIAL
+      </h3>
+    </div>
+    <article class="bg-white border border-slate-200/90 hover:border-[#E60000]/40 rounded-lg sm:rounded-xl p-1.5 sm:p-2 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between flex-1 group cursor-pointer" role="button" tabindex="0" aria-label="Baca Editorial: ${escapeHtml(editorialTitle)}">
+      <div>
+        <div class="special-media-thumb relative overflow-hidden rounded-md aspect-[16/10] w-full bg-slate-900 shadow-2xs group/thumb">
+          <img src="${editorialThumb}" alt="${escapeHtml(editorialTitle)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
+          <div class="absolute top-1 right-1 z-10 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-black/65 backdrop-blur-xs flex items-center justify-center text-amber-300 shadow-xs">
+            <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+        </div>
+        <h4 class="font-bold text-[9.5px] sm:text-[11px] text-slate-900 leading-snug line-clamp-2 mt-1.5 group-hover:text-[#E60000] transition-colors">
+          ${escapeHtml(editorialTitle)}
+        </h4>
+      </div>
+      <div class="flex items-center gap-1 text-[8px] sm:text-[9px] text-slate-400 mt-1 pt-1 border-t border-slate-100">
+        <span class="truncate">${escapeHtml(editorialAuthor)}</span>
+      </div>
+    </article>
+  `;
+
+  editorialCol.querySelector('article').addEventListener('click', () => {
+    if (editorialSlug) {
+      window.location.href = `artikel.html?slug=${encodeURIComponent(editorialSlug)}`;
+    } else {
+      window.location.href = 'internasional.html?cat=editorial';
+    }
+  });
+  container.appendChild(editorialCol);
+}
+
 // Mobile Berita Foto (3 items horizontal compact)
 function renderFotoSection(articles) {
   const container = document.getElementById('home-foto-grid');
@@ -1206,12 +1081,6 @@ async function renderVideoSection(articles) {
     card.innerHTML = `
       <img src="${thumb}" alt="${escapeHtml(title)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg'" />
       <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent pointer-events-none"></div>
-
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#E60000]/90 text-white flex items-center justify-center shadow-lg group-hover:scale-115 group-hover:bg-[#E60000] transition-all">
-          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-      </div>
 
       <div class="absolute top-1.5 right-1.5 z-10">
         <span class="bg-black/75 backdrop-blur-xs text-white text-[8px] sm:text-[9px] font-mono font-bold px-1.5 py-0.5 rounded">${escapeHtml(duration)}</span>
@@ -1373,7 +1242,7 @@ function openFotoModal(item) {
 
   if (descEl) {
     const p1 = item.desc;
-    const p2 = 'Galeri foto ini didokumentasikan oleh pewarta foto Japakeh Post dengan standar ketat integritas visual jurnalistik tanpa manipulasi konten peristiwa.';
+    const p2 = 'Dokumentasi foto ini diliput oleh pewarta foto Japakeh Post dengan standar ketat integritas visual jurnalistik tanpa manipulasi konten peristiwa.';
     descEl.innerHTML = `<p>${escapeHtml(p1)}</p><p class="text-slate-400 pt-1">${p2}</p>`;
   }
 

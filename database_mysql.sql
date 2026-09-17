@@ -79,7 +79,8 @@ INSERT INTO `kategori` (`id_kategori`, `name_kategori`, `slug`, `deskripsi`) VAL
 (11, 'Internasional', 'internasional', 'Diplomasi dunia, geopolitik luar negeri, dan kabar mancanegara'),
 (12, 'Video', 'video', 'Kanal tayangan liputan multimedia eksklusif Japakeh Post'),
 (13, 'Olahraga', 'olahraga', 'Kabar kompetisi olahraga prestasi, sepak bola nasional dan internasional, PON, atlet daerah, dan kejuaraan terupdate.'),
-(14, 'Tokoh', 'tokoh', 'Profil figur inspiratif, tokoh publik, birokrat berdedikasi, ulama kharismatik, dan cendekiawan penggerak kemajuan masyarakat.');
+(14, 'Tokoh', 'tokoh', 'Profil figur inspiratif, tokoh publik, birokrat berdedikasi, ulama kharismatik, dan cendekiawan penggerak kemajuan masyarakat.'),
+(15, 'Editorial', 'editorial', 'Sikap resmi dewan redaksi, tajuk rencana, pandangan institusional Japakeh Post terhadap dinamika peristiwa strategis.');
 
 -- -----------------------------------------------------------------------------
 -- 3. Tabel: artikel (Berita Lengkap)
@@ -395,7 +396,14 @@ INSERT INTO `artikel` (`kategori_id`, `author_id`, `title`, `slug`, `content`, `
       </p>
       <p class="mb-4 text-gray-700 leading-relaxed">
         Presiden menekankan bahwa percepatan pembangunan infrastruktur nasional ini diarahkan untuk memeratakan kue pembangunan ekonomi luar Pulau Jawa dan menciptakan efisiensi rantai distribusi nasional.
-      </p>', 'assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg', 'published', 2340, '2026-09-12 13:10:00', NOW());
+      </p>', 'assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg', 'published', 2340, '2026-09-12 13:10:00', NOW()),
+(15, 1, 'Kebijakan Anggaran Besar Tak Berbanding dengan Dampak', 'kebijakan-anggaran-besar-tak-berbanding-dengan-dampak', '
+      <p class="lead font-medium text-lg text-gray-800 leading-relaxed mb-4">
+        <strong>TAJUK RENCANA</strong> — Sudah saatnya pemerintah dan seluruh pemangku kepentingan memiliki ukuran mekanisme pengelolaan anggaran yang terukur dan akuntabel, agar setiap rupiah dana publik benar-benar memberi manfaat nyata bagi masyarakat luas.
+      </p>
+      <p class="mb-4 text-gray-700 leading-relaxed">
+        Transparansi alokasi belanja modal dan efisiensi birokrasi harus menjadi prioritas mutlak demi keberlanjutan pemulihan ekonomi daerah.
+      </p>', 'assets/images/berita/pendidikan/kurikulum-merdeka-smk.jpg', 'published', 25400, '2026-09-10 08:00:00', NOW());
 
 
 -- -----------------------------------------------------------------------------
