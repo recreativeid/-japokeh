@@ -21,9 +21,6 @@ async function renderAllLiveContentFromDB() {
       title: cleanMediaTitle(a.title)
     }));
 
-    // 1. BREAKING NEWS TICKER (Shared across all viewports)
-    renderTicker(articles);
-
     if (articles.length === 0) {
       showEmptyState();
       return;
@@ -31,6 +28,9 @@ async function renderAllLiveContentFromDB() {
 
     // Sort popular articles by views / score for Trending & Populer sections
     const trendingArticles = [...articles].sort((a, b) => (b.views || 0) - (a.views || 0));
+
+    // 1. BREAKING NEWS TICKER (Moving ticker based on Berita Terpopuler)
+    renderTicker(trendingArticles);
 
     // =========================================================================
     // A. DESKTOP LIVE RENDERING (Strictly Matching UI DESKTOP.jpeg)
@@ -144,54 +144,135 @@ function extractYouTubeId(url) {
 }
 
 // =============================================================================
-// BREAKING NEWS TICKER (Matching UI DESKTOP.jpeg Single Headline Rotator)
+// BREAKING NEWS TICKER (Smooth Infinite Moving Marquee based on Berita Terpopuler)
 // =============================================================================
-let tickerArticlesList = [];
-let tickerCurrentIdx = 0;
-let tickerTimer = null;
+let tickerAnimId = null;
+let tickerOffset = 0;
+let isTickerPaused = false;
+let isTickerDragging = false;
+let tickerStartX = 0;
+let tickerDragStartOffset = 0;
+let tickerHalfWidth = 0;
+const TICKER_SPEED = 0.85; // Pixels per frame (~50px/sec, comfortable reading speed)
 
 function renderTicker(articles) {
   const track = document.getElementById('breaking-ticker-track');
   const nextBtn = document.getElementById('ticker-next-btn');
   if (!track || !articles || articles.length === 0) return;
 
-  tickerArticlesList = articles.slice(0, 10);
-  tickerCurrentIdx = 0;
+  // Ensure articles are sorted by views (highest views first = Berita Terpopuler)
+  const popularArticles = [...articles].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 10);
+  if (popularArticles.length === 0) return;
 
-  function showTickerItem(idx) {
-    if (!tickerArticlesList || tickerArticlesList.length === 0) return;
-    tickerCurrentIdx = (idx + tickerArticlesList.length) % tickerArticlesList.length;
-    const item = tickerArticlesList[tickerCurrentIdx];
-    track.style.opacity = '0';
-    setTimeout(() => {
-      track.innerHTML = `
-        <a href="artikel.html?slug=${encodeURIComponent(item.slug)}" class="hover:text-[#E60000] transition-colors truncate block">
-          ${escapeHtml(item.title)}
-        </a>
-      `;
-      track.style.opacity = '1';
-    }, 150);
+  // Build items HTML
+  function buildItemHtml(item, rank) {
+    const cat = escapeHtml(item.name_kategori || item.category || 'Terkini');
+    const title = escapeHtml(item.title);
+    const slug = encodeURIComponent(item.slug || '');
+    return `
+      <a href="artikel.html?slug=${slug}" class="ticker-item inline-flex items-center text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#E60000] mr-6 sm:mr-8 transition-colors group shrink-0 select-none py-0.5">
+        <span class="inline-flex items-center justify-center bg-red-50 text-[#E60000] border border-red-200/80 text-[10px] font-extrabold px-1.5 py-0.5 rounded mr-2 uppercase tracking-wider group-hover:bg-[#E60000] group-hover:text-white transition-colors">
+          #${rank} Populer
+        </span>
+        <span class="text-slate-500 text-[11px] font-bold mr-1.5 uppercase">[${cat}]</span>
+        <span class="group-hover:text-[#E60000] group-hover:underline text-slate-900">${title}</span>
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 ml-6 sm:ml-8 shrink-0"></span>
+      </a>
+    `;
   }
 
-  showTickerItem(0);
+  // Multi-repeat to guarantee seamless infinite loop
+  const repeats = popularArticles.length <= 3 ? 4 : 2;
+  let singleSetHtml = '';
+  popularArticles.forEach((item, idx) => {
+    singleSetHtml += buildItemHtml(item, idx + 1);
+  });
 
-  if (tickerTimer) clearInterval(tickerTimer);
-  tickerTimer = setInterval(() => {
-    showTickerItem(tickerCurrentIdx + 1);
-  }, 6000);
+  let fullHtml = '';
+  for (let r = 0; r < repeats; r++) {
+    fullHtml += singleSetHtml;
+  }
 
-  if (nextBtn && !nextBtn.dataset.bound) {
-    nextBtn.dataset.bound = 'true';
-    nextBtn.addEventListener('click', () => {
-      showTickerItem(tickerCurrentIdx + 1);
-      if (tickerTimer) {
-        clearInterval(tickerTimer);
-        tickerTimer = setInterval(() => {
-          showTickerItem(tickerCurrentIdx + 1);
-        }, 6000);
+  track.innerHTML = fullHtml;
+  track.style.animation = 'none'; // Disable CSS keyframe to avoid conflict with requestAnimationFrame
+  track.style.opacity = '1';
+
+  // Calculate halfWidth for infinite seamless loop
+  function updateTickerWidth() {
+    if (track) {
+      tickerHalfWidth = track.scrollWidth / repeats;
+    }
+  }
+
+  // Initial calculation + update after brief delay for webfonts rendering
+  updateTickerWidth();
+  setTimeout(updateTickerWidth, 300);
+  window.addEventListener('resize', updateTickerWidth);
+
+  // Animation Loop (requestAnimationFrame for 60fps/120fps hardware-accelerated movement)
+  if (tickerAnimId) cancelAnimationFrame(tickerAnimId);
+
+  function tickerStep() {
+    if (!isTickerPaused && !isTickerDragging && tickerHalfWidth > 0) {
+      tickerOffset += TICKER_SPEED;
+      if (tickerOffset >= tickerHalfWidth) {
+        tickerOffset -= tickerHalfWidth;
       }
+      track.style.transform = `translate3d(-${tickerOffset.toFixed(2)}px, 0, 0)`;
+    }
+    tickerAnimId = requestAnimationFrame(tickerStep);
+  }
+  tickerAnimId = requestAnimationFrame(tickerStep);
+
+  // Pause on mouse hover so user can comfortably read and click
+  const wrapper = track.closest('.ticker-wrapper') || track.parentElement;
+  if (wrapper && !wrapper.dataset.tickerHoverBound) {
+    wrapper.dataset.tickerHoverBound = 'true';
+    wrapper.addEventListener('mouseenter', () => { isTickerPaused = true; });
+    wrapper.addEventListener('mouseleave', () => { if (!isTickerDragging) isTickerPaused = false; });
+
+    // Touch support for mobile devices
+    wrapper.addEventListener('touchstart', (e) => {
+      isTickerPaused = true;
+      isTickerDragging = true;
+      tickerStartX = e.touches[0].clientX;
+      tickerDragStartOffset = tickerOffset;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchmove', (e) => {
+      if (!isTickerDragging) return;
+      const currentX = e.touches[0].clientX;
+      const diff = tickerStartX - currentX;
+      tickerOffset = tickerDragStartOffset + diff;
+      if (tickerOffset < 0) tickerOffset += tickerHalfWidth;
+      if (tickerOffset >= tickerHalfWidth) tickerOffset -= tickerHalfWidth;
+      track.style.transform = `translate3d(-${tickerOffset.toFixed(2)}px, 0, 0)`;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchend', () => {
+      isTickerDragging = false;
+      isTickerPaused = false;
     });
   }
+
+  // Next button click: Smoothly advance forward to next popular headline
+  if (nextBtn && !nextBtn.dataset.tickerBound) {
+    nextBtn.dataset.tickerBound = 'true';
+    nextBtn.addEventListener('click', () => {
+      tickerOffset += 280;
+      if (tickerOffset >= tickerHalfWidth) tickerOffset -= tickerHalfWidth;
+      track.style.transform = `translate3d(-${tickerOffset.toFixed(2)}px, 0, 0)`;
+    });
+  }
+
+  // Page visibility: Pause when switching tabs to save battery and CPU
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      isTickerPaused = true;
+    } else {
+      isTickerPaused = false;
+    }
+  });
 }
 
 // Empty state fallback

@@ -85,13 +85,19 @@ body {
 .ticker-wrapper {
   overflow: hidden;
   white-space: nowrap;
+  position: relative;
+  width: 100%;
 }
 .ticker-track {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   white-space: nowrap;
+  will-change: transform;
+}
+.ticker-track.css-marquee {
   animation: tickerSlide 35s linear infinite;
 }
-.ticker-wrapper:hover .ticker-track {
+.ticker-wrapper:hover .ticker-track.css-marquee {
   animation-play-state: paused;
 }
 

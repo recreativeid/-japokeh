@@ -95,18 +95,24 @@ function initMobileDrawer() {
 async function initBreakingNewsTicker() {
   const track = document.getElementById('breaking-ticker-track');
   const nextBtn = document.getElementById('ticker-next-btn');
-  if (!track || nextBtn) return; // If nextBtn is present, home-live.js handles single-headline rotator ticker
+  if (!track || nextBtn) return; // If nextBtn is present, home-live.js handles interactive marquee ticker
 
   let items = [];
 
   if (window.BuserInfoAPI) {
     try {
-      const res = await window.BuserInfoAPI.getArticles({ limit: 8, status: 'published' });
+      const res = await window.BuserInfoAPI.getArticles({ limit: 100, status: 'published' });
       const articles = res.articles || [];
       if (articles.length > 0) {
-        items = articles.map(art => ({
+        const sorted = [...articles].sort((a, b) => {
+          const vA = typeof a.views === 'number' ? a.views : (parseInt(String(a.views || '0').replace(/\D/g, ''), 10) || 0);
+          const vB = typeof b.views === 'number' ? b.views : (parseInt(String(b.views || '0').replace(/\D/g, ''), 10) || 0);
+          return vB - vA;
+        });
+        items = sorted.slice(0, 10).map((art, idx) => ({
           title: art.title,
-          category: (art.name_kategori || 'Terkini').toUpperCase(),
+          category: (art.name_kategori || 'Populer').toUpperCase(),
+          rank: idx + 1,
           link: `artikel.html?slug=${encodeURIComponent(art.slug)}`
         }));
       }
@@ -118,31 +124,36 @@ async function initBreakingNewsTicker() {
       {
         title: 'Selamat Datang di Japakeh Post — Cepat, Akurat, Terpercaya',
         category: 'INFO',
+        rank: 1,
         link: 'tentang.html'
       },
       {
         title: 'Japakeh Post berkomitmen menyajikan karya jurnalistik independen, berimbang, dan tepercaya',
         category: 'REDAKSI',
+        rank: 2,
         link: 'tentang.html'
       },
       {
         title: 'Layanan Pengaduan & Informasi Warga: Hubungi WhatsApp 082165071114',
         category: 'HOTLINE',
+        rank: 3,
         link: 'https://wa.me/6282165071114'
       }
     ];
   }
 
   let html = '';
-  // Repeat items for continuous marquee loop
   const repeatCount = 2;
   for (let r = 0; r < repeatCount; r++) {
     items.forEach((item) => {
       html += `
-        <a href="${item.link}" class="inline-flex items-center text-xs sm:text-sm font-semibold text-slate-900 hover:text-buser-red mr-8 transition-colors group">
-          <span class="inline-block w-2 h-2 rounded-full bg-buser-red mr-2.5 flex-shrink-0"></span>
-          <span class="bg-slate-900 text-white text-[10px] px-2 py-0.5 rounded-full font-bold mr-2 uppercase tracking-wider">${item.category || 'TERKINI'}</span>
-          <span class="group-hover:underline">${item.title}</span>
+        <a href="${item.link}" class="ticker-item inline-flex items-center text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#E60000] mr-6 sm:mr-8 transition-colors group shrink-0 select-none py-0.5">
+          <span class="inline-flex items-center justify-center bg-red-50 text-[#E60000] border border-red-200/80 text-[10px] font-extrabold px-1.5 py-0.5 rounded mr-2 uppercase tracking-wider group-hover:bg-[#E60000] group-hover:text-white transition-colors">
+            #${item.rank || 1} Populer
+          </span>
+          <span class="text-slate-500 text-[11px] font-bold mr-1.5 uppercase">[${item.category || 'TERKINI'}]</span>
+          <span class="group-hover:text-[#E60000] group-hover:underline text-slate-900">${item.title}</span>
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 ml-6 sm:ml-8 shrink-0"></span>
         </a>
       `;
     });

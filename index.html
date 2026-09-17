@@ -15,7 +15,7 @@
   <script src="assets/js/tailwind-config.js"></script>
 
   <!-- Google Fonts & Custom CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20260917_special_cards_v1">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260917_popular_ticker_v1">
 </head>
 <body class="bg-[#F1F5F9] text-[#0F172A] antialiased flex flex-col min-h-screen font-sans">
 
@@ -72,31 +72,47 @@
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-5 sm:py-7 flex-1 w-full space-y-8 sm:space-y-10">
+  <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 flex-1 w-full space-y-5 sm:space-y-6">
+
+    <!-- 1. BREAKING NEWS TICKER (Moving running-text based on Berita Terpopuler) -->
+    <div id="breaking-news-container" class="bg-white border border-slate-200/90 rounded-lg px-3 py-2 flex items-center gap-2.5 sm:gap-3 shadow-2xs overflow-hidden">
+      <div class="flex items-center gap-1.5 bg-[#E60000] text-white text-[10px] sm:text-[11px] font-black uppercase px-2 sm:px-2.5 py-1 rounded shadow-2xs shrink-0 select-none">
+        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>BREAKING NEWS</span>
+      </div>
+      <span class="text-[#E60000] font-bold text-sm shrink-0 select-none">&gt;</span>
+      <div class="ticker-wrapper flex-1 min-w-0 overflow-hidden relative cursor-default">
+        <div id="breaking-ticker-track" class="ticker-track flex items-center whitespace-nowrap will-change-transform">
+          <a href="artikel.html?slug=bupati-tarmizi-tegaskan-satlinmas-dan-pageu-gampong-ujung-tombak-keamanan-masyarakat" class="ticker-item inline-flex items-center text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#E60000] mr-6 sm:mr-8 transition-colors group shrink-0 select-none py-0.5">
+            <span class="inline-flex items-center justify-center bg-red-50 text-[#E60000] border border-red-200/80 text-[10px] font-extrabold px-1.5 py-0.5 rounded mr-2 uppercase tracking-wider group-hover:bg-[#E60000] group-hover:text-white transition-colors">#1 Populer</span>
+            <span class="text-slate-500 text-[11px] font-bold mr-1.5 uppercase">[DAERAH]</span>
+            <span class="group-hover:text-[#E60000] group-hover:underline text-slate-900">Bupati Tarmizi Tegaskan Satlinmas dan Pageu Gampong Ujung Tombak Keamanan Masyarakat</span>
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 ml-6 sm:ml-8 shrink-0"></span>
+          </a>
+          <a href="artikel.html?slug=kapolri-mutasi-424-pati-dan-pamen-polri-sejumlah-jabatan-strategis-berganti" class="ticker-item inline-flex items-center text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#E60000] mr-6 sm:mr-8 transition-colors group shrink-0 select-none py-0.5">
+            <span class="inline-flex items-center justify-center bg-red-50 text-[#E60000] border border-red-200/80 text-[10px] font-extrabold px-1.5 py-0.5 rounded mr-2 uppercase tracking-wider group-hover:bg-[#E60000] group-hover:text-white transition-colors">#2 Populer</span>
+            <span class="text-slate-500 text-[11px] font-bold mr-1.5 uppercase">[NASIONAL]</span>
+            <span class="group-hover:text-[#E60000] group-hover:underline text-slate-900">Kapolri Mutasi 424 Pati dan Pamen Polri, Sejumlah Jabatan Strategis Berganti</span>
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 ml-6 sm:ml-8 shrink-0"></span>
+          </a>
+          <a href="artikel.html?slug=prabowo-tegaskan-tidak-boleh-ada-anak-anak-bertarung-nyawa-saat-ke-sekolah" class="ticker-item inline-flex items-center text-xs sm:text-[13px] font-semibold text-slate-800 hover:text-[#E60000] mr-6 sm:mr-8 transition-colors group shrink-0 select-none py-0.5">
+            <span class="inline-flex items-center justify-center bg-red-50 text-[#E60000] border border-red-200/80 text-[10px] font-extrabold px-1.5 py-0.5 rounded mr-2 uppercase tracking-wider group-hover:bg-[#E60000] group-hover:text-white transition-colors">#3 Populer</span>
+            <span class="text-slate-500 text-[11px] font-bold mr-1.5 uppercase">[NASIONAL]</span>
+            <span class="group-hover:text-[#E60000] group-hover:underline text-slate-900">Prabowo Tegaskan Tidak Boleh Ada Anak-Anak Bertarung Nyawa saat ke Sekolah</span>
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 ml-6 sm:ml-8 shrink-0"></span>
+          </a>
+        </div>
+      </div>
+      <button id="ticker-next-btn" type="button" class="text-[#E60000] hover:text-red-700 font-bold text-sm px-1.5 transition-colors shrink-0 select-none" aria-label="Berita Populer Selanjutnya" title="Berita Populer Selanjutnya">&gt;</button>
+    </div>
 
     <!-- ========================================================================
-         DESKTOP VIEW CONTAINER (hidden lg:block space-y-8 sm:space-y-10)
+         DESKTOP VIEW CONTAINER (hidden lg:block space-y-6 sm:space-y-7)
          100% Pre-session Desktop Restoration: 8-col Slider + 4-col Pilihan Redaksi,
          Two Columns Section (Terkini 8-cols & Trending 4-cols with Editorial & Hotline),
          Dynamic Category Blocks.
          ======================================================================== -->
     <div id="desktop-home-container" class="hidden lg:block space-y-6 sm:space-y-7">
-    <!-- 1. BREAKING NEWS TICKER -->
-    <div class="bg-white border border-slate-200/90 rounded-lg px-3 py-2 flex items-center gap-3 shadow-2xs">
-      <div class="flex items-center gap-1.5 bg-[#E60000] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded shadow-2xs shrink-0">
-        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        <span>BREAKING NEWS</span>
-      </div>
-      <span class="text-[#E60000] font-bold text-sm shrink-0">&gt;</span>
-      <div class="flex-1 min-w-0 overflow-hidden">
-        <div id="breaking-ticker-track" class="truncate text-xs sm:text-[13px] font-semibold text-slate-900">
-          <a href="artikel.html?slug=banjir-di-pidie-jaya-warga-masih-bertahan-di-posko-pengungsian" class="hover:text-[#E60000] transition-colors">
-            Banjir di Pidie Jaya, Warga Masih Bertahan di Posko Pengungsian
-          </a>
-        </div>
-      </div>
-      <button id="ticker-next-btn" type="button" class="text-[#E60000] hover:text-red-700 font-bold text-sm px-1.5 transition-colors" aria-label="Berita Selanjutnya">&gt;</button>
-    </div>
 
     <!-- 2. HERO SECTION & TERPOPULER (Top Section) -->
     <section id="desktop-hero-section" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -895,7 +911,7 @@
   <script src="assets/js/news-data.js"></script>
   <script src="assets/js/api-client.js"></script>
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/home-live.js?v=20260917_special_cards_v1"></script>
+  <script src="assets/js/home-live.js?v=20260917_popular_ticker_v1"></script>
   <script src="assets/js/ads-loader.js"></script>
 </body>
 </html>
