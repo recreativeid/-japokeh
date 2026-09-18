@@ -137,12 +137,18 @@
   function updateUserInterface(u) {
     const displayName = u.nama_users || u.name || 'Pengguna Redaksi';
     const displayRole = (u.role === 'admin' || u.role === 'Administrator') ? 'Pemimpin Redaksi' : (u.role || 'Redaksi');
-    const displayEmail = u.email_users || u.email || 'alb4hri@gmail.com';
+    const displayEmail = u.email_users || u.email || '';
 
     // Cari dan ganti teks nama user di navbar/sidebar
     document.querySelectorAll('.user-display-name, [data-user-name], #sidebar-user-name').forEach(el => {
       el.textContent = displayName;
     });
+
+    if (displayEmail) {
+      document.querySelectorAll('.user-display-email, [data-user-email], #sidebar-user-email').forEach(el => {
+        el.textContent = displayEmail;
+      });
+    }
 
     // Cari elemen default teks dummy lama dan perbarui
     const nameCandidates = document.querySelectorAll('span, p, h4, div');
@@ -150,7 +156,7 @@
       if (el.children.length === 0 && (el.textContent.trim() === 'Agus Riyadi' || el.textContent.trim() === 'Agus Riyadi, S.Sos., M.I.Kom.' || el.textContent.trim() === 'Al Bahri')) {
         el.textContent = displayName;
       }
-      if (el.children.length === 0 && (el.textContent.trim() === 'redaksi@buserinfo.com' || el.textContent.trim() === 'alb4hri@gmail.com') && el.tagName !== 'INPUT') {
+      if (displayEmail && el.children.length === 0 && (el.textContent.trim() === 'redaksi@buserinfo.com' || el.textContent.trim() === 'alb4hri@gmail.com') && el.tagName !== 'INPUT') {
         el.textContent = displayEmail;
       }
     });

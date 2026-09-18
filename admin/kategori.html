@@ -7,9 +7,8 @@
   <meta name="description" content="Manajemen Rubrik dan Kategori Berita Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -113,21 +112,21 @@
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
     
     <!-- Top Navbar -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
-      <div class="flex items-center space-x-3">
-        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 shrink-0" aria-label="Buka Menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Kategori Berita</h1>
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight truncate">Kategori Berita</h1>
           <p class="text-[11px] text-gray-500 hidden sm:block">Kelola rubrikasi, permalink slug, dan struktur navigasi portal</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-3">
-        <button type="button" id="btn-add-category" class="btn btn-primary btn-sm">
-          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-          <span>Tambah Kategori</span>
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+        <button type="button" id="btn-add-category" class="btn btn-primary btn-sm shadow-sm">
+          <svg class="w-3.5 h-3.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Tambah Kategori</span>
         </button>
       </div>
     </header>
@@ -142,9 +141,9 @@
           <span class="text-xs text-gray-500" id="cat-total-articles">Total: 8 Artikel Terpetakan</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="table-responsive">
           <table class="w-full text-left border-collapse table-responsive-cards">
-            <thead>
+            <thead class="hidden md:table-header-group">
               <tr class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
                 <th class="py-3 px-4">Nama Kategori</th>
                 <th class="py-3 px-4">Slug Permalink</th>
@@ -411,25 +410,62 @@
           const tr = document.createElement('tr');
           tr.className = 'hover:bg-gray-50 transition-colors';
           tr.innerHTML = `
-            <td class="py-3.5 px-4 font-bold text-gray-900 flex items-center space-x-2">
+            <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+            <td class="md:hidden block w-full p-4 border-0">
+              <div class="space-y-3">
+                <!-- Top: Category Name + Color Dot + Status -->
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full ${colorClass}"></span>
+                    <span class="font-bold text-gray-900 text-sm">${cat.name_kategori}</span>
+                  </div>
+                  <span class="badge-status badge-published">Aktif</span>
+                </div>
+
+                <!-- Middle: Slug + Total Articles -->
+                <div class="flex items-center justify-between text-xs text-gray-600 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+                  <span class="font-mono text-gray-500">/kategori/${slug}</span>
+                  <span class="font-bold text-gray-900">${total} artikel</span>
+                </div>
+
+                <!-- Bottom: Action Buttons full width without swiping! -->
+                <div class="pt-2 border-t border-gray-100 flex items-center gap-2">
+                  <button type="button" class="btn-edit btn btn-sm flex-1 justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200">
+                    <svg class="w-3.5 h-3.5 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    Edit Kategori
+                  </button>
+                  <button type="button" class="btn-del btn btn-sm px-4 text-xs py-1.5 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200">
+                    <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            </td>
+
+            <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+            <td class="hidden md:table-cell py-3.5 px-4 font-bold text-gray-900 flex items-center space-x-2">
               <span class="w-2.5 h-2.5 rounded-full ${colorClass}"></span>
               <span>${cat.name_kategori}</span>
             </td>
-            <td class="py-3.5 px-4 font-mono text-gray-500">/kategori/${slug}</td>
-            <td class="py-3.5 px-4 font-semibold text-gray-900">${total} artikel</td>
-            <td class="py-3.5 px-4"><span class="badge-status badge-published">Aktif</span></td>
-            <td class="py-3.5 px-4 text-right space-x-1">
-              <button type="button" class="btn-edit p-1.5 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50">Edit</button>
-              <button type="button" class="btn-del p-1.5 text-red-600 hover:text-red-800 rounded hover:bg-red-50">Hapus</button>
+            <td class="hidden md:table-cell py-3.5 px-4 font-mono text-gray-500">/kategori/${slug}</td>
+            <td class="hidden md:table-cell py-3.5 px-4 font-semibold text-gray-900">${total} artikel</td>
+            <td class="hidden md:table-cell py-3.5 px-4"><span class="badge-status badge-published">Aktif</span></td>
+            <td class="hidden md:table-cell py-3.5 px-4 text-right space-x-1 whitespace-nowrap">
+              <button type="button" class="btn-edit table-action-btn text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50">Edit</button>
+              <button type="button" class="btn-del table-action-btn text-red-600 hover:text-red-800 rounded hover:bg-red-50">Hapus</button>
             </td>
           `;
 
-          tr.querySelector('.btn-edit').addEventListener('click', () => {
-            editCatModal(cat.id_kategori, cat.name_kategori, slug, cat.deskripsi || '');
+          tr.querySelectorAll('.btn-edit').forEach(btn => {
+            btn.addEventListener('click', () => {
+              editCatModal(cat.id_kategori, cat.name_kategori, slug, cat.deskripsi || '');
+            });
           });
 
-          tr.querySelector('.btn-del').addEventListener('click', () => {
-            deleteCatModal(cat.id_kategori, cat.name_kategori);
+          tr.querySelectorAll('.btn-del').forEach(btn => {
+            btn.addEventListener('click', () => {
+              deleteCatModal(cat.id_kategori, cat.name_kategori);
+            });
           });
 
           tableBody.appendChild(tr);

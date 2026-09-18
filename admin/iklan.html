@@ -7,9 +7,8 @@
   <meta name="description" content="Manajemen Iklan Google Ads dan Banner Sponsor Portal Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -119,25 +118,25 @@
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
     
     <!-- Top Navbar -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
-      <div class="flex items-center space-x-3">
-        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 shrink-0" aria-label="Buka Menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Manajemen Iklan & Monetisasi</h1>
-          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola kode Google Ads dan banner sponsor/endorse portal berita Japakeh Post</p>
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight truncate">Manajemen Iklan</h1>
+          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola kode Google Ads dan banner sponsor/endorse portal berita</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
         <a href="../index.html" target="_blank" class="hidden sm:inline-flex items-center text-xs font-semibold text-gray-600 hover:text-buser-red px-3 py-1.5 border border-gray-200 rounded-lg hover:border-buser-red transition-colors">
           <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Lihat di Portal
         </a>
-        <button type="button" id="btn-add-ad" class="btn btn-primary btn-sm flex items-center gap-1.5">
+        <button type="button" id="btn-add-ad" class="btn btn-primary btn-sm shadow-sm flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span>Tambah Iklan Baru</span>
+          <span class="hidden sm:inline">Tambah Iklan Baru</span>
         </button>
       </div>
     </header>
@@ -276,9 +275,9 @@
 
       <!-- IKLAN LIST TABLE / CARDS -->
       <div class="cms-card overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
+        <div class="table-responsive">
+          <table class="w-full text-left border-collapse text-xs table-responsive-cards">
+            <thead class="hidden md:table-header-group">
               <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase tracking-wider text-[10px]">
                 <th class="py-3 px-4 w-12 text-center">No</th>
                 <th class="py-3 px-4">Info Iklan / Kampanye</th>
@@ -308,7 +307,7 @@
        ========================================================================= -->
   <div id="modal-ad-form" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div id="modal-ad-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
+    <div class="modal-container relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
       
       <!-- Modal Header -->
       <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0 border-b border-gray-800">
@@ -493,7 +492,7 @@
        ========================================================================= -->
   <div id="modal-preview" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div id="modal-preview-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col">
+    <div class="modal-container relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col">
       <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
           <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
@@ -756,8 +755,50 @@
 
           return `
             <tr class="hover:bg-gray-50/80 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-gray-400">${idx + 1}</td>
-              <td class="py-3 px-4">
+              <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+              <td class="md:hidden block w-full p-4 border-0">
+                <div class="space-y-3">
+                  <!-- Top: Visual Thumb + Title + Status Switch -->
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-center space-x-3 min-w-0 flex-1">
+                      ${visualThumb}
+                      <div class="min-w-0 flex-1">
+                        <p class="font-bold text-gray-900 text-xs truncate">${escapeHtml(ad.judul)}</p>
+                        <p class="text-[10px] text-gray-500 truncate mt-0.5">${ad.keterangan ? escapeHtml(ad.keterangan) : (isGoogle ? 'Unit AdSense' : 'Link: ' + (ad.link_tujuan || '-'))}</p>
+                      </div>
+                    </div>
+                    <div class="shrink-0 pt-1">
+                      ${statusToggle}
+                    </div>
+                  </div>
+
+                  <!-- Middle: Type & Position Badges -->
+                  <div class="flex flex-wrap items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-100 text-xs">
+                    ${typeBadge}
+                    ${posBadge}
+                    <span class="text-[10px] text-gray-400 ml-auto">Urutan: #${ad.urutan || 1}</span>
+                  </div>
+
+                  <!-- Bottom: Action Buttons full width without swiping! -->
+                  <div class="pt-2 border-t border-gray-100 flex items-center gap-2">
+                    <button type="button" class="btn-preview-ad btn btn-outline btn-sm flex-1 justify-center text-xs py-1.5 text-gray-700 hover:bg-gray-100" data-id="${ad.id}" title="Pratinjau Iklan">
+                      <svg class="w-3.5 h-3.5 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                      Pratinjau
+                    </button>
+                    <button type="button" class="btn-edit-ad btn btn-sm flex-1 justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200" data-id="${ad.id}" title="Edit Iklan">
+                      <svg class="w-3.5 h-3.5 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                      Edit
+                    </button>
+                    <button type="button" class="btn-delete-ad btn btn-sm px-3 text-xs py-1.5 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200" data-id="${ad.id}" title="Hapus Iklan">
+                      <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </td>
+
+              <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+              <td class="hidden md:table-cell py-3 px-4 text-center font-bold text-gray-400">${idx + 1}</td>
+              <td class="hidden md:table-cell py-3 px-4">
                 <div class="flex items-center space-x-3">
                   ${visualThumb}
                   <div class="min-w-0">
@@ -766,18 +807,18 @@
                   </div>
                 </div>
               </td>
-              <td class="py-3 px-4">${typeBadge}</td>
-              <td class="py-3 px-4">${posBadge}</td>
-              <td class="py-3 px-4 text-center">${statusToggle}</td>
-              <td class="py-3 px-4 text-right whitespace-nowrap">
+              <td class="hidden md:table-cell py-3 px-4">${typeBadge}</td>
+              <td class="hidden md:table-cell py-3 px-4">${posBadge}</td>
+              <td class="hidden md:table-cell py-3 px-4 text-center">${statusToggle}</td>
+              <td class="hidden md:table-cell py-3 px-4 text-right whitespace-nowrap">
                 <div class="inline-flex items-center space-x-1.5">
-                  <button type="button" class="btn-preview-ad p-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors" data-id="${ad.id}" title="Pratinjau Iklan">
+                  <button type="button" class="btn-preview-ad table-action-btn p-1.5 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors" data-id="${ad.id}" title="Pratinjau Iklan">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                   </button>
-                  <button type="button" class="btn-edit-ad p-1.5 rounded-lg text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" data-id="${ad.id}" title="Edit Iklan">
+                  <button type="button" class="btn-edit-ad table-action-btn p-1.5 rounded-lg text-gray-500 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" data-id="${ad.id}" title="Edit Iklan">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   </button>
-                  <button type="button" class="btn-delete-ad p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" data-id="${ad.id}" title="Hapus Iklan">
+                  <button type="button" class="btn-delete-ad table-action-btn p-1.5 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors" data-id="${ad.id}" title="Hapus Iklan">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
                 </div>
@@ -1026,5 +1067,6 @@
       loadAds();
     });
   </script>
+  <script src="js/admin.js"></script>
 </body>
 </html>

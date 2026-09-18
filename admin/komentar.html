@@ -7,9 +7,8 @@
   <meta name="description" content="Sistem Moderasi dan Kurasi Komentar Portal Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -135,20 +134,20 @@
     <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-5">
       
       <!-- TABS -->
-      <div class="flex items-center space-x-2 border-b border-gray-200 overflow-x-auto pb-px">
-        <button class="comment-tab-btn active px-4 py-2 text-xs font-bold border-b-2 border-b-buser-red text-buser-red" data-tab="all">
+      <div class="flex items-center space-x-2 border-b border-gray-200 overflow-x-auto pb-px no-scrollbar">
+        <button class="comment-tab-btn active px-3.5 py-2 text-xs font-bold border-b-2 border-b-buser-red text-buser-red whitespace-nowrap min-h-[38px]" data-tab="all">
           Semua (0)
         </button>
-        <button class="comment-tab-btn px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent" data-tab="pending">
+        <button class="comment-tab-btn px-3.5 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent whitespace-nowrap min-h-[38px]" data-tab="pending">
           Menunggu Moderasi (0)
         </button>
-        <button class="comment-tab-btn px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent" data-tab="approved">
+        <button class="comment-tab-btn px-3.5 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent whitespace-nowrap min-h-[38px]" data-tab="approved">
           Disetujui (0)
         </button>
-        <button class="comment-tab-btn px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent" data-tab="rejected">
+        <button class="comment-tab-btn px-3.5 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent whitespace-nowrap min-h-[38px]" data-tab="rejected">
           Ditolak (0)
         </button>
-        <button class="comment-tab-btn px-4 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent" data-tab="spam">
+        <button class="comment-tab-btn px-3.5 py-2 text-xs font-medium text-gray-500 hover:text-gray-900 border-b-2 border-b-transparent whitespace-nowrap min-h-[38px]" data-tab="spam">
           Spam (0)
         </button>
       </div>

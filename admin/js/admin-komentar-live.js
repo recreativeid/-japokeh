@@ -223,7 +223,7 @@ function createCommentCardElement(item) {
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center space-x-1.5 self-end sm:self-start shrink-0 pt-1">
+      <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5 w-full sm:w-auto justify-end pt-2.5 sm:pt-1 border-t sm:border-t-0 border-gray-100">
         ${actionButtonsHtml}
       </div>
     </div>

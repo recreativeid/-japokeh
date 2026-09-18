@@ -120,7 +120,46 @@ function renderAuthorRows(authors, tbody) {
     const toggleColor = isActive ? 'text-amber-600 hover:text-amber-800 hover:bg-amber-50' : 'text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50';
 
     tr.innerHTML = `
-      <td class="py-3 px-4">
+      <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+      <td class="md:hidden block w-full p-4 border-0">
+        <div class="space-y-3">
+          <!-- Top: Avatar + Name + Status -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+                ${escapeHtml(initials)}
+              </div>
+              <div class="min-w-0">
+                <div class="font-bold text-gray-900 text-xs truncate">${escapeHtml(author.nama_users)}</div>
+                <div class="text-[10px] text-gray-400">ID: W-${String(author.id).padStart(3, '0')}</div>
+              </div>
+            </div>
+            ${statusBadge}
+          </div>
+
+          <!-- Middle: Email + Role + Articles Count -->
+          <div class="flex flex-wrap items-center justify-between gap-2 bg-gray-50 p-2.5 rounded-lg border border-gray-100 text-xs">
+            <span class="font-mono text-gray-600 truncate max-w-[180px]">${escapeHtml(author.email_users)}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block px-2 py-0.5 font-semibold ${roleBadge} rounded text-[11px]">${escapeHtml(author.role || 'Reporter')}</span>
+              <span class="font-bold text-gray-900 text-[11px]">${parseInt(author.total_artikel || 0)} berita</span>
+            </div>
+          </div>
+
+          <!-- Bottom: Full-Width Action Buttons -->
+          <div class="pt-2 border-t border-gray-100 flex items-center gap-1.5">
+            <button type="button" class="btn-view btn btn-outline btn-sm flex-1 justify-center text-xs py-1.5" title="Lihat Profil">Lihat</button>
+            <button type="button" class="btn-edit btn btn-sm flex-1 justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200" title="Edit Penulis">Edit</button>
+            <button type="button" class="btn-toggle btn btn-sm flex-1 justify-center text-xs py-1.5 ${toggleColor} border border-gray-200" title="${toggleText}">${toggleText}</button>
+            <button type="button" class="btn-delete btn btn-sm px-2.5 text-xs py-1.5 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200" title="Hapus">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        </div>
+      </td>
+
+      <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+      <td class="hidden md:table-cell py-3 px-4">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
             ${escapeHtml(initials)}
@@ -131,25 +170,25 @@ function renderAuthorRows(authors, tbody) {
           </div>
         </div>
       </td>
-      <td class="py-3 px-4 text-gray-600 font-mono">${escapeHtml(author.email_users)}</td>
-      <td class="py-3 px-4">
+      <td class="hidden md:table-cell py-3 px-4 text-gray-600 font-mono">${escapeHtml(author.email_users)}</td>
+      <td class="hidden md:table-cell py-3 px-4">
         <span class="inline-block px-2 py-0.5 font-semibold ${roleBadge} rounded text-[11px]">${escapeHtml(author.role || 'Reporter')}</span>
       </td>
-      <td class="py-3 px-4 font-bold text-gray-900">${parseInt(author.total_artikel || 0)} berita</td>
-      <td class="py-3 px-4">${statusBadge}</td>
-      <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
-        <button type="button" class="btn-view p-1.5 text-gray-600 hover:text-gray-900 rounded hover:bg-gray-100 text-xs font-medium">Lihat</button>
-        <button type="button" class="btn-edit p-1.5 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 text-xs font-medium">Edit</button>
-        <button type="button" class="btn-toggle p-1.5 ${toggleColor} rounded text-xs font-medium">${toggleText}</button>
-        <button type="button" class="btn-delete p-1.5 text-red-600 hover:text-red-800 rounded hover:bg-red-50 text-xs font-medium">Hapus</button>
+      <td class="hidden md:table-cell py-3 px-4 font-bold text-gray-900">${parseInt(author.total_artikel || 0)} berita</td>
+      <td class="hidden md:table-cell py-3 px-4">${statusBadge}</td>
+      <td class="hidden md:table-cell py-3 px-4 text-right space-x-1 whitespace-nowrap">
+        <button type="button" class="btn-view table-action-btn text-gray-600 hover:text-gray-900 rounded hover:bg-gray-100 text-xs font-medium">Lihat</button>
+        <button type="button" class="btn-edit table-action-btn text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 text-xs font-medium">Edit</button>
+        <button type="button" class="btn-toggle table-action-btn ${toggleColor} rounded text-xs font-medium">${toggleText}</button>
+        <button type="button" class="btn-delete table-action-btn text-red-600 hover:text-red-800 rounded hover:bg-red-50 text-xs font-medium">Hapus</button>
       </td>
     `;
 
-    // Event Listeners
-    tr.querySelector('.btn-view').addEventListener('click', () => viewAuthorDetail(author.id));
-    tr.querySelector('.btn-edit').addEventListener('click', () => openAuthorModal(author));
-    tr.querySelector('.btn-toggle').addEventListener('click', () => toggleAuthorStatus(author.id, author.nama_users, author.status));
-    tr.querySelector('.btn-delete').addEventListener('click', () => deleteAuthor(author.id, author.nama_users));
+    // Event Listeners for both views
+    tr.querySelectorAll('.btn-view').forEach(b => b.addEventListener('click', () => viewAuthorDetail(author.id)));
+    tr.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => openAuthorModal(author)));
+    tr.querySelectorAll('.btn-toggle').forEach(b => b.addEventListener('click', () => toggleAuthorStatus(author.id, author.nama_users, author.status)));
+    tr.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', () => deleteAuthor(author.id, author.nama_users)));
 
     tbody.appendChild(tr);
   });

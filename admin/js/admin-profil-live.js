@@ -326,10 +326,47 @@ function renderProfileRows(profiles, tbody) {
     }
 
     tr.innerHTML = `
-      <td class="py-3.5 px-4">
+      <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+      <td class="md:hidden block w-full p-4 border-0">
+        <div class="space-y-3">
+          <!-- Top: Order + Avatar + Name + Status -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <span class="font-mono text-[10px] font-bold text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded shrink-0">#${item.urutan || (index + 1)}</span>
+              ${avatarMarkup}
+              <div class="min-w-0">
+                <div class="font-bold text-gray-900 text-xs truncate">${escapeHtml(item.nama)}</div>
+                <div class="text-[10px] text-gray-500 truncate">${escapeHtml(item.jabatan)}</div>
+              </div>
+            </div>
+            ${statusBadge}
+          </div>
+
+          <!-- Middle: Kategori + Telepon -->
+          <div class="flex flex-wrap items-center justify-between gap-2 bg-gray-50 p-2.5 rounded-lg border border-gray-100 text-xs">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold border ${catBadge}">
+              ${escapeHtml(item.kategori || 'Redaksi')}
+            </span>
+            <span class="font-mono text-gray-500 text-[11px]">${escapeHtml(item.telepon || '-')}</span>
+          </div>
+
+          <!-- Bottom: Action Buttons full width without swiping! -->
+          <div class="pt-2 border-t border-gray-100 grid grid-cols-4 gap-1.5">
+            <button type="button" class="btn-view btn btn-outline btn-sm justify-center text-xs py-1.5" title="Lihat Profil">Lihat</button>
+            <button type="button" class="btn-edit btn btn-sm justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200" title="Edit Profil">Edit</button>
+            <button type="button" class="btn-toggle btn btn-sm justify-center text-xs py-1.5 ${toggleHover} border border-gray-200" title="${toggleText}">${toggleText}</button>
+            <button type="button" class="btn-delete btn btn-sm justify-center text-xs py-1.5 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200" title="Hapus">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+        </div>
+      </td>
+
+      <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+      <td class="hidden md:table-cell py-3.5 px-4">
         <span class="font-mono text-[11px] font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">#${item.urutan || (index + 1)}</span>
       </td>
-      <td class="py-3.5 px-4">
+      <td class="hidden md:table-cell py-3.5 px-4">
         <div class="flex items-center space-x-3">
           ${avatarMarkup}
           <div class="min-w-0">
@@ -338,22 +375,22 @@ function renderProfileRows(profiles, tbody) {
           </div>
         </div>
       </td>
-      <td class="py-3.5 px-4">
+      <td class="hidden md:table-cell py-3.5 px-4">
         <div class="font-bold text-xs text-gray-900">${escapeHtml(item.jabatan)}</div>
         <div class="text-[10px] text-gray-500">${escapeHtml(item.keterangan || '-')}</div>
       </td>
-      <td class="py-3.5 px-4">
+      <td class="hidden md:table-cell py-3.5 px-4">
         <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold border ${catBadge}">
           ${escapeHtml(item.kategori || 'Redaksi')}
         </span>
       </td>
-      <td class="py-3.5 px-4 text-gray-600 text-xs font-mono">
+      <td class="hidden md:table-cell py-3.5 px-4 text-gray-600 text-xs font-mono">
         ${escapeHtml(item.telepon || '-')}
       </td>
-      <td class="py-3.5 px-4">
+      <td class="hidden md:table-cell py-3.5 px-4">
         ${statusBadge}
       </td>
-      <td class="py-2.5 px-4 text-right">
+      <td class="hidden md:table-cell py-2.5 px-4 text-right">
         <!-- Layout Tombol Aksi: Kotak 4 Bagian (Kiri Atas: Lihat, Kanan Atas: Edit, Kiri Bawah: Nonaktifkan, Kanan Bawah: Hapus) -->
         <div class="inline-block w-full sm:w-48 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-2xs text-left">
           <!-- Baris Atas: Kiri = Lihat, Kanan = Edit -->
@@ -382,11 +419,11 @@ function renderProfileRows(profiles, tbody) {
       </td>
     `;
 
-    // Event Listeners pada Tombol Aksi
-    tr.querySelector('.btn-view').addEventListener('click', () => viewRedaksiDetail(item.id));
-    tr.querySelector('.btn-edit').addEventListener('click', () => openRedaksiModal(item));
-    tr.querySelector('.btn-toggle').addEventListener('click', () => toggleRedaksiStatus(item.id, item.nama, item.status));
-    tr.querySelector('.btn-delete').addEventListener('click', () => deleteRedaksi(item.id, item.nama));
+    // Event Listeners pada Tombol Aksi (both mobile and desktop)
+    tr.querySelectorAll('.btn-view').forEach(b => b.addEventListener('click', () => viewRedaksiDetail(item.id)));
+    tr.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => openRedaksiModal(item)));
+    tr.querySelectorAll('.btn-toggle').forEach(b => b.addEventListener('click', () => toggleRedaksiStatus(item.id, item.nama, item.status)));
+    tr.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', () => deleteRedaksi(item.id, item.nama)));
 
     tbody.appendChild(tr);
   });

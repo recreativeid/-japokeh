@@ -7,9 +7,8 @@
   <meta name="description" content="Manajemen Video Berita YouTube dan Caption Portal Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -115,25 +114,25 @@
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
     
     <!-- Top Navbar -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
-      <div class="flex items-center space-x-3">
-        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 shrink-0" aria-label="Buka Menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Manajemen Video YouTube</h1>
-          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola video liputan YouTube dengan caption untuk ditampilkan di portal portal client</p>
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight truncate">Manajemen Video YouTube</h1>
+          <p class="text-[11px] text-gray-500 hidden sm:block">Kelola video liputan YouTube dengan caption untuk ditampilkan di portal client</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
         <a href="../internasional.html?cat=video" target="_blank" class="hidden sm:inline-flex items-center text-xs font-semibold text-gray-600 hover:text-buser-red px-3 py-1.5 border border-gray-200 rounded-lg hover:border-buser-red transition-colors">
           <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
           Lihat di Portal
         </a>
-        <button type="button" id="btn-add-video" class="btn btn-primary btn-sm flex items-center gap-1.5">
+        <button type="button" id="btn-add-video" class="btn btn-primary btn-sm shadow-sm flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          <span>Tambah Video</span>
+          <span class="hidden sm:inline">Tambah Video</span>
         </button>
       </div>
     </header>
@@ -224,7 +223,7 @@
        ========================================================================= -->
   <div id="modal-video-form" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div id="modal-video-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div class="relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
+    <div class="modal-container relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col max-h-[92vh]">
       
       <!-- Modal Header -->
       <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0 border-b border-gray-800">
@@ -343,7 +342,7 @@
        ========================================================================= -->
   <div id="modal-watch-player" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div id="modal-watch-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
-    <div class="relative bg-[#0E0E0E] text-white w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col border border-gray-800">
+    <div class="modal-container relative bg-[#0E0E0E] text-white w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col border border-gray-800">
       <div class="h-12 px-4 bg-black flex items-center justify-between border-b border-gray-800">
         <h4 id="watch-modal-title" class="text-xs sm:text-sm font-bold truncate pr-4 text-gray-200">Pratinjau Video</h4>
         <button type="button" id="btn-close-watch-modal" class="p-1 rounded text-gray-400 hover:text-white">
@@ -506,17 +505,17 @@
 
             <!-- Card Actions -->
             <div class="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-              <button type="button" onclick="openWatchModal(${v.id_video})" class="text-xs font-semibold text-gray-700 hover:text-buser-red flex items-center gap-1">
+              <button type="button" onclick="openWatchModal(${v.id_video})" class="touch-target px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:text-buser-red flex items-center gap-1">
                 <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 <span>Tonton</span>
               </button>
 
               <div class="flex items-center space-x-2">
-                <button type="button" onclick="openEditModal(${v.id_video})" class="px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded transition-colors flex items-center gap-1">
+                <button type="button" onclick="openEditModal(${v.id_video})" class="touch-target px-3 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors flex items-center gap-1">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   <span>Edit</span>
                 </button>
-                <button type="button" onclick="confirmDeleteVideo(${v.id_video}, '${v.title.replace(/'/g, "\\'")}')" class="px-2.5 py-1 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 rounded transition-colors flex items-center gap-1">
+                <button type="button" onclick="confirmDeleteVideo(${v.id_video}, '${v.title.replace(/'/g, "\\'")}')" class="touch-target px-3 py-1.5 text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-colors flex items-center gap-1">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   <span>Hapus</span>
                 </button>

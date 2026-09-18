@@ -7,9 +7,8 @@
   <meta name="description" content="Manajemen Wartawan, Penulis, dan Redaksi Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -113,21 +112,21 @@
   <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
     
     <!-- Top Navbar -->
-    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-30 shrink-0">
-      <div class="flex items-center space-x-3">
-        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-3 sm:px-6 z-30 shrink-0">
+      <div class="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 shrink-0" aria-label="Buka Menu">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight">Daftar Penulis & Redaktur</h1>
+        <div class="min-w-0">
+          <h1 class="text-base sm:text-lg font-bold text-gray-900 tracking-tight leading-tight truncate">Daftar Penulis & Redaktur</h1>
           <p class="text-[11px] text-gray-500 hidden sm:block">Kelola tim jurnalis, editor desk, dan koresponden daerah Japakeh Post</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-3">
-        <button type="button" id="btn-add-author" class="btn btn-primary btn-sm">
-          <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-          <span>Tambah Penulis</span>
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+        <button type="button" id="btn-add-author" class="btn btn-primary btn-sm shadow-sm">
+          <svg class="w-3.5 h-3.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Tambah Penulis</span>
         </button>
       </div>
     </header>
@@ -141,9 +140,9 @@
           <span class="text-xs text-gray-500">PT Japakeh Media Nusantara</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="table-responsive">
           <table class="w-full text-left border-collapse table-responsive-cards">
-            <thead>
+            <thead class="hidden md:table-header-group">
               <tr class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
                 <th class="py-3 px-4">Wartawan / Penulis</th>
                 <th class="py-3 px-4">Email Redaksi</th>

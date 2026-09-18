@@ -1,0 +1,16 @@
+{
+  "name": "website-berita-japakeh-post",
+  "version": "1.0.0",
+  "description": "Portal Berita Japakeh Post - PT Japakeh Media Nusantara",
+  "scripts": {
+    "build:css": "npx tailwindcss@3 -i ./assets/css/input.css -o ./assets/css/tailwind.min.css --minify",
+    "watch:css": "npx tailwindcss@3 -i ./assets/css/input.css -o ./assets/css/tailwind.min.css --watch"
+  },
+  "keywords": [
+    "news",
+    "portal",
+    "japakeh-post"
+  ],
+  "author": "PT Japakeh Media Nusantara",
+  "license": "ISC"
+}

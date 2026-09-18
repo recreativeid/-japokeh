@@ -129,7 +129,51 @@ function renderUserRows(users, tbody) {
     const toggleColor = isActive ? 'text-amber-600 hover:text-amber-800 hover:bg-amber-50' : 'text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50';
 
     tr.innerHTML = `
-      <td class="py-3 px-4">
+      <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+      <td class="md:hidden block w-full p-4 border-0">
+        <div class="space-y-3">
+          <!-- Top: Avatar + Name + Status -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+                ${escapeHtml(initials)}
+              </div>
+              <div class="min-w-0">
+                <div class="font-bold text-gray-900 text-xs truncate flex items-center space-x-1.5">
+                  <span>${escapeHtml(user.nama_users)}</span>
+                  ${isSelf ? '<span class="px-1.5 py-0.2 text-[9px] font-bold bg-neutral-800 text-white rounded">Anda</span>' : ''}
+                </div>
+                <div class="text-[10px] text-gray-400">ID: U-${String(user.id).padStart(3, '0')}</div>
+              </div>
+            </div>
+            ${statusBadge}
+          </div>
+
+          <!-- Middle: Email + Role + Last Login -->
+          <div class="flex flex-wrap items-center justify-between gap-2 bg-gray-50 p-2.5 rounded-lg border border-gray-100 text-xs">
+            <span class="font-mono text-gray-600 truncate max-w-[170px]">${escapeHtml(user.email_users)}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="inline-block px-2 py-0.5 font-semibold ${roleBadge} rounded text-[11px]">${escapeHtml(user.role || 'Reporter')}</span>
+              <span class="text-gray-400 text-[10px] truncate max-w-[100px]">${formattedLogin}</span>
+            </div>
+          </div>
+
+          <!-- Bottom: Action Buttons full width without swiping! -->
+          <div class="pt-2 border-t border-gray-100 flex items-center gap-1.5">
+            <button type="button" class="btn-edit btn btn-sm flex-1 justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200">Edit</button>
+            <button type="button" class="btn-role btn btn-outline btn-sm flex-1 justify-center text-xs py-1.5 text-gray-700 hover:bg-gray-100">Role</button>
+            ${!isSelf ? `
+              <button type="button" class="btn-toggle btn btn-sm flex-1 justify-center text-xs py-1.5 ${toggleColor} border border-gray-200">${toggleText}</button>
+              <button type="button" class="btn-delete btn btn-sm px-2.5 text-xs py-1.5 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200" title="Hapus">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </td>
+
+      <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+      <td class="hidden md:table-cell py-3 px-4">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
             ${escapeHtml(initials)}
@@ -143,35 +187,33 @@ function renderUserRows(users, tbody) {
           </div>
         </div>
       </td>
-      <td class="py-3 px-4 text-gray-600 font-mono text-xs">${escapeHtml(user.email_users)}</td>
-      <td class="py-3 px-4">
+      <td class="hidden md:table-cell py-3 px-4 text-gray-600 font-mono text-xs">${escapeHtml(user.email_users)}</td>
+      <td class="hidden md:table-cell py-3 px-4">
         <span class="inline-block px-2 py-0.5 font-semibold ${roleBadge} rounded text-[11px]">${escapeHtml(user.role || 'Reporter')}</span>
       </td>
-      <td class="py-3 px-4">${statusBadge}</td>
-      <td class="py-3 px-4 text-gray-500 text-xs">${formattedLogin}</td>
-      <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
-        <button type="button" class="btn-edit p-1.5 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 text-xs font-medium">Edit</button>
-        <button type="button" class="btn-role p-1.5 text-gray-600 hover:text-gray-800 rounded hover:bg-gray-100 text-xs font-medium">Ubah Role</button>
+      <td class="hidden md:table-cell py-3 px-4">${statusBadge}</td>
+      <td class="hidden md:table-cell py-3 px-4 text-gray-500 text-xs">${formattedLogin}</td>
+      <td class="hidden md:table-cell py-3 px-4 text-right space-x-1 whitespace-nowrap">
+        <button type="button" class="btn-edit table-action-btn text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 text-xs font-medium">Edit</button>
+        <button type="button" class="btn-role table-action-btn text-gray-600 hover:text-gray-800 rounded hover:bg-gray-100 text-xs font-medium">Ubah Role</button>
         ${!isSelf ? `
-          <button type="button" class="btn-toggle p-1.5 ${toggleColor} rounded text-xs font-medium">${toggleText}</button>
-          <button type="button" class="btn-delete p-1.5 text-red-600 hover:text-red-800 rounded hover:bg-red-50 text-xs font-medium">Hapus</button>
+          <button type="button" class="btn-toggle table-action-btn ${toggleColor} rounded text-xs font-medium">${toggleText}</button>
+          <button type="button" class="btn-delete table-action-btn text-red-600 hover:text-red-800 rounded hover:bg-red-50 text-xs font-medium">Hapus</button>
         ` : ''}
       </td>
     `;
 
-    // Event listeners
-    tr.querySelector('.btn-edit').addEventListener('click', () => openUserModal(user));
-    tr.querySelector('.btn-role').addEventListener('click', () => openChangeRoleModal(user));
+    // Event listeners for both views
+    tr.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => openUserModal(user)));
+    tr.querySelectorAll('.btn-role').forEach(b => b.addEventListener('click', () => openChangeRoleModal(user)));
     
-    const btnToggle = tr.querySelector('.btn-toggle');
-    if (btnToggle) {
-      btnToggle.addEventListener('click', () => toggleUserStatus(user.id, user.nama_users, user.status));
-    }
+    tr.querySelectorAll('.btn-toggle').forEach(b => {
+      b.addEventListener('click', () => toggleUserStatus(user.id, user.nama_users, user.status));
+    });
 
-    const btnDelete = tr.querySelector('.btn-delete');
-    if (btnDelete) {
-      btnDelete.addEventListener('click', () => deleteUser(user.id, user.nama_users));
-    }
+    tr.querySelectorAll('.btn-delete').forEach(b => {
+      b.addEventListener('click', () => deleteUser(user.id, user.nama_users));
+    });
 
     tbody.appendChild(tr);
   });

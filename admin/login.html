@@ -7,9 +7,8 @@
   <meta name="description" content="Sistem Manajemen Konten Editorial Resmi Japakeh Post — PT Japakeh Media Nusantara">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   <link rel="stylesheet" href="css/admin.css">
   <script src="../assets/js/api-client.js"></script>
   <script src="js/auth-guard.js"></script>
@@ -90,10 +89,10 @@
                   type="text" 
                   id="email" 
                   name="email" 
-                  value="alb4hri@gmail.com" 
                   required 
+                  autocomplete="username"
                   class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white transition-all"
-                  placeholder="alb4hri@gmail.com">
+                  placeholder="Masukkan email atau username">
               </div>
             </div>
 
@@ -117,8 +116,8 @@
                   type="password" 
                   id="password" 
                   name="password" 
-                  value="Japakeh#2026" 
                   required 
+                  autocomplete="current-password"
                   class="w-full pl-9 pr-10 py-2.5 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white transition-all"
                   placeholder="Masukkan kata sandi">
                 <button 
@@ -158,13 +157,6 @@
               </button>
             </div>
           </form>
-
-          <!-- Quick Test Credentials helper -->
-          <div class="mt-6 pt-4 border-t border-gray-100 bg-gray-50 -mx-6 -mb-6 p-4 text-center rounded-b-xl">
-            <p class="text-[11px] text-gray-500 font-medium">
-              Akses Cepat: <span class="font-bold text-gray-800">alb4hri@gmail.com</span> &bull; Sandi: <span class="font-mono font-semibold text-buser-red">Japakeh#2026</span> (Klik "Masuk ke Dashboard" untuk langsung masuk)
-            </p>
-          </div>
         </div>
       </div>
 
@@ -290,13 +282,17 @@
     // Forgot password handler
     document.getElementById('btn-forgot-password').addEventListener('click', (e) => {
       e.preventDefault();
+      const emailInput = document.getElementById('email');
+      const emailVal = emailInput ? emailInput.value.trim() : '';
+      const emailTargetText = emailVal ? `ke ${emailVal}` : 'ke alamat email akun Anda';
+
       confirmAction({
         title: 'Pemulihan Akun Redaksi',
         message: 'Tautan reset password akan dikirimkan ke email terdaftar Anda. Lanjutkan?',
         confirmText: 'Kirim Tautan',
         type: 'primary',
         onConfirm: () => {
-          showToast('info', 'Email Terkirim', 'Instruksi reset password telah dikirim ke alb4hri@gmail.com.');
+          showToast('info', 'Email Terkirim', `Instruksi reset password telah dikirim ${emailTargetText}.`);
         }
       });
     });

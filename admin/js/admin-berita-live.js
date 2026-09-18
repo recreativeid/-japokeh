@@ -85,6 +85,13 @@ function initCheckboxAndBulkActions() {
 
     tableBody.addEventListener('change', (e) => {
       if (e.target && e.target.classList.contains('row-checkbox')) {
+        // Sync mobile and desktop checkboxes inside same tr
+        const tr = e.target.closest('tr');
+        if (tr) {
+          tr.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = e.target.checked;
+          });
+        }
         updateBulkBar();
         updateCheckAllStatus();
       }
@@ -100,11 +107,11 @@ function updateCheckAllStatus() {
   const tableBody = document.getElementById('news-table-body');
   if (!checkAll || !tableBody) return;
 
-  const visibleCheckboxes = tableBody.querySelectorAll('tr:not(.hidden) .row-checkbox');
-  if (visibleCheckboxes.length === 0) {
+  const visibleRows = Array.from(tableBody.querySelectorAll('tr.news-row:not(.hidden)'));
+  if (visibleRows.length === 0) {
     checkAll.checked = false;
   } else {
-    checkAll.checked = Array.from(visibleCheckboxes).every(cb => cb.checked);
+    checkAll.checked = visibleRows.every(r => r.querySelector('.row-checkbox')?.checked);
   }
 }
 
@@ -116,10 +123,10 @@ function updateBulkBar() {
   const selectedCount = document.getElementById('selected-count');
   if (!bulkBar || !selectedCount) return;
 
-  const checked = document.querySelectorAll('#news-table-body .row-checkbox:checked');
-  if (checked.length > 0) {
+  const checkedIds = new Set(Array.from(document.querySelectorAll('#news-table-body .row-checkbox:checked')).map(cb => cb.value));
+  if (checkedIds.size > 0) {
     bulkBar.classList.remove('hidden');
-    selectedCount.textContent = checked.length;
+    selectedCount.textContent = checkedIds.size;
   } else {
     bulkBar.classList.add('hidden');
   }
@@ -229,33 +236,78 @@ async function loadLiveArticlesFromDB() {
       tr.setAttribute('data-date', dateIso);
 
       tr.innerHTML = `
-        <td class="py-3 px-4">
+        <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
+        <td class="md:hidden block w-full p-4 border-0">
+          <div class="space-y-3">
+            <!-- Top Bar: Checkbox + Category + Status -->
+            <div class="flex items-center justify-between gap-2">
+              <label class="inline-flex items-center space-x-2 cursor-pointer select-none">
+                <input type="checkbox" value="${item.id_artikel}" class="row-checkbox w-4 h-4 rounded border-gray-300 text-buser-red focus:ring-buser-red cursor-pointer">
+                <span class="inline-block px-2 py-0.5 text-[11px] font-bold bg-red-50 text-buser-red rounded">${item.name_kategori || 'Umum'}</span>
+              </label>
+              ${statusBadge}
+            </div>
+
+            <!-- Middle: Thumbnail + Title + Meta -->
+            <div class="flex items-start space-x-3">
+              <img src="${thumbUrl}" alt="Thumb" class="w-16 h-16 object-cover rounded-lg border border-gray-200 shrink-0" onerror="this.src='../assets/images/berita/hero/sorotan-utama-dunia.jpg'">
+              <div class="min-w-0 flex-1">
+                <a href="../artikel.html?slug=${item.slug}" target="_blank" class="font-bold text-gray-900 text-xs hover:text-buser-red transition-colors line-clamp-2 leading-snug">
+                  ${item.title}
+                </a>
+                <div class="flex items-center gap-2 mt-1.5 text-[11px] text-gray-500">
+                  <span class="truncate max-w-[110px]">${item.author_name || 'Redaksi'}</span>
+                  <span>•</span>
+                  <span class="whitespace-nowrap">${dateFormatted}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom: Action Buttons full width without swiping! -->
+            <div class="pt-2.5 border-t border-gray-100 flex items-center gap-2">
+              <a href="../artikel.html?slug=${item.slug}" target="_blank" class="btn btn-outline btn-sm flex-1 justify-center text-xs py-1.5 text-gray-700 hover:bg-gray-100" title="Pratinjau">
+                <svg class="w-3.5 h-3.5 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                Pratinjau
+              </a>
+              <button type="button" onclick="openEditNewsModal(${item.id_artikel})" class="btn btn-sm flex-1 justify-center text-xs py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200" title="Edit Berita">
+                <svg class="w-3.5 h-3.5 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                Edit
+              </button>
+              <button type="button" onclick="handleDeleteRealArticle(${item.id_artikel})" class="btn btn-sm text-xs py-1.5 px-3 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200" title="Hapus">
+                <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </div>
+          </div>
+        </td>
+
+        <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
+        <td class="hidden md:table-cell py-3 px-4">
           <input type="checkbox" value="${item.id_artikel}" class="row-checkbox w-4 h-4 rounded border-gray-300 text-buser-red focus:ring-buser-red cursor-pointer">
         </td>
-        <td class="py-3 px-4">
+        <td class="hidden md:table-cell py-3 px-4">
           <img src="${thumbUrl}" alt="Thumb" class="w-14 h-10 object-cover rounded border border-gray-200" onerror="this.src='../assets/images/berita/hero/sorotan-utama-dunia.jpg'">
         </td>
-        <td class="py-3 px-4 font-semibold text-gray-900 max-w-sm">
+        <td class="hidden md:table-cell py-3 px-4 font-semibold text-gray-900 max-w-sm">
           <a href="../artikel.html?slug=${item.slug}" target="_blank" class="hover:text-buser-red transition-colors line-clamp-2">
             ${item.title}
           </a>
         </td>
-        <td class="py-3 px-4">
+        <td class="hidden md:table-cell py-3 px-4">
           <span class="inline-block px-2 py-0.5 font-medium bg-red-50 text-buser-red rounded">${item.name_kategori || 'Umum'}</span>
         </td>
-        <td class="py-3 px-4 font-medium text-gray-700">${item.author_name || 'Redaksi'}</td>
-        <td class="py-3 px-4">
+        <td class="hidden md:table-cell py-3 px-4 font-medium text-gray-700">${item.author_name || 'Redaksi'}</td>
+        <td class="hidden md:table-cell py-3 px-4">
           ${statusBadge}
         </td>
-        <td class="py-3 px-4 text-gray-500">${dateFormatted}</td>
-        <td class="py-3 px-4 text-right space-x-1 whitespace-nowrap">
-          <a href="../artikel.html?slug=${item.slug}" target="_blank" class="p-1.5 text-gray-500 hover:text-gray-900 rounded hover:bg-gray-100 inline-block" title="Pratinjau">
+        <td class="hidden md:table-cell py-3 px-4 text-gray-500">${dateFormatted}</td>
+        <td class="hidden md:table-cell py-3 px-4 text-right space-x-1 whitespace-nowrap">
+          <a href="../artikel.html?slug=${item.slug}" target="_blank" class="table-action-btn text-gray-500 hover:text-gray-900 rounded hover:bg-gray-100 inline-flex" title="Pratinjau">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           </a>
-          <button type="button" onclick="openEditNewsModal(${item.id_artikel})" class="p-1.5 text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 inline-block" title="Edit Berita">
+          <button type="button" onclick="openEditNewsModal(${item.id_artikel})" class="table-action-btn text-blue-600 hover:text-blue-800 rounded hover:bg-blue-50 inline-flex" title="Edit Berita">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
           </button>
-          <button type="button" onclick="handleDeleteRealArticle(${item.id_artikel})" class="p-1.5 text-red-600 hover:text-red-800 rounded hover:bg-red-50 inline-block" title="Hapus">
+          <button type="button" onclick="handleDeleteRealArticle(${item.id_artikel})" class="table-action-btn text-red-600 hover:text-red-800 rounded hover:bg-red-50 inline-flex" title="Hapus">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
           </button>
         </td>
@@ -407,11 +459,11 @@ async function updateBeritaTabCounts() {
  */
 async function executeBulk(action) {
   const checkedBoxes = Array.from(document.querySelectorAll('#news-table-body .row-checkbox:checked'));
-  const count = checkedBoxes.length;
+  const ids = [...new Set(checkedBoxes.map(cb => cb.value))];
+  const count = ids.length;
   if (count === 0) return;
 
   const actionName = action === 'publish' ? 'menerbitkan' : (action === 'draft' ? 'memindahkan ke draft' : 'menghapus');
-  const ids = checkedBoxes.map(cb => cb.value);
 
   const doBulk = async () => {
     try {

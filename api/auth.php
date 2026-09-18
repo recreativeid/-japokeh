@@ -47,44 +47,48 @@ function handleLogin(PDO $db): void {
     $rawInput = json_decode(file_get_contents('php://input'), true);
     $data = $rawInput ?? $_POST;
 
-    $email    = trim($data['email'] ?? $data['email_users'] ?? '');
-    $password = trim($data['password'] ?? '');
+    $identifier = trim($data['email'] ?? $data['email_users'] ?? $data['username'] ?? '');
+    $password   = trim($data['password'] ?? '');
 
-    if (empty($email) || empty($password)) {
-        sendResponse(false, 'Email dan password wajib diisi', null, 400);
+    if (empty($identifier) || empty($password)) {
+        sendResponse(false, 'Email/Username dan kata sandi wajib diisi', null, 400);
     }
 
     try {
-        $stmt = $db->prepare("SELECT * FROM users WHERE LOWER(email_users) = LOWER(:email) LIMIT 1");
-        $stmt->execute([':email' => $email]);
+        $stmt = $db->prepare("SELECT * FROM users WHERE LOWER(email_users) = LOWER(:identifier) OR LOWER(nama_users) = LOWER(:identifier) LIMIT 1");
+        $stmt->execute([':identifier' => $identifier]);
         $user = $stmt->fetch();
 
+        $valid = false;
         if ($user) {
             if (password_verify($password, $user['password'])) {
                 $valid = true;
+            } elseif (password_verify(ucfirst($password), $user['password']) || password_verify(lcfirst($password), $user['password'])) {
+                // Fleksibilitas jika ada ketidaksengajaan kapitalisasi huruf pertama
+                $valid = true;
             } elseif ($password === $user['password']) {
                 $valid = true;
-            } elseif (in_array($password, ['Japakeh#2026', 'JapakehPost#2026', 'BuserInfo#2026', 'admin123', 'admin', 'password', 'password123'])) {
-                // Fallback demo/dev credential untuk kemudahan pengujian lokal
-                $valid = true;
+                // Upgrade plaintext password ke hash bcrypt otomatis
+                try {
+                    $newHash = password_hash($password, PASSWORD_DEFAULT);
+                    $upd = $db->prepare("UPDATE users SET password = :p WHERE id = :id");
+                    $upd->execute([':p' => $newHash, ':id' => $user['id']]);
+                } catch (Exception $e) {}
             }
-        } elseif (in_array($email, ['alb4hri@gmail.com', 'redaksi@japakehpost.com', 'admin@japakehpost.com', 'redaksi@buserinfo.com'])) {
-            // Virtual user fallback jika database belum diisi
-            $user = [
-                'id' => 1,
-                'nama_users' => 'Al Bahri',
-                'email_users' => 'alb4hri@gmail.com',
-                'role' => 'Administrator',
-                'status' => 'active',
-                'avatar' => 'assets/images/logo/favicon.webp',
-                'bio' => 'Pemimpin Umum / Pemimpin Redaksi & Penanggung Jawab PT Japakeh Media Nusantara - Japakeh Post.'
-            ];
-            $valid = true;
         }
 
         if (!$valid) {
             sendResponse(false, 'Email atau kata sandi yang Anda masukkan tidak sesuai.', null, 401);
         }
+
+        if (isset($user['status']) && $user['status'] !== 'active') {
+            sendResponse(false, 'Akun Anda sedang dinonaktifkan. Silakan hubungi Administrator.', null, 403);
+        }
+
+        // Catat waktu login terakhir
+        try {
+            $db->prepare("UPDATE users SET last_login = NOW() WHERE id = :id")->execute([':id' => $user['id']]);
+        } catch (Exception $e) {}
 
         // Regenerasi ID sesi untuk mencegah session fixation
         session_regenerate_id(true);

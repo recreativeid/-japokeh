@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileSidebar();
+  initMobileBottomNav();
   initLiveClock();
   initNotificationDropdown();
   initUserDropdown();
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================
-   1. MOBILE SIDEBAR DRAWER TOGGLE
+   1. MOBILE SIDEBAR DRAWER TOGGLE & SWIPE
    ========================================== */
 function initMobileSidebar() {
   const sidebar = document.getElementById('admin-sidebar');
@@ -41,9 +42,178 @@ function initMobileSidebar() {
     document.body.classList.remove('overflow-hidden');
   }
 
+  window.openAdminSidebar = openSidebar;
+  window.closeAdminSidebar = closeSidebar;
+
   if (toggleBtn) toggleBtn.addEventListener('click', openSidebar);
   if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
   if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  // Close sidebar on tapping any nav-item on mobile screens
+  sidebar.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth < 1024) {
+        closeSidebar();
+      }
+    });
+  });
+
+  // Touch Swipe-to-Close gesture on mobile sidebar
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  sidebar.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  sidebar.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    // Swipe left (more than 45px horizontal and not primarily vertical scroll)
+    if (diffX < -45 && Math.abs(diffX) > Math.abs(diffY)) {
+      closeSidebar();
+    }
+  }, { passive: true });
+}
+
+/* ==========================================
+   1B. MOBILE BOTTOM NAVIGATION BAR
+   ========================================== */
+function initMobileBottomNav() {
+  // Do not show bottom nav on login page
+  const path = window.location.pathname.toLowerCase();
+  if (path.includes('login.html') || path.endsWith('/login')) return;
+
+  // If already rendered, return
+  if (document.getElementById('mobile-bottom-nav')) return;
+
+  const isDashboard = path.endsWith('index.html') || path.endsWith('/admin') || path.endsWith('/admin/') || path.endsWith('dashboard');
+  const isBerita = path.includes('berita.html') || path.endsWith('/berita');
+  const isKomentar = path.includes('komentar.html') || path.endsWith('/komentar');
+
+  // Determine label & action for central FAB
+  let fabAria = 'Tambah Data';
+  let fabIcon = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>`;
+
+  if (path.includes('pengaturan.html')) {
+    fabAria = 'Simpan Pengaturan';
+    fabIcon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>`;
+  }
+
+  const nav = document.createElement('nav');
+  nav.id = 'mobile-bottom-nav';
+  nav.setAttribute('aria-label', 'Navigasi Cepat Mobile');
+  nav.innerHTML = `
+    <!-- 1. Dashboard -->
+    <a href="index.html" class="mobile-nav-item ${isDashboard ? 'active' : ''}">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+      </svg>
+      <span>Beranda</span>
+    </a>
+
+    <!-- 2. Berita -->
+    <a href="berita.html" class="mobile-nav-item ${isBerita ? 'active' : ''}">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+      </svg>
+      <span>Berita</span>
+    </a>
+
+    <!-- 3. Central Action FAB Button -->
+    <button type="button" id="mobile-bottom-fab" class="mobile-nav-fab" aria-label="${fabAria}" title="${fabAria}">
+      ${fabIcon}
+    </button>
+
+    <!-- 4. Komentar -->
+    <a href="komentar.html" class="mobile-nav-item ${isKomentar ? 'active' : ''}">
+      <div class="relative">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        <span id="mobile-bottom-comment-dot" class="hidden absolute -top-1 -right-1 w-2 h-2 bg-buser-red rounded-full ring-2 ring-white"></span>
+      </div>
+      <span>Komentar</span>
+    </a>
+
+    <!-- 5. Menu Drawer -->
+    <button type="button" id="mobile-bottom-menu-btn" class="mobile-nav-item">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+      <span>Menu</span>
+    </button>
+  `;
+
+  document.body.appendChild(nav);
+
+  // Hook Menu Button to open sidebar
+  const menuBtn = document.getElementById('mobile-bottom-menu-btn');
+  if (menuBtn) {
+    menuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (typeof window.openAdminSidebar === 'function') {
+        window.openAdminSidebar();
+      }
+    });
+  }
+
+  // Hook FAB to contextual primary action
+  const fabBtn = document.getElementById('mobile-bottom-fab');
+  if (fabBtn) {
+    fabBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Check for available add buttons on current page
+      const addNewsBtn = document.getElementById('btn-add-news');
+      const addCategoryBtn = document.getElementById('btn-add-category');
+      const addAuthorBtn = document.getElementById('btn-add-author');
+      const addVideoBtn = document.getElementById('btn-add-video');
+      const addAdBtn = document.getElementById('btn-add-ad');
+      const addUploadBtn = document.getElementById('btn-open-upload');
+      const addUserBtn = document.getElementById('btn-add-user');
+      const addRedaksiBtn = document.getElementById('btn-add-redaksi');
+      const saveSettingsBtn = document.getElementById('btn-save-all-settings');
+
+      if (addNewsBtn) {
+        addNewsBtn.click();
+      } else if (addCategoryBtn) {
+        addCategoryBtn.click();
+      } else if (addAuthorBtn) {
+        addAuthorBtn.click();
+      } else if (addVideoBtn) {
+        addVideoBtn.click();
+      } else if (addAdBtn) {
+        addAdBtn.click();
+      } else if (addUploadBtn) {
+        addUploadBtn.click();
+      } else if (addUserBtn) {
+        addUserBtn.click();
+      } else if (addRedaksiBtn) {
+        addRedaksiBtn.click();
+      } else if (saveSettingsBtn) {
+        saveSettingsBtn.click();
+      } else {
+        // Fallback: navigate to create news
+        window.location.href = 'berita.html?action=tambah';
+      }
+    });
+  }
+
+  // Sync comment badge on mobile bottom nav if sidebar or header has pending count
+  const checkCommentDot = () => {
+    const dot = document.getElementById('mobile-bottom-comment-dot');
+    if (!dot) return;
+    const sidebarBadge = document.querySelector('a[href="komentar.html"] span.rounded');
+    if (sidebarBadge && parseInt(sidebarBadge.textContent.trim(), 10) > 0) {
+      dot.classList.remove('hidden');
+    }
+  };
+  setTimeout(checkCommentDot, 1000);
 }
 
 /* ==========================================

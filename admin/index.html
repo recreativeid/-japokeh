@@ -7,9 +7,8 @@
   <meta name="description" content="Dashboard Manajemen Redaksi & Berita Portal Japakeh Post">
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="../assets/js/tailwind-config.js"></script>
+  <!-- Tailwind CSS (Production Compiled) -->
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
   
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -234,8 +233,8 @@
           <!-- User Dropdown Menu -->
           <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg border border-gray-200 shadow-xl z-50 py-1 text-xs">
             <div class="px-3 py-2 border-b border-gray-100">
-              <p class="user-display-name font-semibold text-gray-900 truncate">Al Bahri</p>
-              <p class="text-gray-400 text-[10px] truncate">alb4hri@gmail.com</p>
+              <p class="user-display-name font-semibold text-gray-900 truncate">Administrator</p>
+              <p class="user-display-email text-gray-400 text-[10px] truncate">redaksi@japakehpost.com</p>
             </div>
             <a href="profil.html" class="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-50">
               <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -360,11 +359,11 @@
               <p class="text-xs text-gray-500">Volume penerbitan, draft, dan pembaruan artikel</p>
             </div>
             <!-- Filter Pills -->
-            <div class="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg text-xs self-start sm:self-auto">
-              <button class="px-2.5 py-1 rounded-md font-semibold bg-white text-gray-900 shadow-sm chart-filter-btn" data-range="7d">7 Hari</button>
-              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn" data-range="30d">30 Hari</button>
-              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn" data-range="3m">3 Bulan</button>
-              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn" data-range="1y">1 Tahun</button>
+            <div class="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg text-xs self-start sm:self-auto overflow-x-auto no-scrollbar max-w-full">
+              <button class="px-2.5 py-1 rounded-md font-semibold bg-white text-gray-900 shadow-sm chart-filter-btn shrink-0" data-range="7d">7 Hari</button>
+              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn shrink-0" data-range="30d">30 Hari</button>
+              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn shrink-0" data-range="3m">3 Bulan</button>
+              <button class="px-2.5 py-1 rounded-md font-medium text-gray-600 hover:text-gray-900 chart-filter-btn shrink-0" data-range="1y">1 Tahun</button>
             </div>
           </div>
 
@@ -388,7 +387,7 @@
 
       </div>
 
-      <!-- RECENT NEWS SECTION (Table on desktop, Cards on mobile) -->
+      <!-- RECENT NEWS SECTION -->
       <div class="cms-card overflow-hidden">
         
         <!-- Table Header & Filter Bar -->
@@ -399,20 +398,21 @@
           </div>
           <div class="flex items-center gap-2">
             <a href="berita.html" class="btn btn-outline btn-sm">
-              <span>Buka Semua Berita</span>
+              <span class="hidden sm:inline">Buka Semua Berita</span>
+              <span class="sm:hidden">Semua</span>
               <svg class="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </a>
             <a href="berita.html?action=tambah" class="btn btn-primary btn-sm">
-              <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-              <span>Berita Baru</span>
+              <svg class="w-3.5 h-3.5 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span class="hidden sm:inline">Berita Baru</span>
+              <span class="sm:hidden">Tambah</span>
             </a>
           </div>
         </div>
 
-        <!-- Table Responsive Container -->
-        <div class="overflow-x-auto">
+        <div class="table-responsive">
           <table class="w-full text-left border-collapse table-responsive-cards">
-            <thead>
+            <thead class="hidden md:table-header-group">
               <tr class="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider border-b border-gray-200">
                 <th class="py-3 px-4 w-16">Thumbnail</th>
                 <th class="py-3 px-4">Judul Artikel</th>
