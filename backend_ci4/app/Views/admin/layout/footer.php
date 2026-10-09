@@ -13,6 +13,6 @@
 
   </div>
 
-  <script src="<?= base_url('admin/js/admin.js') ?>"></script>
+  <script src="<?= base_url('admin/js/admin.js?v=20260929_v1') ?>"></script>
 </body>
 </html>

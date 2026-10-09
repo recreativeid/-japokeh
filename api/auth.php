@@ -91,7 +91,9 @@ function handleLogin(PDO $db): void {
         } catch (Exception $e) {}
 
         // Regenerasi ID sesi untuk mencegah session fixation
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            @session_regenerate_id(true);
+        }
 
         $now = time();
         // Set session dengan pencatatan batas waktu dan aktivitas
@@ -250,13 +252,13 @@ function handleUploadAvatar(PDO $db): void {
         sendResponse(false, 'Format file tidak didukung. Harap gunakan format JPG, PNG, WEBP, atau GIF.', null, 400);
     }
 
-    $ext = match ($mime) {
+    $mimeMap = [
         'image/jpeg' => 'jpg',
         'image/png'  => 'png',
         'image/webp' => 'webp',
-        'image/gif'  => 'gif',
-        default      => 'jpg'
-    };
+        'image/gif'  => 'gif'
+    ];
+    $ext = $mimeMap[$mime] ?? 'jpg';
 
     $uploadDir = __DIR__ . '/../assets/images/berita/uploads/avatars';
     if (!is_dir($uploadDir)) {

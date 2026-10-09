@@ -229,15 +229,7 @@ async function performSearch(query, category, sort) {
         results = data.articles;
       }
     } catch (err) {
-      // Fallback ke NewsDB
-    }
-  }
-
-  // 2. Fallback ke NewsDB (DOM client-side data store) jika API kosong atau gagal
-  if ((!results || results.length === 0) && window.NewsDB && typeof window.NewsDB.search === 'function') {
-    const localMatches = window.NewsDB.search(trimmedQuery, activeCat);
-    if (Array.isArray(localMatches) && localMatches.length > 0) {
-      results = localMatches;
+      console.warn('[search.js] Search API error:', err);
     }
   }
 

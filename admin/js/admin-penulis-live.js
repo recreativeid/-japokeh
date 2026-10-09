@@ -12,10 +12,58 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAuthorsLive() {
   const btnAdd = document.getElementById('btn-add-author');
   const form = document.getElementById('author-form');
+  const avatarInput = document.getElementById('author-avatar-input');
+  const btnRemoveAvatar = document.getElementById('btn-remove-author-avatar');
+  const avatarPreview = document.getElementById('author-avatar-preview');
+  const avatarInitials = document.getElementById('author-avatar-initials');
+  const avatarUrlInput = document.getElementById('author-avatar-url');
 
   if (btnAdd) {
     btnAdd.addEventListener('click', () => {
       openAuthorModal(null);
+    });
+  }
+
+  if (avatarInput) {
+    avatarInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        if (avatarPreview) {
+          avatarPreview.src = evt.target.result;
+          avatarPreview.classList.remove('hidden');
+        }
+        if (avatarInitials) avatarInitials.classList.add('hidden');
+        if (btnRemoveAvatar) btnRemoveAvatar.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+
+      if (window.BuserInfoAPI && window.BuserInfoAPI.uploadAvatar) {
+        if (typeof showToast === 'function') showToast('info', 'Mengunggah Foto...', 'Sedang menyimpan foto profil penulis.');
+        const res = await window.BuserInfoAPI.uploadAvatar(file);
+        if (res && res.status === 'success' && res.data && res.data.url) {
+          if (avatarUrlInput) avatarUrlInput.value = res.data.url;
+          if (typeof showToast === 'function') showToast('success', 'Foto Tersimpan', 'Foto profil berhasil diunggah.');
+        } else {
+          if (typeof showToast === 'function') showToast('warning', 'Peringatan', res.message || 'Gagal menyimpan foto ke server.');
+        }
+      }
+    });
+  }
+
+  if (btnRemoveAvatar) {
+    btnRemoveAvatar.addEventListener('click', () => {
+      if (avatarUrlInput) avatarUrlInput.value = '';
+      if (avatarInput) avatarInput.value = '';
+      if (avatarPreview) {
+        avatarPreview.src = '';
+        avatarPreview.classList.add('hidden');
+      }
+      if (avatarInitials) avatarInitials.classList.remove('hidden');
+      btnRemoveAvatar.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('info', 'Foto Direset', 'Foto profil penulis dikembalikan ke inisial.');
     });
   }
 
@@ -119,6 +167,26 @@ function renderAuthorRows(authors, tbody) {
     const toggleText = isActive ? 'Nonaktifkan' : 'Aktifkan';
     const toggleColor = isActive ? 'text-amber-600 hover:text-amber-800 hover:bg-amber-50' : 'text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50';
 
+    const hasAvatar = author.avatar && author.avatar.trim() !== '';
+    const avatarImgSrc = hasAvatar ? (author.avatar.startsWith('assets/') ? '../' + author.avatar : author.avatar) : '';
+    const avatarDesktopHtml = hasAvatar
+      ? `<div class="relative w-8 h-8 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200 bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(author.nama_users)}" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+          <span class="hidden">${escapeHtml(initials)}</span>
+        </div>`
+      : `<div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+          ${escapeHtml(initials)}
+        </div>`;
+
+    const avatarMobileHtml = hasAvatar
+      ? `<div class="relative w-9 h-9 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200 bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(author.nama_users)}" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+          <span class="hidden">${escapeHtml(initials)}</span>
+        </div>`
+      : `<div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+          ${escapeHtml(initials)}
+        </div>`;
+
     tr.innerHTML = `
       <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
       <td class="md:hidden block w-full p-4 border-0">
@@ -126,9 +194,7 @@ function renderAuthorRows(authors, tbody) {
           <!-- Top: Avatar + Name + Status -->
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center space-x-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
-                ${escapeHtml(initials)}
-              </div>
+              ${avatarMobileHtml}
               <div class="min-w-0">
                 <div class="font-bold text-gray-900 text-xs truncate">${escapeHtml(author.nama_users)}</div>
                 <div class="text-[10px] text-gray-400">ID: W-${String(author.id).padStart(3, '0')}</div>
@@ -161,9 +227,7 @@ function renderAuthorRows(authors, tbody) {
       <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
       <td class="hidden md:table-cell py-3 px-4">
         <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
-            ${escapeHtml(initials)}
-          </div>
+          ${avatarDesktopHtml}
           <div class="min-w-0">
             <div class="font-bold text-gray-900 truncate">${escapeHtml(author.nama_users)}</div>
             <div class="text-[10px] text-gray-400">ID: W-${String(author.id).padStart(3, '0')}</div>
@@ -205,7 +269,15 @@ function openAuthorModal(author = null) {
   const roleSelect = document.getElementById('author-role-select');
   const bioInput = document.getElementById('author-bio-input');
 
+  const avatarInput = document.getElementById('author-avatar-input');
+  const avatarUrlInput = document.getElementById('author-avatar-url');
+  const avatarPreview = document.getElementById('author-avatar-preview');
+  const avatarInitials = document.getElementById('author-avatar-initials');
+  const btnRemoveAvatar = document.getElementById('btn-remove-author-avatar');
+
   if (!modalTitle || !nameInput || !emailInput) return;
+
+  if (avatarInput) avatarInput.value = '';
 
   if (author) {
     modalTitle.textContent = 'Edit Penulis: ' + author.nama_users;
@@ -214,6 +286,27 @@ function openAuthorModal(author = null) {
     emailInput.value = author.email_users || '';
     if (roleSelect) roleSelect.value = author.role || 'Reporter';
     if (bioInput) bioInput.value = author.bio || '';
+
+    if (author.avatar && author.avatar.trim() !== '') {
+      if (avatarUrlInput) avatarUrlInput.value = author.avatar;
+      if (avatarPreview) {
+        avatarPreview.src = author.avatar.startsWith('assets/') ? '../' + author.avatar : author.avatar;
+        avatarPreview.classList.remove('hidden');
+      }
+      if (avatarInitials) avatarInitials.classList.add('hidden');
+      if (btnRemoveAvatar) btnRemoveAvatar.classList.remove('hidden');
+    } else {
+      if (avatarUrlInput) avatarUrlInput.value = '';
+      if (avatarPreview) {
+        avatarPreview.src = '';
+        avatarPreview.classList.add('hidden');
+      }
+      if (avatarInitials) {
+        avatarInitials.textContent = getInitials(author.nama_users || 'JP');
+        avatarInitials.classList.remove('hidden');
+      }
+      if (btnRemoveAvatar) btnRemoveAvatar.classList.add('hidden');
+    }
   } else {
     modalTitle.textContent = 'Tambah Penulis Baru';
     if (idInput) idInput.value = '';
@@ -221,6 +314,17 @@ function openAuthorModal(author = null) {
     emailInput.value = '';
     if (roleSelect) roleSelect.value = 'Reporter';
     if (bioInput) bioInput.value = '';
+
+    if (avatarUrlInput) avatarUrlInput.value = '';
+    if (avatarPreview) {
+      avatarPreview.src = '';
+      avatarPreview.classList.add('hidden');
+    }
+    if (avatarInitials) {
+      avatarInitials.textContent = 'JP';
+      avatarInitials.classList.remove('hidden');
+    }
+    if (btnRemoveAvatar) btnRemoveAvatar.classList.add('hidden');
   }
 
   if (typeof openModal === 'function') {
@@ -242,12 +346,14 @@ async function handleAuthorFormSubmit(e) {
   const emailInput = document.getElementById('author-email-input');
   const roleSelect = document.getElementById('author-role-select');
   const bioInput = document.getElementById('author-bio-input');
+  const avatarUrlInput = document.getElementById('author-avatar-url');
 
   const id = idInput ? idInput.value : '';
   const name = nameInput ? nameInput.value.trim() : '';
   const email = emailInput ? emailInput.value.trim() : '';
   const role = roleSelect ? roleSelect.value : 'Reporter';
   const bio = bioInput ? bioInput.value.trim() : '';
+  const avatar = avatarUrlInput ? avatarUrlInput.value.trim() : '';
 
   if (!name || !email) {
     if (typeof showToast === 'function') {
@@ -273,7 +379,8 @@ async function handleAuthorFormSubmit(e) {
         name,
         email,
         role,
-        bio
+        bio,
+        avatar
       });
     } else {
       // Tambah penulis baru
@@ -281,7 +388,8 @@ async function handleAuthorFormSubmit(e) {
         name,
         email,
         role,
-        bio
+        bio,
+        avatar
       });
     }
 
@@ -381,6 +489,7 @@ async function viewAuthorDetail(id) {
     const bioEl = document.getElementById('view-author-bio');
     const countEl = document.getElementById('view-author-count');
     const initialsEl = document.getElementById('view-author-initials');
+    const imgEl = document.getElementById('view-author-img');
     const articlesListEl = document.getElementById('view-author-articles');
 
     if (nameEl) nameEl.textContent = author.nama_users;
@@ -388,7 +497,24 @@ async function viewAuthorDetail(id) {
     if (emailEl) emailEl.textContent = author.email_users;
     if (bioEl) bioEl.textContent = author.bio || '(Belum ada biodata profil)';
     if (countEl) countEl.textContent = `${parseInt(author.total_artikel || 0)} Berita`;
-    if (initialsEl) initialsEl.textContent = getInitials(author.nama_users);
+
+    if (author.avatar && author.avatar.trim() !== '') {
+      const avatarImgSrc = author.avatar.startsWith('assets/') ? '../' + author.avatar : author.avatar;
+      if (imgEl) {
+        imgEl.src = avatarImgSrc;
+        imgEl.classList.remove('hidden');
+      }
+      if (initialsEl) initialsEl.classList.add('hidden');
+    } else {
+      if (imgEl) {
+        imgEl.src = '';
+        imgEl.classList.add('hidden');
+      }
+      if (initialsEl) {
+        initialsEl.textContent = getInitials(author.nama_users);
+        initialsEl.classList.remove('hidden');
+      }
+    }
 
     if (articlesListEl) {
       if (author.recent_articles && author.recent_articles.length > 0) {

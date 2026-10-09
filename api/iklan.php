@@ -16,66 +16,106 @@ $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 function getDemoAds(): array {
     return [
         [
-            'id'          => 1,
-            'judul'       => 'Sponsor Resmi Japakeh Post — Bank Syariah Indonesia',
-            'tipe'        => 'banner',
-            'posisi'      => 'header',
-            'kode_html'   => null,
-            'gambar'      => 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg',
-            'link_tujuan' => 'https://bankbsi.co.id',
-            'keterangan'  => 'Mitra Finansial & Perbankan Syariah Mitra Redaksi',
-            'is_active'   => 1,
-            'urutan'      => 1,
-            'created_at'  => date('Y-m-d H:i:s'),
-            'updated_at'  => date('Y-m-d H:i:s')
+            'id'            => 1,
+            'judul'         => 'Sponsor Resmi Japakeh Post — Bank Syariah Indonesia',
+            'tipe'          => 'banner',
+            'posisi'        => 'sidebar',
+            'target_device' => 'desktop',
+            'target_page'   => 'article',
+            'mode_tayang'   => 'exclusive',
+            'kode_html'     => null,
+            'gambar'        => 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg',
+            'link_tujuan'   => 'https://bankbsi.co.id',
+            'keterangan'    => 'Mitra Finansial & Perbankan Syariah Mitra Redaksi (Eksklusif Sidebar Desktop)',
+            'is_active'     => 1,
+            'urutan'        => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s')
         ],
         [
-            'id'          => 2,
-            'judul'       => 'Google AdSense — Sidebar Responsive Display',
-            'tipe'        => 'google',
-            'posisi'      => 'sidebar',
-            'kode_html'   => '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="9876543210" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
-            'gambar'      => null,
-            'link_tujuan' => null,
-            'keterangan'  => 'Slot iklan sidebar otomatis Google AdSense',
-            'is_active'   => 1,
-            'urutan'      => 2,
-            'created_at'  => date('Y-m-d H:i:s'),
-            'updated_at'  => date('Y-m-d H:i:s')
+            'id'            => 2,
+            'judul'         => 'Google AdSense — Sidebar Responsive Display',
+            'tipe'          => 'google',
+            'posisi'        => 'sidebar_middle',
+            'target_device' => 'desktop',
+            'target_page'   => 'article',
+            'mode_tayang'   => 'exclusive',
+            'kode_html'     => '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="9876543210" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
+            'gambar'        => null,
+            'link_tujuan'   => null,
+            'keterangan'    => 'Slot iklan sidebar tengah otomatis Google AdSense',
+            'is_active'     => 1,
+            'urutan'        => 2,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s')
         ],
         [
-            'id'          => 3,
-            'judul'       => 'Google AdSense — Artikel Tengah (In-Article)',
-            'tipe'        => 'google',
-            'posisi'      => 'article_middle',
-            'kode_html'   => '<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-1234567890123456" data-ad-slot="5432109876"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
-            'gambar'      => null,
-            'link_tujuan' => null,
-            'keterangan'  => 'Slot iklan di sela paragraf artikel berita',
-            'is_active'   => 1,
-            'urutan'      => 3,
-            'created_at'  => date('Y-m-d H:i:s'),
-            'updated_at'  => date('Y-m-d H:i:s')
+            'id'            => 3,
+            'judul'         => 'Google AdSense — Artikel Tengah (In-Article)',
+            'tipe'          => 'google',
+            'posisi'        => 'article_middle',
+            'target_device' => 'mobile',
+            'target_page'   => 'article',
+            'mode_tayang'   => 'exclusive',
+            'kode_html'     => '<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-1234567890123456" data-ad-slot="5432109876"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
+            'gambar'        => null,
+            'link_tujuan'   => null,
+            'keterangan'    => 'Slot iklan di sela paragraf artikel berita khusus HP',
+            'is_active'     => 1,
+            'urutan'        => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s')
         ],
         [
-            'id'          => 4,
-            'judul'       => 'Banner Promo UMKM Aceh & Kuliner Khas Nusantara',
-            'tipe'        => 'banner',
-            'posisi'      => 'home_middle',
-            'kode_html'   => null,
-            'gambar'      => 'assets/images/berita/ekonomi/panen-kopi-gayo-organik.jpg',
-            'link_tujuan' => 'https://japakehpost.com',
-            'keterangan'  => 'Banner kemitraan promosi UMKM daerah',
-            'is_active'   => 1,
-            'urutan'      => 4,
-            'created_at'  => date('Y-m-d H:i:s'),
-            'updated_at'  => date('Y-m-d H:i:s')
+            'id'            => 4,
+            'judul'         => 'Banner Promo UMKM Aceh & Kuliner Khas Nusantara',
+            'tipe'          => 'banner',
+            'posisi'        => 'home_middle',
+            'target_device' => 'mobile',
+            'target_page'   => 'home',
+            'mode_tayang'   => 'rotation',
+            'kode_html'     => null,
+            'gambar'        => 'assets/images/berita/ekonomi/panen-kopi-gayo-organik.jpg',
+            'link_tujuan'   => 'https://japakehpost.com',
+            'keterangan'    => 'Banner kemitraan promosi UMKM daerah (Mode Rotasi)',
+            'is_active'     => 1,
+            'urutan'        => 1,
+            'created_at'    => date('Y-m-d H:i:s'),
+            'updated_at'    => date('Y-m-d H:i:s')
         ]
     ];
 }
 
 try {
     $db = Database::getConnection();
+    if ($db) {
+        // Auto-migrate kolom target_device jika belum ada
+        try {
+            // Pastikan ENUM posisi mendukung 'sidebar_middle' dan 'sidebar_bottom'
+            $posCol = $db->query("SHOW COLUMNS FROM `iklan` LIKE 'posisi'")->fetch();
+            if ($posCol && isset($posCol['Type']) && strpos($posCol['Type'], 'sidebar_bottom') === false) {
+                $db->exec("ALTER TABLE `iklan` MODIFY COLUMN `posisi` ENUM('sidebar', 'sidebar_middle', 'sidebar_bottom', 'article_middle', 'article_bottom', 'home_middle', 'footer') NOT NULL DEFAULT 'sidebar'");
+                $db->exec("UPDATE `iklan` SET `posisi` = 'sidebar_bottom' WHERE `target_page` = 'article' AND `target_device` = 'desktop' AND `posisi` = 'footer'");
+            }
+
+            $cols = $db->query("SHOW COLUMNS FROM `iklan` LIKE 'target_device'")->fetchAll();
+            if (empty($cols)) {
+                $db->exec("ALTER TABLE `iklan` ADD COLUMN `target_device` ENUM('all', 'desktop', 'mobile') NOT NULL DEFAULT 'desktop' AFTER `posisi`");
+            }
+            $colsPage = $db->query("SHOW COLUMNS FROM `iklan` LIKE 'target_page'")->fetchAll();
+            if (empty($colsPage)) {
+                $db->exec("ALTER TABLE `iklan` ADD COLUMN `target_page` ENUM('home', 'article') NOT NULL DEFAULT 'article' AFTER `target_device`");
+                $db->exec("ALTER TABLE `iklan` ADD INDEX `idx_iklan_target_page` (`target_page`)");
+            }
+            $colsMode = $db->query("SHOW COLUMNS FROM `iklan` LIKE 'mode_tayang'")->fetchAll();
+            if (empty($colsMode)) {
+                $db->exec("ALTER TABLE `iklan` ADD COLUMN `mode_tayang` ENUM('exclusive', 'rotation') NOT NULL DEFAULT 'exclusive' AFTER `target_device`");
+                $db->exec("ALTER TABLE `iklan` ADD INDEX `idx_iklan_mode_tayang` (`mode_tayang`)");
+            }
+        } catch (Throwable $me) {
+            // Ignore error jika migrasi gagal
+        }
+    }
 } catch (Throwable $e) {
     $db = null;
 }
@@ -115,6 +155,9 @@ function formatAdItem(array $row): array {
     $row['id'] = (int)($row['id'] ?? 0);
     $row['is_active'] = (int)($row['is_active'] ?? 0);
     $row['urutan'] = (int)($row['urutan'] ?? 0);
+    $row['target_device'] = in_array($row['target_device'] ?? '', ['desktop', 'mobile', 'all'], true) ? $row['target_device'] : 'desktop';
+    $row['target_page'] = $row['target_page'] ?? 'article';
+    $row['mode_tayang'] = in_array($row['mode_tayang'] ?? '', ['exclusive', 'rotation'], true) ? $row['mode_tayang'] : 'exclusive';
     return $row;
 }
 
@@ -126,6 +169,10 @@ function handleGetAds(?PDO $db): void {
     $posisi = isset($_GET['posisi']) ? trim($_GET['posisi']) : null;
     $tipe = isset($_GET['tipe']) ? trim($_GET['tipe']) : null;
     $status = isset($_GET['status']) ? trim($_GET['status']) : null;
+    $targetDevice = isset($_GET['target_device']) ? trim($_GET['target_device']) : null;
+    $device = isset($_GET['device']) ? trim($_GET['device']) : null;
+    $targetPage = isset($_GET['target_page']) ? trim($_GET['target_page']) : (isset($_GET['page']) ? trim($_GET['page']) : null);
+    $modeTayang = isset($_GET['mode_tayang']) ? trim($_GET['mode_tayang']) : null;
 
     // Fallback jika database tidak aktif
     if (!$db) {
@@ -139,11 +186,19 @@ function handleGetAds(?PDO $db): void {
             sendResponse(false, 'Iklan tidak ditemukan', null, 404);
         }
 
-        $filtered = array_filter($ads, function($item) use ($posisi, $tipe, $status) {
+        $filtered = array_filter($ads, function($item) use ($posisi, $tipe, $status, $targetDevice, $device, $targetPage, $modeTayang) {
             if ($posisi && $item['posisi'] !== $posisi) return false;
             if ($tipe && $item['tipe'] !== $tipe) return false;
             if ($status === 'active' && $item['is_active'] != 1) return false;
             if ($status === 'inactive' && $item['is_active'] != 0) return false;
+            $adDev = $item['target_device'] ?? 'desktop';
+            if ($targetDevice && $adDev !== $targetDevice && $adDev !== 'all') return false;
+            if ($device === 'mobile' && !in_array($adDev, ['all', 'mobile'], true)) return false;
+            if ($device === 'desktop' && !in_array($adDev, ['all', 'desktop'], true)) return false;
+            $adPage = $item['target_page'] ?? 'article';
+            if ($targetPage && $adPage !== $targetPage) return false;
+            $adMode = $item['mode_tayang'] ?? 'exclusive';
+            if ($modeTayang && $adMode !== $modeTayang) return false;
             return true;
         });
 
@@ -177,6 +232,25 @@ function handleGetAds(?PDO $db): void {
         if ($tipe) {
             $where[] = "`tipe` = :tipe";
             $params[':tipe'] = $tipe;
+        }
+
+        if ($targetDevice) {
+            $where[] = "(`target_device` = :target_device OR `target_device` = 'all')";
+            $params[':target_device'] = $targetDevice;
+        } elseif ($device === 'mobile') {
+            $where[] = "`target_device` IN ('all', 'mobile')";
+        } elseif ($device === 'desktop') {
+            $where[] = "`target_device` IN ('all', 'desktop')";
+        }
+
+        if ($modeTayang && in_array($modeTayang, ['exclusive', 'rotation'], true)) {
+            $where[] = "`mode_tayang` = :mode_tayang";
+            $params[':mode_tayang'] = $modeTayang;
+        }
+
+        if ($targetPage && in_array($targetPage, ['home', 'article'], true)) {
+            $where[] = "`target_page` = :target_page";
+            $params[':target_page'] = $targetPage;
         }
 
         if ($status === 'active') {
@@ -221,8 +295,19 @@ function handleCreateAd(?PDO $db): void {
     $judul = trim($input['judul'] ?? '');
     $tipe = trim($input['tipe'] ?? 'google');
     $posisi = trim($input['posisi'] ?? 'sidebar');
+    $targetDevice = trim($input['target_device'] ?? 'desktop');
+    if (!in_array($targetDevice, ['desktop', 'mobile', 'all'], true)) {
+        $targetDevice = 'desktop';
+    }
+    $modeTayang = trim($input['mode_tayang'] ?? 'exclusive');
+    if (!in_array($modeTayang, ['exclusive', 'rotation'], true)) {
+        $modeTayang = 'exclusive';
+    }
     $kodeHtml = $input['kode_html'] ?? null;
-    $gambar = $input['gambar'] ?? null;
+    $gambar = !empty($input['gambar']) ? trim($input['gambar']) : null;
+    if ($gambar) {
+        $gambar = preg_replace('#^\.\./+#', '', $gambar);
+    }
     $linkTujuan = $input['link_tujuan'] ?? null;
     $keterangan = trim($input['keterangan'] ?? '');
     $isActive = isset($input['is_active']) ? (int)filter_var($input['is_active'], FILTER_VALIDATE_BOOLEAN) : 1;
@@ -236,9 +321,14 @@ function handleCreateAd(?PDO $db): void {
         sendResponse(false, 'Tipe iklan harus "google" atau "banner"', null, 400);
     }
 
-    $validPositions = ['header', 'sidebar', 'article_middle', 'article_bottom', 'home_middle', 'footer'];
-    if (!in_array($posisi, $validPositions, true)) {
-        sendResponse(false, 'Posisi slot iklan tidak valid', null, 400);
+    $validPositions = ['sidebar', 'sidebar_middle', 'sidebar_bottom', 'article_middle', 'article_bottom', 'home_middle', 'footer'];
+    if ($posisi === 'header' || !in_array($posisi, $validPositions, true)) {
+        $posisi = ($targetDevice === 'mobile') ? 'article_middle' : 'sidebar';
+    }
+
+    $targetPage = trim($input['target_page'] ?? 'article');
+    if (!in_array($targetPage, ['home', 'article'], true)) {
+        $targetPage = 'article';
     }
 
     if ($tipe === 'google' && empty(trim($kodeHtml ?? ''))) {
@@ -251,6 +341,9 @@ function handleCreateAd(?PDO $db): void {
             'judul' => $judul,
             'tipe' => $tipe,
             'posisi' => $posisi,
+            'target_device' => $targetDevice,
+            'target_page' => $targetPage,
+            'mode_tayang' => $modeTayang,
             'kode_html' => $kodeHtml,
             'gambar' => $gambar,
             'link_tujuan' => $linkTujuan,
@@ -262,19 +355,22 @@ function handleCreateAd(?PDO $db): void {
 
     try {
         $stmt = $db->prepare("
-            INSERT INTO `iklan` (`judul`, `tipe`, `posisi`, `kode_html`, `gambar`, `link_tujuan`, `keterangan`, `is_active`, `urutan`, `created_at`, `updated_at`)
-            VALUES (:judul, :tipe, :posisi, :kode_html, :gambar, :link_tujuan, :keterangan, :is_active, :urutan, NOW(), NOW())
+            INSERT INTO `iklan` (`judul`, `tipe`, `posisi`, `target_device`, `target_page`, `mode_tayang`, `kode_html`, `gambar`, `link_tujuan`, `keterangan`, `is_active`, `urutan`, `created_at`, `updated_at`)
+            VALUES (:judul, :tipe, :posisi, :target_device, :target_page, :mode_tayang, :kode_html, :gambar, :link_tujuan, :keterangan, :is_active, :urutan, NOW(), NOW())
         ");
         $stmt->execute([
-            ':judul'       => $judul,
-            ':tipe'        => $tipe,
-            ':posisi'      => $posisi,
-            ':kode_html'   => $kodeHtml,
-            ':gambar'      => $gambar,
-            ':link_tujuan' => $linkTujuan,
-            ':keterangan'  => $keterangan,
-            ':is_active'   => $isActive,
-            ':urutan'      => $urutan
+            ':judul'         => $judul,
+            ':tipe'          => $tipe,
+            ':posisi'        => $posisi,
+            ':target_device' => $targetDevice,
+            ':target_page'   => $targetPage,
+            ':mode_tayang'   => $modeTayang,
+            ':kode_html'     => $kodeHtml,
+            ':gambar'        => $gambar,
+            ':link_tujuan'   => $linkTujuan,
+            ':keterangan'    => $keterangan,
+            ':is_active'     => $isActive,
+            ':urutan'        => $urutan
         ]);
 
         $newId = (int)$db->lastInsertId();
@@ -306,8 +402,29 @@ function handleUpdateAd(?PDO $db): void {
     $judul = trim($input['judul'] ?? '');
     $tipe = trim($input['tipe'] ?? 'google');
     $posisi = trim($input['posisi'] ?? 'sidebar');
+    $targetDevice = trim($input['target_device'] ?? 'desktop');
+    if (!in_array($targetDevice, ['desktop', 'mobile', 'all'], true)) {
+        $targetDevice = 'desktop';
+    }
+    $modeTayang = trim($input['mode_tayang'] ?? 'exclusive');
+    if (!in_array($modeTayang, ['exclusive', 'rotation'], true)) {
+        $modeTayang = 'exclusive';
+    }
+    $targetPage = trim($input['target_page'] ?? 'article');
+    if (!in_array($targetPage, ['home', 'article'], true)) {
+        $targetPage = 'article';
+    }
+
+    $validPositions = ['sidebar', 'sidebar_middle', 'sidebar_bottom', 'article_middle', 'article_bottom', 'home_middle', 'footer'];
+    if ($posisi === 'header' || !in_array($posisi, $validPositions, true)) {
+        $posisi = ($targetDevice === 'mobile') ? 'article_middle' : 'sidebar';
+    }
+
     $kodeHtml = $input['kode_html'] ?? null;
-    $gambar = $input['gambar'] ?? null;
+    $gambar = !empty($input['gambar']) ? trim($input['gambar']) : null;
+    if ($gambar) {
+        $gambar = preg_replace('#^\.\./+#', '', $gambar);
+    }
     $linkTujuan = $input['link_tujuan'] ?? null;
     $keterangan = trim($input['keterangan'] ?? '');
     $isActive = isset($input['is_active']) ? (int)filter_var($input['is_active'], FILTER_VALIDATE_BOOLEAN) : 1;
@@ -327,6 +444,9 @@ function handleUpdateAd(?PDO $db): void {
             SET `judul` = :judul,
                 `tipe` = :tipe,
                 `posisi` = :posisi,
+                `target_device` = :target_device,
+                `target_page` = :target_page,
+                `mode_tayang` = :mode_tayang,
                 `kode_html` = :kode_html,
                 `gambar` = :gambar,
                 `link_tujuan` = :link_tujuan,
@@ -337,16 +457,19 @@ function handleUpdateAd(?PDO $db): void {
             WHERE `id` = :id
         ");
         $stmt->execute([
-            ':id'          => $id,
-            ':judul'       => $judul,
-            ':tipe'        => $tipe,
-            ':posisi'      => $posisi,
-            ':kode_html'   => $kodeHtml,
-            ':gambar'      => $gambar,
-            ':link_tujuan' => $linkTujuan,
-            ':keterangan'  => $keterangan,
-            ':is_active'   => $isActive,
-            ':urutan'      => $urutan
+            ':id'            => $id,
+            ':judul'         => $judul,
+            ':tipe'          => $tipe,
+            ':posisi'        => $posisi,
+            ':target_device' => $targetDevice,
+            ':target_page'   => $targetPage,
+            ':mode_tayang'   => $modeTayang,
+            ':kode_html'     => $kodeHtml,
+            ':gambar'        => $gambar,
+            ':link_tujuan'   => $linkTujuan,
+            ':keterangan'    => $keterangan,
+            ':is_active'     => $isActive,
+            ':urutan'        => $urutan
         ]);
 
         sendResponse(true, 'Iklan berhasil diperbarui', ['id' => $id]);

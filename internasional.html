@@ -10,10 +10,10 @@
   <link rel="icon" type="image/webp" href="assets/images/logo/favicon.webp">
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="assets/css/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/tailwind.min.css?v=20260929_v1">
 
   <!-- Google Fonts & Custom CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20260917_special_cards_v1">
+  <link rel="stylesheet" href="assets/css/style.css?v=20260929_v1">
 </head>
 <body class="bg-[#F1F5F9] text-[#0F172A] antialiased flex flex-col min-h-screen font-sans">
 
@@ -103,9 +103,6 @@
 
   <!-- MAIN CONTAINER (Desktop 70% Left Content, 30% Right Sidebar) -->
   <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-8 flex-1 w-full">
-    <!-- SLOT IKLAN: HEADER LEADERBOARD -->
-    <div data-ad-slot="header" class="w-full mb-6"></div>
-
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
       <!-- LEFT COLUMN: MAIN CONTENT (~70% = 8 cols) -->
@@ -132,6 +129,9 @@
           <!-- Diisi dinamis oleh category-live.js dari database PostgreSQL -->
         </div>
 
+        <!-- SLOT IKLAN: BAWAH DAFTAR BERITA (Khusus Mobile Responsif Sebelum Paginasi) -->
+        <div data-ad-slot="article_bottom" class="w-full my-6"></div>
+
         <!-- PAGINATION UI COMPONENT -->
         <nav class="flex items-center justify-center space-x-2 pt-6 pb-2" aria-label="Navigasi Halaman">
           <span class="px-4 py-2 bg-buser-red text-white text-xs font-bold rounded-full shadow-xs">1</span>
@@ -142,6 +142,9 @@
       <!-- RIGHT COLUMN: SIDEBAR (~30% = 4 cols) -->
       <aside class="lg:col-span-4 space-y-6">
         
+        <!-- SLOT IKLAN: SIDEBAR ATAS -->
+        <div data-ad-slot="sidebar" class="w-full"></div>
+
         <!-- SIDEBAR: TRENDING SECTION -->
         <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-soft">
           <div class="section-heading-bar mb-4 justify-between">
@@ -154,13 +157,13 @@
             <span class="text-[10px] bg-rose-50 text-buser-red font-extrabold px-2.5 py-0.5 rounded-full">HOT</span>
           </div>
 
-          <div class="divide-y divide-slate-100">
+          <div class="divide-y divide-slate-100" id="category-trending-feed">
             <!-- Diisi dinamis oleh category-live.js dari database PostgreSQL -->
           </div>
         </div>
 
-        <!-- SLOT IKLAN: SIDEBAR -->
-        <div data-ad-slot="sidebar" class="w-full"></div>
+        <!-- SLOT IKLAN: SIDEBAR TENGAH -->
+        <div data-ad-slot="sidebar_middle" class="w-full"></div>
 
         <!-- HOTLINE BOX -->
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-soft border-t-2 border-buser-red">
@@ -173,6 +176,9 @@
             Kirim ke Redaksi &rarr;
           </a>
         </div>
+
+        <!-- SLOT IKLAN: SIDEBAR BAWAH -->
+        <div data-ad-slot="sidebar_bottom" class="w-full"></div>
 
       </aside>
 
@@ -226,9 +232,10 @@
         </div>
       </div>
 
-      <!-- Bottom: Copyright aligned to right -->
-      <div class="pt-4 text-center lg:text-right text-[11px] text-slate-400">
-        &copy; 2026 Japakeh Post. All Rights Reserved.
+      <!-- Bottom: Office address & Copyright -->
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
+        <div class="portal-office-address text-center sm:text-left">Gedung PT Japakeh Media Nusantara, Jl. Banda Aceh - Meulaboh Km. 8, Aceh Besar • WhatsApp: <a href="https://wa.me/6282165071114" class="portal-hotline-link text-slate-300 hover:text-white font-medium">082165071114</a></div>
+        <div>&copy; 2026 Japakeh Post. All Rights Reserved.</div>
       </div>
     </div>
   </footer>
@@ -337,10 +344,10 @@
   </div>
 
   <!-- SCRIPTS -->
-  <script src="assets/js/news-data.js"></script>
-  <script src="assets/js/api-client.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/category-live.js"></script>
-  <script src="assets/js/ads-loader.js"></script>
+  <script src="assets/js/news-data.js?v=20260929_v1"></script>
+  <script src="assets/js/api-client.js?v=20260929_v1"></script>
+  <script src="assets/js/main.js?v=20260929_v1"></script>
+  <script src="assets/js/category-live.js?v=20260929_v1"></script>
+  <script src="assets/js/ads-loader.js?v=20260929_v1"></script>
 </body>
 </html>

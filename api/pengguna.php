@@ -50,6 +50,8 @@ function handleGetUsers(PDO $db): void {
                     email_users, 
                     role, 
                     COALESCE(status, 'active') AS status, 
+                    COALESCE(avatar, '') AS avatar,
+                    COALESCE(bio, '') AS bio,
                     last_login, 
                     created_at, 
                     updated_at
@@ -74,6 +76,8 @@ function handleGetUsers(PDO $db): void {
                 email_users, 
                 role, 
                 COALESCE(status, 'active') AS status, 
+                COALESCE(avatar, '') AS avatar,
+                COALESCE(bio, '') AS bio,
                 last_login, 
                 created_at, 
                 updated_at
@@ -97,6 +101,21 @@ function handleCreateUser(PDO $db): void {
     $email    = trim($input['email'] ?? $input['email_users'] ?? '');
     $role     = trim($input['role'] ?? 'Reporter');
     $password = trim($input['password'] ?? '');
+    $bio      = trim($input['bio'] ?? '');
+    $avatar   = trim($input['avatar'] ?? $input['foto'] ?? '');
+
+    // Cek jika ada file avatar diunggah langsung via multipart/form-data
+    if (!empty($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $upDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'avatars';
+        if (!is_dir($upDir)) mkdir($upDir, 0755, true);
+        $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+            $fname = 'avatar-' . time() . '-' . bin2hex(random_bytes(4)) . '.' . $ext;
+            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $upDir . DIRECTORY_SEPARATOR . $fname)) {
+                $avatar = 'assets/images/users/avatars/' . $fname;
+            }
+        }
+    }
 
     if (empty($nama) || empty($email) || empty($password)) {
         sendResponse(false, 'Nama lengkap, email, dan kata sandi wajib diisi', null, 400);
@@ -120,14 +139,16 @@ function handleCreateUser(PDO $db): void {
 
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $db->prepare("
-            INSERT INTO users (nama_users, email_users, password, role, status, created_at, updated_at)
-            VALUES (:nama, :email, :password, :role, 'active', NOW(), NOW())
+            INSERT INTO users (nama_users, email_users, password, role, bio, avatar, status, created_at, updated_at)
+            VALUES (:nama, :email, :password, :role, :bio, :avatar, 'active', NOW(), NOW())
         ");
         $stmt->execute([
             ':nama'     => $nama,
             ':email'    => $email,
             ':password' => $hash,
-            ':role'     => $role
+            ':role'     => $role,
+            ':bio'      => $bio,
+            ':avatar'   => $avatar
         ]);
         $newId = (int)$db->lastInsertId();
         $newUser = [
@@ -135,6 +156,8 @@ function handleCreateUser(PDO $db): void {
             'nama_users'  => $nama,
             'email_users' => $email,
             'role'        => $role,
+            'bio'         => $bio,
+            'avatar'      => $avatar,
             'status'      => 'active',
             'created_at'  => date('Y-m-d H:i:s')
         ];
@@ -207,6 +230,30 @@ function handleUpdateUser(PDO $db): void {
         $status = trim($input['status'] ?? $user['status'] ?? 'active');
         $newPass = trim($input['password'] ?? '');
 
+        $bio    = trim($input['bio'] ?? $user['bio'] ?? '');
+        $clearAvatar = !empty($input['clear_avatar']) || !empty($input['delete_avatar']);
+        $inputAvatar = isset($input['avatar']) ? trim($input['avatar']) : (isset($input['foto']) ? trim($input['foto']) : null);
+
+        if (!empty($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $upDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'users' . DIRECTORY_SEPARATOR . 'avatars';
+            if (!is_dir($upDir)) mkdir($upDir, 0755, true);
+            $ext = strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                $fname = 'avatar-' . time() . '-' . bin2hex(random_bytes(4)) . '.' . $ext;
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $upDir . DIRECTORY_SEPARATOR . $fname)) {
+                    $inputAvatar = 'assets/images/users/avatars/' . $fname;
+                }
+            }
+        }
+
+        if ($clearAvatar) {
+            $finalAvatar = '';
+        } elseif ($inputAvatar !== null) {
+            $finalAvatar = $inputAvatar;
+        } else {
+            $finalAvatar = $user['avatar'] ?? '';
+        }
+
         if (empty($nama) || empty($email)) {
             sendResponse(false, 'Nama dan email tidak boleh kosong', null, 400);
         }
@@ -233,6 +280,8 @@ function handleUpdateUser(PDO $db): void {
                 SET nama_users = :nama, 
                     email_users = :email, 
                     role = :role, 
+                    bio = :bio,
+                    avatar = :avatar,
                     status = :status,
                     password = :password,
                     updated_at = NOW()
@@ -242,6 +291,8 @@ function handleUpdateUser(PDO $db): void {
                 ':nama'     => $nama,
                 ':email'    => $email,
                 ':role'     => $role,
+                ':bio'      => $bio,
+                ':avatar'   => $finalAvatar,
                 ':status'   => $status,
                 ':password' => $hash,
                 ':id'       => $id
@@ -252,6 +303,8 @@ function handleUpdateUser(PDO $db): void {
                 SET nama_users = :nama, 
                     email_users = :email, 
                     role = :role, 
+                    bio = :bio,
+                    avatar = :avatar,
                     status = :status,
                     updated_at = NOW()
                 WHERE id = :id
@@ -260,12 +313,14 @@ function handleUpdateUser(PDO $db): void {
                 ':nama'   => $nama,
                 ':email'  => $email,
                 ':role'   => $role,
+                ':bio'    => $bio,
+                ':avatar' => $finalAvatar,
                 ':status' => $status,
                 ':id'     => $id
             ]);
         }
 
-        $stmtUser = $db->prepare("SELECT id, nama_users, email_users, role, status, updated_at FROM users WHERE id = :id");
+        $stmtUser = $db->prepare("SELECT id, nama_users, email_users, role, bio, avatar, status, updated_at FROM users WHERE id = :id");
         $stmtUser->execute([':id' => $id]);
         $updated = $stmtUser->fetch();
 

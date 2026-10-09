@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCategoryOverflowNav();
   highlightActiveNav();
   loadDynamicCategoriesNav();
+  initPortalSettings();
 });
 
 /* --------------------------------------------------------------------------
@@ -120,6 +121,14 @@ async function initBreakingNewsTicker() {
   }
 
   if (items.length === 0) {
+    let fallbackHotline = '082165071114';
+    try {
+      const ps = JSON.parse(localStorage.getItem('portal_settings') || '{}');
+      if (ps && ps.hotline_phone) fallbackHotline = ps.hotline_phone;
+    } catch (e) {}
+    const cleanFallbackWa = fallbackHotline.replace(/[^0-9]/g, '');
+    const intlFallbackWa = cleanFallbackWa.startsWith('0') ? '62' + cleanFallbackWa.slice(1) : cleanFallbackWa;
+
     items = [
       {
         title: 'Selamat Datang di Japakeh Post — Cepat, Akurat, Terpercaya',
@@ -134,10 +143,10 @@ async function initBreakingNewsTicker() {
         link: 'tentang.html'
       },
       {
-        title: 'Layanan Pengaduan & Informasi Warga: Hubungi WhatsApp 082165071114',
+        title: `Layanan Pengaduan & Informasi Warga: Hubungi WhatsApp ${fallbackHotline}`,
         category: 'HOTLINE',
         rank: 3,
-        link: 'https://wa.me/6282165071114'
+        link: `https://wa.me/${intlFallbackWa}`
       }
     ];
   }
@@ -359,7 +368,7 @@ function initQuickSearch() {
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       clearTimeout(quickSearchTimer);
-      quickSearchTimer = setTimeout(() => {
+      quickSearchTimer = setTimeout(async () => {
         const val = searchInput.value.trim();
         if (!liveResultsContainer) return;
 
@@ -369,9 +378,18 @@ function initQuickSearch() {
           return;
         }
 
-        const matches = (window.NewsDB && typeof window.NewsDB.search === 'function')
-          ? window.NewsDB.search(val)
-          : [];
+        let matches = [];
+        const api = window.JapakehPostAPI || window.BuserInfoAPI;
+        if (api && typeof api.getArticles === 'function') {
+          try {
+            const res = await api.getArticles({ search: val, limit: 4, status: 'published' });
+            if (res && Array.isArray(res.articles)) {
+              matches = res.articles;
+            }
+          } catch (e) {
+            console.warn('[main.js] Quick search error:', e);
+          }
+        }
 
         if (matches.length === 0) {
           liveResultsContainer.innerHTML = `
@@ -401,19 +419,19 @@ function initQuickSearch() {
                   <h4 class="text-xs font-bold text-slate-900 group-hover:text-buser-red line-clamp-1 transition-colors leading-tight">
                     ${escapeQuickHtml(item.title)}
                   </h4>
-                  <span class="text-[10px] text-slate-400">${escapeQuickHtml(item.date || 'Terbaru')}</span>
+                  <span class="text-[10px] text-slate-400">${escapeQuickHtml(item.published_at || item.date || 'Terbaru')}</span>
                 </div>
               </a>
             `;
           }).join('')}
           <div class="pt-2 text-center">
             <a href="cari.html?q=${encodeURIComponent(val)}" class="text-xs font-bold text-buser-red hover:text-buser-redHover transition-colors inline-flex items-center">
-              Lihat semua ${matches.length} hasil di Halaman Cari Berita &rarr;
+              Lihat semua hasil di Halaman Cari Berita &rarr;
             </a>
           </div>
         `;
         liveResultsContainer.classList.remove('hidden');
-      }, 150);
+      }, 250);
     });
   }
 
@@ -754,3 +772,109 @@ window.removeBookmark = removeBookmark;
 window.toggleBookmark = toggleBookmark;
 window.isBookmarked = isBookmarked;
 window.showToast = showToast;
+
+/* --------------------------------------------------------------------------
+   9. Portal Global Settings Synchronization (Address, Contact, & Socials)
+   -------------------------------------------------------------------------- */
+function initPortalSettings() {
+  function applySettings(d) {
+    if (!d) return;
+
+    const hotline = d.hotline_phone || '082165071114';
+    const emailRedaksi = d.redaksi_email || 'alb4hri@gmail.com';
+    const emailIklan = d.iklan_email || 'iklan@japakehpost.com';
+    const address = d.office_address || 'Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Kec. Darul Imarah, Kab. Aceh Besar, Aceh';
+    const company = d.company_name || 'PT Japakeh Media Nusantara';
+
+    const cleanWaNum = hotline.replace(/[^0-9]/g, '');
+    const intlWa = cleanWaNum.startsWith('0') ? '62' + cleanWaNum.slice(1) : cleanWaNum;
+
+    // 1. WhatsApp / Hotline links & text
+    document.querySelectorAll('.portal-hotline-text, #footer-whatsapp-text, #contact-whatsapp-text, #tentang-whatsapp-text').forEach(el => {
+      el.textContent = hotline;
+    });
+
+    document.querySelectorAll('.portal-hotline-link, #footer-whatsapp-link, #contact-whatsapp-link, #tentang-whatsapp-link, a[href*="wa.me"]').forEach(el => {
+      el.href = `https://wa.me/${intlWa}`;
+      const hotlineSpan = el.querySelector('.portal-hotline-text');
+      if (hotlineSpan) {
+        hotlineSpan.textContent = hotline;
+      } else if (el.textContent.includes('WhatsApp Redaksi:')) {
+        el.innerHTML = el.innerHTML.replace(/WhatsApp Redaksi:\s*[\d\s\+\-\.]+/i, `WhatsApp Redaksi: ${hotline}`);
+      } else if (el.textContent.includes('WhatsApp:')) {
+        el.innerHTML = el.innerHTML.replace(/WhatsApp:\s*[\d\s\+\-\.]+/i, `WhatsApp: ${hotline}`);
+      } else if (/^\s*08\d{8,11}\s*$/.test(el.textContent)) {
+        el.textContent = hotline;
+      }
+    });
+
+    // 2. Email Redaksi & Iklan
+    document.querySelectorAll('.portal-email-text').forEach(el => {
+      el.textContent = emailRedaksi;
+    });
+
+    document.querySelectorAll('.portal-email-redaksi, #contact-email-redaksi, #tentang-email-link, a[href^="mailto:"]').forEach(el => {
+      if (el.href.toLowerCase().includes('iklan')) {
+        el.href = `mailto:${emailIklan}`;
+        if (el.textContent.includes('@')) el.textContent = emailIklan;
+      } else {
+        el.href = `mailto:${emailRedaksi}`;
+        const emailSpan = el.querySelector('.portal-email-text');
+        if (emailSpan) {
+          emailSpan.textContent = emailRedaksi;
+        } else if (el.textContent.includes('Email:')) {
+          el.innerHTML = el.innerHTML.replace(/Email:\s*[\S]+@[\S]+/i, `Email: ${emailRedaksi}`);
+        } else if (el.textContent.includes('@')) {
+          el.textContent = emailRedaksi;
+        }
+      }
+    });
+
+    // 3. Alamat Kantor
+    document.querySelectorAll('.portal-office-address, #footer-office-address, #contact-office-address, #tentang-office-address').forEach(el => {
+      el.textContent = address;
+    });
+
+    // 4. Nama Perusahaan / Badan Usaha
+    document.querySelectorAll('.portal-company-name, #footer-company-name, #contact-company-name, #tentang-company-name').forEach(el => {
+      el.textContent = company;
+    });
+
+    // 5. Tautan Media Sosial
+    if (d.social_facebook) {
+      document.querySelectorAll('a[aria-label="Facebook"], a[title*="Facebook"]').forEach(a => a.href = d.social_facebook);
+    }
+    if (d.social_tiktok) {
+      document.querySelectorAll('a[aria-label="TikTok"], a[title*="TikTok"]').forEach(a => a.href = d.social_tiktok);
+    }
+    if (d.social_instagram) {
+      document.querySelectorAll('a[aria-label="Instagram"], a[title*="Instagram"]').forEach(a => a.href = d.social_instagram);
+    }
+    if (d.social_youtube) {
+      document.querySelectorAll('a[aria-label="YouTube"], a[title*="YouTube"]').forEach(a => a.href = d.social_youtube);
+    }
+    if (d.social_twitter) {
+      document.querySelectorAll('a[aria-label="X"], a[aria-label="X (Twitter)"], a[title*="Twitter"]').forEach(a => a.href = d.social_twitter);
+    }
+  }
+
+  // A. Terapkan cache lokal instan
+  try {
+    const cached = localStorage.getItem('portal_settings');
+    if (cached) {
+      applySettings(JSON.parse(cached));
+    }
+  } catch (e) {}
+
+  // B. Ambil data terbaru dari API backend
+  fetch('api/pengaturan.php')
+    .then(res => res.json())
+    .then(result => {
+      if (result && result.status && result.data) {
+        localStorage.setItem('portal_settings', JSON.stringify(result.data));
+        applySettings(result.data);
+      }
+    })
+    .catch(() => {});
+}
+

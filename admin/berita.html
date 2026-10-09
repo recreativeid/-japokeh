@@ -8,10 +8,10 @@
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-  <link rel="stylesheet" href="css/admin.css">
-  <script src="../assets/js/api-client.js"></script>
-  <script src="js/auth-guard.js"></script>
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css?v=20260929_v1">
+  <link rel="stylesheet" href="css/admin.css?v=20261006_v2">
+  <script src="../assets/js/api-client.js?v=20260929_v1"></script>
+  <script src="js/auth-guard.js?v=20260929_v1"></script>
 </head>
 <body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
 
@@ -231,11 +231,6 @@
           <div>
             <select id="filter-author" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
               <option value="">Semua Penulis</option>
-              <option value="Dimas Pratama">Dimas Pratama</option>
-              <option value="Siti Nurhaliza">Siti Nurhaliza</option>
-              <option value="Rudi Hartono">Rudi Hartono</option>
-              <option value="Bambang Sudiro, S.I.Kom.">Bambang Sudiro, S.I.Kom.</option>
-              <option value="Maya Safitri">Maya Safitri</option>
             </select>
           </div>
 
@@ -505,6 +500,84 @@
               </div>
             </div>
 
+            <!-- GALERI FOTO DALAM ARTIKEL (SLIDER / GRID) -->
+            <div class="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-xs">
+              <div class="p-4 bg-gray-50/80 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div class="flex items-center space-x-2.5">
+                  <div class="w-8 h-8 rounded-lg bg-red-100 text-buser-red flex items-center justify-center shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h4 class="text-xs font-bold uppercase tracking-wider text-gray-800">Galeri Foto Berita (Slider & Grid)</h4>
+                      <span id="gallery-counter-badge" class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-slate-200 text-slate-700">0 Foto</span>
+                    </div>
+                    <p class="text-[11px] text-gray-500">Unggah minimal 5 foto lengkap dengan keterangan (caption) untuk ditampilkan dalam format galeri slider di bawah foto utama.</p>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2 w-full sm:w-auto shrink-0">
+                  <label class="btn btn-outline btn-sm cursor-pointer text-xs flex items-center justify-center flex-1 sm:flex-initial shadow-xs">
+                    <svg class="w-3.5 h-3.5 mr-1 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>+ Unggah Foto (Min. 5 Foto)</span>
+                    <input type="file" id="gallery-file-input" multiple accept="image/*" class="hidden">
+                  </label>
+                  <button type="button" id="btn-clear-gallery" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-600 hover:text-white rounded-lg border border-red-300 transition-all shadow-xs cursor-pointer hidden" title="Hapus Semua Foto dari Galeri">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    <span>Hapus Semua Foto</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Upload Drag & Drop Area / Empty State -->
+              <div id="gallery-dropzone" class="p-6 text-center border-2 border-dashed border-gray-200 m-4 rounded-xl bg-gray-50/50 hover:bg-gray-50 hover:border-buser-red transition-all cursor-pointer">
+                <input type="file" id="gallery-dropzone-input" multiple accept="image/*" class="hidden">
+                <div class="w-12 h-12 mx-auto rounded-full bg-red-50 text-buser-red flex items-center justify-center mb-2">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                  </svg>
+                </div>
+                <p class="text-xs font-bold text-gray-800 mb-0.5">Pilih atau Seret Minimal 5 Foto ke Sini</p>
+                <p class="text-[11px] text-gray-500 max-w-sm mx-auto">Format didukung: JPG, PNG, WEBP. Setiap foto dapat diberi keterangan/caption tersendiri.</p>
+                <div class="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold text-buser-red bg-red-50 px-2.5 py-1 rounded-full border border-red-200">
+                  <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                  <span>Mendukung upload multi-file sekaligus (Batch Upload)</span>
+                </div>
+              </div>
+
+              <!-- Uploading Progress Indicator -->
+              <div id="gallery-uploading-indicator" class="hidden p-4 mx-4 mb-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center space-x-3 text-xs text-blue-800">
+                <svg class="animate-spin w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span id="gallery-uploading-text">Sedang mengunggah foto galeri...</span>
+              </div>
+
+              <!-- Gallery Items Container (Responsive Cards List) -->
+              <div id="gallery-items-list" class="hidden p-4 space-y-3.5">
+                <!-- Injected dynamically by admin-berita-live.js -->
+              </div>
+
+              <!-- Compact Add More Photos Bar (Shown when gallery has photos) -->
+              <div id="gallery-add-more-container" class="hidden px-4 pb-4">
+                <label class="w-full py-2.5 px-4 border-2 border-dashed border-gray-300 hover:border-buser-red hover:bg-red-50/30 rounded-xl text-xs font-semibold text-gray-700 hover:text-buser-red flex items-center justify-center gap-2 cursor-pointer transition-all shadow-2xs">
+                  <svg class="w-4 h-4 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <span>+ Tambah Foto Lainnya ke Galeri (Bisa Pilih Banyak Foto)</span>
+                  <input type="file" id="gallery-add-more-input" multiple accept="image/*" class="hidden">
+                </label>
+              </div>
+
+              <!-- Gallery Requirements Footer Notice -->
+              <div class="px-4 py-2.5 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-gray-500 gap-1">
+                <div id="gallery-status-notice" class="flex items-center space-x-1.5 font-medium text-amber-700">
+                  <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                  <span>Belum ada foto galeri. Tambahkan minimal 5 foto untuk mode berita galeri/slider.</span>
+                </div>
+                <div class="text-gray-400">Slider tersinkronisasi otomatis dengan caption</div>
+              </div>
+            </div>
+
             <!-- Collapsible SEO -->
             <div class="border border-gray-200 rounded-lg overflow-hidden bg-white">
               <button type="button" id="btn-toggle-seo" class="w-full p-3 text-left font-bold text-xs uppercase tracking-wider text-gray-800 bg-gray-50 flex items-center justify-between">
@@ -538,48 +611,122 @@
             
             <!-- Pengaturan Publikasi -->
             <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3">
-              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-200 pb-2">
-                Status Publikasi
+              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-200 pb-2 flex items-center justify-between">
+                <span>Status Publikasi</span>
+                <span class="text-[10px] font-normal text-gray-400 capitalize" id="current-status-indicator">Published</span>
               </h4>
               <div class="space-y-2 text-xs">
-                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300 transition-colors">
                   <input type="radio" name="pub_status" value="publish" checked class="text-buser-red focus:ring-buser-red">
                   <div>
                     <span class="font-bold text-gray-900">Terbitkan Sekarang</span>
                     <p class="text-[10px] text-gray-500">Tayang langsung di portal publik</p>
                   </div>
                 </label>
-                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300 transition-colors">
                   <input type="radio" name="pub_status" value="draft" class="text-buser-red focus:ring-buser-red">
                   <div>
                     <span class="font-bold text-gray-900">Simpan sebagai Draft</span>
                     <p class="text-[10px] text-gray-500">Belum dipublikasikan</p>
                   </div>
                 </label>
-                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300 transition-colors">
                   <input type="radio" name="pub_status" value="review" class="text-buser-red focus:ring-buser-red">
                   <div>
                     <span class="font-bold text-gray-900">Kirim untuk Review</span>
                     <p class="text-[10px] text-gray-500">Menunggu verifikasi redaksi</p>
                   </div>
                 </label>
-                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300">
+                <label class="flex items-center space-x-2.5 cursor-pointer p-2 rounded bg-white border border-gray-200 hover:border-gray-300 transition-colors">
                   <input type="radio" name="pub_status" value="schedule" id="radio-schedule" class="text-buser-red focus:ring-buser-red">
                   <div>
                     <span class="font-bold text-gray-900">Jadwalkan Tayang</span>
-                    <p class="text-[10px] text-gray-500">Publikasi otomatis pada waktu tertentu</p>
+                    <p class="text-[10px] text-gray-500">Publikasi otomatis pada waktu mendatang</p>
                   </div>
                 </label>
               </div>
 
-              <!-- Datetime picker for scheduled -->
-              <div id="schedule-picker-box" class="hidden p-3 bg-blue-50 border border-blue-200 rounded-lg space-y-1">
-                <label class="block text-[11px] font-bold text-blue-900">Waktu Jadwal Tayang (WIB)</label>
-                <input type="datetime-local" id="schedule-datetime" class="w-full text-xs p-1.5 bg-white border border-blue-300 rounded focus:ring-buser-red">
+              <!-- Datetime picker for scheduled (Tunda Publish) -->
+              <div id="schedule-picker-box" class="hidden p-3 bg-blue-50/90 border border-blue-200 rounded-lg space-y-2">
+                <label for="schedule-datetime" class="block text-[11px] font-bold text-blue-900 flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Waktu Jadwal Tayang (WIB) <span class="text-red-500">*</span>
+                </label>
+                <input type="datetime-local" id="schedule-datetime" class="w-full text-xs p-1.5 bg-white border border-blue-300 rounded font-mono text-gray-800 focus:ring-2 focus:ring-blue-500">
+                <p class="text-[10px] text-blue-700 leading-tight">Artikel otomatis berstatus Published saat waktu jadwal tercapai.</p>
               </div>
             </div>
 
-            <!-- Kategori & Penulis -->
+            <!-- Pengaturan Tanggal & Waktu (Kustom / Backdate & Auto-Expire) -->
+            <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3" id="date-settings-box">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-200 pb-2 flex items-center justify-between">
+                <span class="flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  Pengaturan Tanggal & Waktu
+                </span>
+                <span class="text-[9.5px] text-gray-400 font-normal">Kustom & Backdate</span>
+              </h4>
+
+              <!-- 1. Opsi Tanggal Terbit (Published Date) -->
+              <div class="space-y-2 text-xs" id="publish-date-wrapper">
+                <label class="block font-semibold text-gray-800 text-[11px]">Tanggal & Jam Terbit (Published At)</label>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <label class="flex items-center space-x-1.5 p-2 rounded bg-white border border-gray-200 cursor-pointer hover:border-gray-300 transition-colors">
+                    <input type="radio" name="date_mode" value="auto" id="date-mode-auto" checked class="text-buser-red focus:ring-buser-red">
+                    <span class="text-[11px] font-medium text-gray-800">Waktu Sekarang</span>
+                  </label>
+                  <label class="flex items-center space-x-1.5 p-2 rounded bg-white border border-gray-200 cursor-pointer hover:border-gray-300 transition-colors">
+                    <input type="radio" name="date_mode" value="manual" id="date-mode-manual" class="text-buser-red focus:ring-buser-red">
+                    <span class="text-[11px] font-medium text-gray-800">Atur Manual</span>
+                  </label>
+                </div>
+
+                <!-- Input Tanggal Terbit Manual (Backdate / Custom) -->
+                <div id="manual-date-picker-box" class="hidden p-2.5 bg-amber-50/70 border border-amber-200 rounded-lg space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-amber-900 uppercase tracking-wider">Pilih Tanggal & Jam:</span>
+                    <div class="flex items-center gap-1">
+                      <button type="button" id="btn-quick-now" class="text-[9.5px] px-1.5 py-0.5 bg-white border border-amber-300 text-amber-900 rounded hover:bg-amber-100 font-semibold" title="Setel ke waktu saat ini">Sekarang</button>
+                      <button type="button" id="btn-quick-yesterday" class="text-[9.5px] px-1.5 py-0.5 bg-white border border-amber-300 text-amber-900 rounded hover:bg-amber-100 font-semibold" title="Setel ke kemarin (H-1)">Kemarin</button>
+                    </div>
+                  </div>
+                  <input type="datetime-local" id="article-published-at" class="w-full text-xs p-1.5 bg-white border border-amber-300 rounded font-mono text-gray-800 focus:ring-2 focus:ring-amber-500">
+                  <p class="text-[9.5px] text-amber-800 leading-tight">
+                    💡 Gunakan opsi ini untuk liputan kemarin, arsip tanggal lama (backdate), atau revisi jam terbit.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 2. Opsi Tanggal Turun Tayang / Auto-Expire -->
+              <div class="pt-2 border-t border-gray-200 space-y-2">
+                <label class="flex items-center space-x-2 cursor-pointer select-none">
+                  <input type="checkbox" id="check-enable-expire" class="rounded border-gray-300 text-buser-red focus:ring-buser-red w-4 h-4">
+                  <div>
+                    <span class="text-xs font-semibold text-gray-800">Batas Waktu Tayang (Auto-Expire)</span>
+                    <p class="text-[10px] text-gray-500">Otomatis turun tayang setelah tanggal tertentu</p>
+                  </div>
+                </label>
+
+                <!-- Box Input Expired At -->
+                <div id="expire-picker-box" class="hidden p-2.5 bg-rose-50/70 border border-rose-200 rounded-lg space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-rose-900 uppercase tracking-wider">Tanggal & Jam Berakhir:</span>
+                    <div class="flex items-center gap-1">
+                      <button type="button" id="btn-expire-1d" class="text-[9.5px] px-1.5 py-0.5 bg-white border border-rose-300 text-rose-900 rounded hover:bg-rose-100 font-semibold">+1 Hari</button>
+                      <button type="button" id="btn-expire-3d" class="text-[9.5px] px-1.5 py-0.5 bg-white border border-rose-300 text-rose-900 rounded hover:bg-rose-100 font-semibold">+3 Hari</button>
+                      <button type="button" id="btn-expire-7d" class="text-[9.5px] px-1.5 py-0.5 bg-white border border-rose-300 text-rose-900 rounded hover:bg-rose-100 font-semibold">+7 Hari</button>
+                    </div>
+                  </div>
+                  <input type="datetime-local" id="article-expired-at" class="w-full text-xs p-1.5 bg-white border border-rose-300 rounded font-mono text-gray-800 focus:ring-2 focus:ring-rose-500">
+                  <p class="text-[9.5px] text-rose-700 leading-tight">
+                    ⏱️ Setelah melewati waktu ini, berita otomatis diarsipkan (berstatus Draft) dan berhenti tampil di publik.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Kategori, Penulis & Editor Redaksi -->
             <div class="bg-gray-50/70 p-4 rounded-lg border border-gray-200 space-y-3">
               <div>
                 <label for="article-category" class="block text-xs font-semibold text-gray-700 mb-1">
@@ -592,14 +739,19 @@
 
               <div>
                 <label for="article-author" class="block text-xs font-semibold text-gray-700 mb-1">
-                  Penulis / Redaksi <span class="text-red-500">*</span>
+                  Penulis / Jurnalis <span class="text-red-500">*</span>
                 </label>
                 <select id="article-author" required class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red">
-                  <option value="Bambang Sudiro, S.I.Kom." selected>Bambang Sudiro, S.I.Kom. (Pemimpin Redaksi)</option>
-                  <option value="Dimas Pratama">Dimas Pratama (Reporter Kriminal)</option>
-                  <option value="Siti Nurhaliza">Siti Nurhaliza (Editor Politik)</option>
-                  <option value="Rudi Hartono">Rudi Hartono (Reporter Investigasi)</option>
-                  <option value="Maya Safitri">Maya Safitri (Reporter Nasional)</option>
+                  <option value="" disabled selected>Memuat daftar penulis...</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="article-editor-select" class="block text-xs font-semibold text-gray-700 mb-1">
+                  Editor Berita / Redaktur <span class="text-gray-400 font-normal">(Opsional)</span>
+                </label>
+                <select id="article-editor-select" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red">
+                  <option value="">-- Tanpa Editor Khusus / Penanggung Jawab --</option>
                 </select>
               </div>
             </div>
@@ -625,6 +777,24 @@
                 </button>
               </div>
               <p class="text-[10px] text-gray-400">Rasio 16:9 disarankan. Format JPG/PNG/WebP maks 2MB.</p>
+
+              <!-- Keterangan Foto Utama (Caption & Atribusi Sumber) -->
+              <div class="pt-3 border-t border-gray-200 space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <label for="article-caption" class="block text-xs font-bold text-gray-700">
+                    Keterangan Foto (Caption)
+                  </label>
+                  <span class="text-[10px] text-gray-400 font-medium">Konteks & Atribusi</span>
+                </div>
+                <textarea 
+                  id="article-caption" 
+                  rows="2" 
+                  placeholder="Tulis konteks peristiwa dan atribusi sumber foto (contoh: Suasana rapat kerja di gedung DPR RI, Jakarta. Foto: Dok. Redaksi / Antara)..." 
+                  class="w-full text-xs text-gray-800 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-buser-red focus:border-buser-red bg-white transition-all leading-relaxed"></textarea>
+                <p class="text-[10px] text-gray-500 leading-normal">
+                  Keterangan ini akan ditampilkan dengan jelas tepat di bawah foto utama berita.
+                </p>
+              </div>
             </div>
 
             <!-- Tag Berita -->
@@ -701,12 +871,15 @@
         <h1 id="modal-prev-title" class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
           Judul Berita Pratinjau
         </h1>
-        <div class="text-xs text-gray-500 font-medium">
-          Penulis: <span id="modal-prev-author" class="text-gray-800 font-semibold">Al Bahri</span> • Japakeh Post
+        <div class="text-xs text-gray-500 font-medium flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span>Penulis: <strong id="modal-prev-author" class="text-gray-800 font-semibold">Al Bahri</strong></span>
+          <span id="modal-prev-editor-wrap" class="hidden">• Editor: <strong id="modal-prev-editor" class="text-gray-800 font-semibold"></strong></span>
+          <span>• Redaksi Japakeh Post</span>
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200 aspect-video">
           <img id="modal-prev-img" src="../assets/images/berita/hero/sorotan-utama-dunia.jpg" alt="Preview" class="w-full h-full object-cover">
         </div>
+        <figcaption id="modal-prev-caption" class="text-xs text-slate-600 italic px-3 py-1 bg-slate-50 rounded-r border-l-2 border-buser-red leading-relaxed"></figcaption>
         <div id="modal-prev-body" class="editor-content text-sm pt-2">
         </div>
       </div>
@@ -718,9 +891,193 @@
     </div>
   </div>
 
-  <script src="../assets/js/api-client.js"></script>
-  <script src="js/admin-berita-live.js"></script>
-  <script src="js/admin.js"></script>
+  <!-- LINK MODAL: SISIPKAN / EDIT LINK (TEKS VS KARTU PREVIEW) -->
+  <div id="link-modal" class="modal-container fixed inset-0 flex items-center justify-center p-4 modal-backdrop hidden" style="z-index: 100;">
+    <div class="bg-white rounded-xl max-w-lg w-full shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in zoom-in-95">
+      <div class="px-5 py-3.5 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
+        <div>
+          <h3 id="link-modal-title" class="text-sm font-bold text-white leading-tight">Sisipkan Link</h3>
+          <p class="text-[11px] text-gray-400">Tempel URL lalu pilih Link Teks atau Kartu Preview</p>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800 transition-colors" data-modal-close aria-label="Tutup">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="p-5 space-y-4">
+        <div>
+          <label for="jp-link-url" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">URL <span class="text-red-500">*</span></label>
+          <input type="url" id="jp-link-url" inputmode="url" placeholder="https://..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+          <p id="jp-link-url-hint" class="text-[11px] text-gray-400 mt-1">Hanya http:// dan https:// yang diizinkan.</p>
+        </div>
+        <div>
+          <label for="jp-link-text" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Teks tampilan</label>
+          <input type="text" id="jp-link-text" placeholder="Otomatis = teks yang diblok / URL" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+        </div>
+        <div>
+          <span class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">Mode tampilan</span>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center space-x-2 p-2.5 rounded-lg bg-white border border-gray-200 cursor-pointer hover:border-gray-300">
+              <input type="radio" name="jp_link_mode" value="text" class="text-buser-red focus:ring-buser-red">
+              <span><span class="font-bold text-gray-900 block">Link Teks</span><span class="text-[10px] text-gray-500">Hyperlink biasa</span></span>
+            </label>
+            <label class="flex items-center space-x-2 p-2.5 rounded-lg bg-white border border-gray-200 cursor-pointer hover:border-gray-300">
+              <input type="radio" name="jp_link_mode" value="card" checked class="text-buser-red focus:ring-buser-red">
+              <span><span class="font-bold text-gray-900 block">Kartu Preview</span><span class="text-[10px] text-gray-500">Judul + gambar + desc</span></span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label for="jp-link-custom-title" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Judul kustom <span class="text-gray-400 font-normal">(opsional)</span></label>
+          <input type="text" id="jp-link-custom-title" placeholder="Override og:title hasil fetch..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+        </div>
+        <div id="jp-link-preview-box" class="min-h-[76px] rounded-lg border border-dashed border-gray-300 bg-gray-50/70 p-3 text-xs text-gray-500">
+          <span class="text-[11px]">Tempel URL untuk memuat preview otomatis...</span>
+        </div>
+      </div>
+      <div class="px-5 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-2">
+        <button type="button" class="btn btn-outline btn-sm" data-modal-close>Batal</button>
+        <button type="button" id="jp-link-submit" class="btn btn-primary btn-sm">Sisipkan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINK CARD POPOVER: EDIT / UBAH KE TEKS / HAPUS / TULIS DI BAWAH -->
+  <div id="jp-link-popover" class="hidden fixed bg-white border border-gray-200 rounded-lg shadow-xl px-2 py-1.5 flex items-center gap-1 text-xs" style="z-index: 120;">
+    <button type="button" id="jp-link-pop-edit" class="px-2.5 py-1.5 rounded hover:bg-gray-100 font-semibold text-gray-700">Edit</button>
+    <span class="w-px h-4 bg-gray-200"></span>
+    <button type="button" id="jp-link-pop-totext" class="px-2.5 py-1.5 rounded hover:bg-gray-100 font-semibold text-gray-700">Ubah ke Teks</button>
+    <span class="w-px h-4 bg-gray-200"></span>
+    <button type="button" id="jp-link-pop-addpara" class="px-2.5 py-1.5 rounded hover:bg-blue-50 font-semibold text-blue-600 flex items-center gap-1" title="Tambah paragraf baru di bawah kartu untuk lanjut menulis">
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      Tulis di Bawah
+    </button>
+    <span class="w-px h-4 bg-gray-200"></span>
+    <button type="button" id="jp-link-pop-delete" class="px-2.5 py-1.5 rounded hover:bg-red-50 font-semibold text-red-600">Hapus</button>
+  </div>
+
+  <!-- MODAL: SISIPKAN GAMBAR DALAM ARTIKEL (UPLOAD FILE & TAUTAN URL) -->
+  <div id="image-modal" class="modal-container fixed inset-0 flex items-center justify-center p-4 modal-backdrop hidden" style="z-index: 100;">
+    <div class="bg-white rounded-xl max-w-md w-full shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in zoom-in-95">
+      <div class="px-5 py-3.5 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
+        <div>
+          <h3 class="text-sm font-bold text-white leading-tight">Sisipkan Gambar Berita</h3>
+          <p class="text-[11px] text-gray-400">Unggah file langsung dari perangkat atau pakai tautan gambar</p>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800 transition-colors" data-modal-close aria-label="Tutup">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <!-- Tab Opsi: Unggah File vs Tautan URL -->
+        <div class="flex border-b border-gray-200 gap-3 text-xs font-bold">
+          <button type="button" id="tab-img-upload" class="pb-2 border-b-2 border-buser-red text-buser-red flex items-center gap-1.5 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Unggah dari Perangkat
+          </button>
+          <button type="button" id="tab-img-url" class="pb-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 flex items-center gap-1.5 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            Tautan / URL Gambar
+          </button>
+        </div>
+
+        <!-- Panel 1: Unggah File -->
+        <div id="panel-img-upload" class="space-y-3">
+          <div id="editor-img-dropzone" class="p-5 text-center border-2 border-dashed border-gray-300 rounded-xl bg-gray-50/70 hover:bg-gray-50 hover:border-buser-red transition-all cursor-pointer">
+            <input type="file" id="editor-img-file-input" accept="image/*" class="hidden">
+            <div id="editor-img-dropzone-content" class="flex flex-col items-center">
+              <div class="w-10 h-10 rounded-full bg-red-50 text-buser-red flex items-center justify-center mb-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <p class="text-xs font-semibold text-gray-700">Pilih gambar dari laptop/HP atau seret ke sini</p>
+              <p class="text-[10px] text-gray-400 mt-0.5">Mendukung format JPG, PNG, WEBP (maks. 8MB)</p>
+            </div>
+            <!-- Uploading indicator -->
+            <div id="editor-img-uploading" class="hidden flex flex-col items-center py-2">
+              <svg class="animate-spin w-6 h-6 text-buser-red mb-1.5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+              <p class="text-xs font-bold text-gray-700">Mengunggah gambar ke server...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Tautan URL Gambar -->
+        <div id="panel-img-url" class="hidden space-y-3">
+          <div>
+            <label for="editor-img-url-input" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">URL Gambar <span class="text-red-500">*</span></label>
+            <input type="url" id="editor-img-url-input" placeholder="https://domain.com/foto.jpg" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+            <p class="text-[11px] text-gray-400 mt-1">Tempelkan tautan langsung ke file gambar di internet.</p>
+          </div>
+        </div>
+
+        <!-- Preview Box (tampil jika ada gambar siap sisip) -->
+        <div id="editor-img-preview-box" class="hidden relative rounded-lg border border-gray-200 overflow-hidden bg-gray-100 max-h-48 flex items-center justify-center group">
+          <img id="editor-img-preview-tag" src="" alt="Pratinjau Gambar" class="w-full max-h-48 object-contain">
+          <button type="button" id="btn-remove-editor-img" class="absolute top-2 right-2 bg-black/70 hover:bg-red-600 text-white p-1 rounded-full text-xs transition-colors shadow" title="Ganti / Reset Gambar">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Input Caption / Keterangan Foto -->
+        <div>
+          <label for="editor-img-caption-input" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Keterangan Foto / Caption <span class="text-gray-400 font-normal">(opsional)</span></label>
+          <input type="text" id="editor-img-caption-input" placeholder="Contoh: Suasana liputan di lokasi. Foto: Dok. Redaksi" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+        </div>
+      </div>
+
+      <div class="px-5 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-2">
+        <button type="button" class="btn btn-outline btn-sm" data-modal-close>Batal</button>
+        <button type="button" id="btn-submit-editor-img" class="btn btn-primary btn-sm flex items-center gap-1.5" disabled>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Sisipkan Gambar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EMBED VIDEO YOUTUBE DALAM ARTIKEL (LINK VIDEO LENGKAP / SHORTS / SHARE) -->
+  <div id="video-embed-modal" class="modal-container fixed inset-0 flex items-center justify-center p-4 modal-backdrop hidden" style="z-index: 100;">
+    <div class="bg-white rounded-xl max-w-md w-full shadow-2xl border border-gray-200 overflow-hidden animate-in fade-in zoom-in-95">
+      <div class="px-5 py-3.5 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
+        <div>
+          <h3 class="text-sm font-bold text-white leading-tight">Sisipkan Video YouTube</h3>
+          <p class="text-[11px] text-gray-400">Cukup tempelkan link URL video YouTube apa saja</p>
+        </div>
+        <button type="button" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800 transition-colors" data-modal-close aria-label="Tutup">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label for="editor-video-url-input" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1">Tautan / Link Video YouTube <span class="text-red-500">*</span></label>
+          <input type="text" id="editor-video-url-input" placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
+          <p class="text-[11px] text-gray-400 mt-1">Bisa link dari browser, tombol Share (youtu.be), YouTube Shorts, maupun ID video.</p>
+        </div>
+
+        <!-- Video Live Preview Box -->
+        <div id="editor-video-preview-box" class="aspect-video bg-gray-900 rounded-lg overflow-hidden border border-gray-300 relative flex items-center justify-center text-center p-3 text-gray-400 text-xs">
+          <div id="editor-video-preview-placeholder">
+            <svg class="w-8 h-8 mx-auto text-red-500 mb-1.5 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <p class="text-[11px]">Pratinjau video akan otomatis muncul di sini</p>
+          </div>
+          <iframe id="editor-video-preview-iframe" class="hidden w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div id="editor-video-feedback" class="hidden text-[11px]"></div>
+      </div>
+
+      <div class="px-5 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-2">
+        <button type="button" class="btn btn-outline btn-sm" data-modal-close>Batal</button>
+        <button type="button" id="btn-submit-editor-video" class="btn btn-primary btn-sm flex items-center gap-1.5" disabled>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Sisipkan Video
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin-berita-live.js?v=20261006_v2"></script>
+  <script src="js/admin.js?v=20261006_v2"></script>
 
 </body>
 </html>

@@ -16,7 +16,9 @@ class BeritaModel extends Model
         'slug',
         'category_id',
         'author_id',
+        'editor_id',
         'thumbnail',
+        'caption',
         'excerpt',
         'content',
         'tags',
@@ -25,6 +27,8 @@ class BeritaModel extends Model
         'focus_keyword',
         'views',
         'status',
+        'published_at',
+        'expired_at',
         'scheduled_at',
     ];
 

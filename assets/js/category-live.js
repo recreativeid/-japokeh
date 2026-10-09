@@ -11,8 +11,20 @@ async function renderCategoryPageFromDB() {
   if (!window.BuserInfoAPI) return;
 
   const urlParams = new URLSearchParams(window.location.search);
-  let currentCatSlug = urlParams.get('cat') || (window.location.pathname.includes('kategori.html') ? 'daerah' : 'internasional');
-  currentCatSlug = (currentCatSlug || 'daerah').toLowerCase();
+  const rawCatSlug = urlParams.get('cat');
+  const sortParam = (urlParams.get('sort') || '').toLowerCase();
+  const isPopular = (sortParam === 'popular' || sortParam === 'terpopuler');
+
+  let currentCatSlug = rawCatSlug;
+  if (!currentCatSlug) {
+    if (window.location.pathname.includes('internasional.html') && !isPopular) {
+      currentCatSlug = 'internasional';
+    } else {
+      currentCatSlug = 'terbaru';
+    }
+  }
+  currentCatSlug = (currentCatSlug || 'terbaru').toLowerCase();
+  const isAllLatest = (currentCatSlug === 'terbaru' || currentCatSlug === 'all');
 
   try {
     // 1. Ambil daftar seluruh kategori untuk pencocokan nama
@@ -26,29 +38,46 @@ async function renderCategoryPageFromDB() {
     }
 
     const listCats = Array.isArray(categories) ? categories : [];
-    const currentCategoryObj = listCats.find(c => (c.slug || '').toLowerCase() === currentCatSlug) || {
-      name_kategori: capitalizeWord(currentCatSlug),
-      name: capitalizeWord(currentCatSlug),
-      slug: currentCatSlug,
-      deskripsi: `Kumpulan berita terverifikasi seputar isu ${currentCatSlug} dari redaksi Japakeh Post.`
-    };
+    let catName = '';
+    let catDesc = '';
 
-    const catName = currentCategoryObj.name_kategori || currentCategoryObj.name || capitalizeWord(currentCatSlug);
-    const catDesc = currentCategoryObj.deskripsi || `Kumpulan berita terverifikasi seputar isu ${(catName || currentCatSlug).toLowerCase()} langsung dari reporter Japakeh Post di lapangan.`;
+    if (isPopular) {
+      catName = 'Berita Populer';
+      catDesc = 'Kumpulan berita paling banyak dibaca dan terpopuler dari seluruh liputan redaksi Japakeh Post.';
+    } else if (isAllLatest) {
+      catName = 'Berita Terbaru';
+      catDesc = 'Menyajikan seluruh rangkuman berita terkini, peristiwa aktual terverifikasi, dan laporan langsung dari seluruh rubrik Japakeh Post.';
+    } else {
+      const currentCategoryObj = listCats.find(c => (c.slug || '').toLowerCase() === currentCatSlug) || {
+        name_kategori: capitalizeWord(currentCatSlug),
+        name: capitalizeWord(currentCatSlug),
+        slug: currentCatSlug,
+        deskripsi: `Kumpulan berita terverifikasi seputar isu ${currentCatSlug} dari redaksi Japakeh Post.`
+      };
+      catName = currentCategoryObj.name_kategori || currentCategoryObj.name || capitalizeWord(currentCatSlug);
+      catDesc = currentCategoryObj.deskripsi || `Kumpulan berita terverifikasi seputar isu ${(catName || currentCatSlug).toLowerCase()} langsung dari reporter Japakeh Post di lapangan.`;
+    }
 
     // Update Header, Breadcrumb, Meta Title
-    document.title = `Berita ${catName} — Japakeh Post`;
+    document.title = `${isPopular ? 'Berita Populer' : (isAllLatest ? 'Berita Terbaru' : 'Berita ' + catName)} — Japakeh Post`;
     const bCat = document.getElementById('breadcrumb-category-name');
     const pTitle = document.getElementById('category-page-title');
     const pDesc = document.getElementById('category-page-desc');
     const fTitle = document.getElementById('category-feed-title');
     const sidebarTrendingTitle = document.querySelector('aside h2');
 
-    if (bCat) bCat.textContent = catName;
-    if (pTitle) pTitle.innerHTML = `<span class="w-1.5 h-4.5 bg-buser-red rounded-full mr-2 inline-block"></span>Berita ${catName}`;
+    if (bCat) bCat.textContent = isPopular ? 'Terpopuler' : (isAllLatest ? 'Berita Terbaru' : catName);
+    if (pTitle) {
+      const displayTitle = isPopular ? 'Berita Populer' : (isAllLatest ? 'Berita Terbaru' : `Berita ${catName}`);
+      pTitle.innerHTML = `<span class="w-1.5 h-4.5 bg-buser-red rounded-full mr-2 inline-block"></span>${displayTitle}`;
+    }
     if (pDesc) pDesc.textContent = catDesc;
-    if (fTitle) fTitle.textContent = `Daftar Berita ${catName} Terkini`;
-    if (sidebarTrendingTitle) sidebarTrendingTitle.textContent = `Trending ${catName}`;
+    if (fTitle) {
+      fTitle.textContent = isPopular ? 'Daftar Berita Terpopuler' : (isAllLatest ? 'Daftar Seluruh Berita Terbaru' : `Daftar Berita ${catName} Terkini`);
+    }
+    if (sidebarTrendingTitle) {
+      sidebarTrendingTitle.textContent = isPopular ? 'Paling Banyak Dibaca' : (isAllLatest ? 'Trending Hari Ini' : `Trending ${catName}`);
+    }
 
     // Sorot menu navigasi aktif di top bar kategori
     highlightActiveCategoryBar(currentCatSlug);
@@ -59,15 +88,22 @@ async function renderCategoryPageFromDB() {
       return;
     }
 
-    // 2. Ambil artikel dari database yang SESUAI KATEGORI INI
+    // 2. Ambil artikel dari database yang SESUAI KATEGORI / FILTER INI
     let articles = [];
     try {
-      const res = await (window.JapakehPostAPI || window.BuserInfoAPI).getArticles({ kategori: currentCatSlug, status: 'published', limit: 20 });
+      const fetchParams = { status: 'published', limit: 20 };
+      if (!isAllLatest && !isPopular) {
+        fetchParams.kategori = currentCatSlug;
+      } else {
+        fetchParams.kategori = 'all';
+      }
+      if (isPopular) {
+        fetchParams.sort = 'popular';
+      }
+      const res = await (window.JapakehPostAPI || window.BuserInfoAPI).getArticles(fetchParams);
       articles = res && Array.isArray(res.articles) ? res.articles : [];
-    } catch (e) {}
-
-    if ((!articles || articles.length === 0) && window.NewsDB && typeof window.NewsDB.getByCategory === 'function') {
-      articles = window.NewsDB.getByCategory(currentCatSlug);
+    } catch (e) {
+      console.warn('[CategoryLive] Gagal memuat artikel dari database:', e);
     }
 
     const featuredContainer = document.getElementById('category-featured-card');
@@ -83,7 +119,7 @@ async function renderCategoryPageFromDB() {
             <div class="w-16 h-16 bg-rose-50 text-buser-red rounded-full flex items-center justify-center mx-auto mb-3">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
             </div>
-            <h3 class="font-black text-slate-900 text-lg mb-1.5">Belum Ada Berita di Rubrik ${catName}</h3>
+            <h3 class="font-black text-slate-900 text-lg mb-1.5">Belum Ada Berita di ${catName.startsWith('Berita') ? catName : 'Rubrik ' + catName}</h3>
             <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mb-5 leading-relaxed">
               Saat ini belum ada artikel yang diterbitkan untuk rubrik ini. Tim redaksi kami sedang menyusun dan memverifikasi laporan peristiwa terkini untuk Anda.
             </p>
@@ -167,7 +203,8 @@ async function renderCategoryPageFromDB() {
         `;
         if (paginationNav) paginationNav.style.display = 'none';
       } else {
-        otherArticles.forEach(item => {
+        const inFeedIndex = otherArticles.length >= 3 ? 2 : (otherArticles.length >= 2 ? 1 : -1);
+        otherArticles.forEach((item, idx) => {
           const card = document.createElement('article');
           card.className = 'bg-white border border-slate-200 rounded-xl p-3 sm:p-4 group flex flex-col sm:flex-row gap-3.5 sm:gap-4 shadow-2xs hover:border-slate-300 transition-colors';
           card.innerHTML = `
@@ -189,6 +226,14 @@ async function renderCategoryPageFromDB() {
             </div>
           `;
           listContainer.appendChild(card);
+
+          // Sisipkan slot iklan in-feed (article_middle) di sela-sela daftar berita
+          if (idx === inFeedIndex) {
+            const inFeedSlot = document.createElement('div');
+            inFeedSlot.setAttribute('data-ad-slot', 'article_middle');
+            inFeedSlot.className = 'w-full my-4';
+            listContainer.appendChild(inFeedSlot);
+          }
         });
       }
     }
@@ -214,6 +259,15 @@ async function renderCategoryPageFromDB() {
         `;
         trendingSidebarContainer.appendChild(art);
       });
+    }
+
+    // Render ulang slot iklan jika AdsLoader sudah siap
+    if (window.JapakehAdsLoader) {
+      if (typeof window.JapakehAdsLoader.renderAllFromCache === 'function') {
+        window.JapakehAdsLoader.renderAllFromCache();
+      } else if (typeof window.JapakehAdsLoader.loadAllSlots === 'function') {
+        window.JapakehAdsLoader.loadAllSlots();
+      }
     }
 
   } catch (err) {
@@ -353,7 +407,8 @@ async function renderVideoRubric(catName, catDesc) {
           </div>
         `;
       } else {
-        otherVideos.forEach(v => {
+        const inFeedVideoIndex = otherVideos.length >= 3 ? 2 : (otherVideos.length >= 2 ? 1 : -1);
+        otherVideos.forEach((v, idx) => {
           const card = document.createElement('article');
           card.className = 'bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 news-card-hover group flex flex-col sm:flex-row gap-4 sm:gap-5 shadow-xs transition-all duration-200 hover:shadow-soft cursor-pointer';
           const cleanTitle = escapeCategoryHtml(v.title);
@@ -396,6 +451,14 @@ async function renderVideoRubric(catName, catDesc) {
           });
 
           listContainer.appendChild(card);
+
+          // Sisipkan slot iklan in-feed (article_middle) di sela-sela daftar video
+          if (idx === inFeedVideoIndex) {
+            const inFeedSlot = document.createElement('div');
+            inFeedSlot.setAttribute('data-ad-slot', 'article_middle');
+            inFeedSlot.className = 'w-full my-4';
+            listContainer.appendChild(inFeedSlot);
+          }
         });
       }
     }
@@ -434,6 +497,15 @@ async function renderVideoRubric(catName, catDesc) {
     }
 
     if (paginationNav) paginationNav.style.display = 'none';
+
+    // Render ulang slot iklan jika AdsLoader sudah siap
+    if (window.JapakehAdsLoader) {
+      if (typeof window.JapakehAdsLoader.renderAllFromCache === 'function') {
+        window.JapakehAdsLoader.renderAllFromCache();
+      } else if (typeof window.JapakehAdsLoader.loadAllSlots === 'function') {
+        window.JapakehAdsLoader.loadAllSlots();
+      }
+    }
 
   } catch (err) {
     console.error('[renderVideoRubric] Error:', err);

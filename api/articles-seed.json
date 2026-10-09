@@ -6,6 +6,7 @@
     "excerpt": "Sudah saatnya pemerintah dan seluruh pemangku kepentingan memiliki ukuran mekanisme pengelolaan anggaran, agar setiap rupiah benar-benar memberi manfaat nyata bagi masyarakat.",
     "content": "<p class=\"lead font-medium text-lg text-gray-800 leading-relaxed mb-4\">Sudah saatnya pemerintah dan seluruh pemangku kepentingan memiliki ukuran mekanisme pengelolaan anggaran yang terukur dan akuntabel, agar setiap rupiah dana publik benar-benar memberi manfaat nyata bagi masyarakat luas.</p><p class=\"mb-4 text-gray-700 leading-relaxed\">Transparansi alokasi belanja modal dan efisiensi birokrasi harus menjadi prioritas mutlak demi keberlanjutan pemulihan ekonomi daerah.</p>",
     "image": "assets/images/berita/pendidikan/kurikulum-merdeka-smk.jpg",
+    "caption": "Ilustrasi evaluasi dan audit tata kelola alokasi belanja anggaran pemerintah daerah. (Foto: Dok. Redaksi Japakeh Post)",
     "category": "Editorial",
     "categorySlug": "editorial",
     "author": "Dewan Redaksi",
@@ -31,6 +32,7 @@
     "excerpt": "NUSANTARA — Kementerian Pekerjaan Umum melaporkan kemajuan signifikan dalam penyelesaian jaringan jalan tol lingkar dan fasilitas konektivitas logistik pendukung Ibu Kota Nusantara (IKN) dan kawasan p...",
     "content": "\n      <p class=\"lead font-medium text-lg text-gray-800 leading-relaxed mb-4\">\n        <strong>NUSANTARA</strong> — Kementerian Pekerjaan Umum melaporkan kemajuan signifikan dalam penyelesaian jaringan jalan tol lingkar dan fasilitas konektivitas logistik pendukung Ibu Kota Nusantara (IKN) dan kawasan penyangga sekitarnya.\n      </p>\n      <p class=\"mb-4 text-gray-700 leading-relaxed\">\n        Presiden menekankan bahwa percepatan pembangunan infrastruktur nasional ini diarahkan untuk memeratakan kue pembangunan ekonomi luar Pulau Jawa dan menciptakan efisiensi rantai distribusi nasional.\n      </p>",
     "image": "assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg",
+    "caption": "Pekerja dan alat berat beroperasi mempercepat penyelesaian konstruksi jaringan jalan tol logistik IKN Nusantara di Kalimantan Timur. (Foto: Dok. Biro Pers Sekretariat Presiden / Antara)",
     "category": "Nasional",
     "categorySlug": "nasional",
     "author": "Al Bahri",
@@ -57,6 +59,7 @@
     "excerpt": "BANDA ACEH — Kanal video sains dan teknologi Japakeh Post menayangkan secara mendalam proses riset terapan mahasiswa dalam menyulap limbah organik kulit manggis menjadi karbon aktif penyerap logam ber...",
     "content": "\n      <p class=\"lead font-medium text-lg text-gray-800 leading-relaxed mb-4\">\n        <strong>BANDA ACEH</strong> — Kanal video sains dan teknologi Japakeh Post menayangkan secara mendalam proses riset terapan mahasiswa dalam menyulap limbah organik kulit manggis menjadi karbon aktif penyerap logam berat dan kekeruhan air gambut.\n      </p>\n      <p class=\"mb-4 text-gray-700 leading-relaxed\">\n        Melalui uji laboratorium bertahap, prototipe reaktor filtrasi sederhana ini terbukti mampu mengalirkan air jernih dengan standar baku mutu kesehatan untuk komunitas perdesaan di lahan basah.\n      </p>\n      <div class=\"my-6 p-4 rounded-2xl bg-slate-900 text-white flex flex-col items-center justify-center text-center space-y-3\">\n        <div class=\"w-16 h-16 rounded-full bg-buser-red flex items-center justify-center shadow-lg animate-pulse cursor-pointer\">\n          <svg class=\"w-8 h-8 text-white ml-1\" fill=\"currentColor\" viewBox=\"0 0 24 24\"><path d=\"M8 5v14l11-7z\"/></svg>\n        </div>\n        <p class=\"text-sm font-semibold\">Tonton Dokumenter Riset Sains Terapan</p>\n        <span class=\"text-xs text-slate-400\">Durasi: 08:15 WIB &bull; Resolusi HD 1080p</span>\n      </div>",
     "image": "assets/images/berita/teknologi/peluncuran-satelit-indonesia.jpg",
+    "caption": "Mahasiswa memperagakan uji coba filtrasi air menggunakan inovasi karbon aktif limbah kulit manggis di laboratorium riset kampus. (Foto: Dok. Tim Sains Japakeh Post)",
     "category": "Video",
     "categorySlug": "video",
     "author": "Kevin Adityawarman",
@@ -1016,9 +1019,43 @@
     "id": 20,
     "title": "[FOTO] Mengintip Kemegahan Pesawat Jumbo Airbus A380 yang Mampir RI",
     "slug": "foto-mengintip-kemegahan-pesawat-jumbo-airbus-a380-yang-mampir-ri",
-    "excerpt": "Kemegahan burung besi bertingkat ganda terbesar di dunia ini memukau para pecinta kedirgantaraan saat menyentuh landas pacu dan menjalani proses penanganan darat terpadu....",
-    "content": "<p class='mb-4'>Kemegahan burung besi bertingkat ganda terbesar di dunia ini memukau para pecinta kedirgantaraan saat menyentuh landas pacu dan menjalani proses penanganan darat terpadu.</p>",
-    "image": "assets/images/berita/internasional/diplomasi-ktt-global.jpg",
+    "excerpt": "Kemegahan burung besi bertingkat ganda terbesar di dunia ini memukau para pecinta kedirgantaraan saat menyentuh landas pacu dan menjalani proses penanganan darat terpadu di Bandara Internasional I Gusti Ngurah Rai, Bali.",
+    "content": "<p class='mb-4'>Kemegahan burung besi bertingkat ganda terbesar di dunia ini memukau para pecinta kedirgantaraan saat menyentuh landas pacu dan menjalani proses penanganan darat terpadu di Bandara Internasional I Gusti Ngurah Rai, Bali.</p><p class='mb-4'>Pesawat berbadan lebar dengan bentang sayap mencapai 79,75 meter ini mencatatkan sejarah baru bagi operasional penerbangan komersial internasional di tanah air dengan fasilitas garbarata ganda yang telah disiapkan secara komprehensif.</p><p class='mb-4'>Berikut rangkaian dokumentasi lensa foto eksklusif yang memperlihatkan dari dekat setiap sudut kemegahan pesawat super jumbo jet Airbus A380 saat berada di apron bandara.</p>",
+    "image": "assets/images/berita/uploads/airbus_a380_p1.jpeg",
+    "thumbnail": "assets/images/berita/uploads/airbus_a380_p1.jpeg",
+    "caption": "Pesawat komersial terbesar di dunia, Airbus A380-800 milik maskapai Emirates mendarat perdana di Bandara Internasional I Gusti Ngurah Rai, Bali.",
+    "gallery": [
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p1.jpeg",
+        "caption": "Pesawat komersial terbesar di dunia, Airbus A380-800 milik maskapai Emirates mendarat perdana di Bandara Internasional I Gusti Ngurah Rai, Bali. (Japakeh Post/Arif)",
+        "urutan": 1
+      },
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p2.jpeg",
+        "caption": "Water salute menyambut kedatangan pesawat super jumbo jet Airbus A380-800 saat mendarat perdana di Bandara Internasional I Gusti Ngurah Rai, Bali. (Japakeh Post/Arif)",
+        "urutan": 2
+      },
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p3.jpeg",
+        "caption": "Suasana di apron Bandara Internasional I Gusti Ngurah Rai saat pesawat Airbus A380 Emirates bersiap menuju garbarata khusus bertingkat. (Japakeh Post/Arif)",
+        "urutan": 3
+      },
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p4.jpeg",
+        "caption": "Penumpang pesawat Airbus A380 Emirates mulai turun melalui fasilitas garbarata ganda yang disiapkan khusus di Bandara I Gusti Ngurah Rai Bali. (Japakeh Post/Arif)",
+        "urutan": 4
+      },
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p5.jpeg",
+        "caption": "Petugas ground handling melakukan pengisian bahan bakar dan pengecekan teknis pesawat Airbus A380-800 di area apron. (Japakeh Post/Arif)",
+        "urutan": 5
+      },
+      {
+        "url": "assets/images/berita/uploads/airbus_a380_p6.jpeg",
+        "caption": "Kemegahan kokpit dan badan pesawat bertingkat Airbus A380-800 yang mampu menampung hingga 615 penumpang dalam konfigurasi dua kelas. (Japakeh Post/Arif)",
+        "urutan": 6
+      }
+    ],
     "category": "Foto",
     "categorySlug": "foto",
     "author": "Al Bahri",

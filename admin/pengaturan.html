@@ -8,10 +8,10 @@
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-  <link rel="stylesheet" href="css/admin.css">
-  <script src="../assets/js/api-client.js"></script>
-  <script src="js/auth-guard.js"></script>
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css?v=20260929_v1">
+  <link rel="stylesheet" href="css/admin.css?v=20260929_v1">
+  <script src="../assets/js/api-client.js?v=20260929_v1"></script>
+  <script src="js/auth-guard.js?v=20260929_v1"></script>
 </head>
 <body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
 
@@ -148,7 +148,11 @@
               <svg class="w-3.5 h-3.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
             <button class="settings-tab-btn shrink-0 md:w-full text-left px-3 py-2 rounded text-xs font-medium text-gray-600 hover:bg-gray-100 flex items-center justify-between gap-2" data-target="tab-contact">
-              <span class="whitespace-nowrap">Kontak Kantor</span>
+              <span class="whitespace-nowrap">Kontak & Pengaduan</span>
+              <svg class="w-3.5 h-3.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button class="settings-tab-btn shrink-0 md:w-full text-left px-3 py-2 rounded text-xs font-medium text-gray-600 hover:bg-gray-100 flex items-center justify-between gap-2" data-target="tab-about">
+              <span class="whitespace-nowrap">Tentang Kami & Legalitas</span>
               <svg class="w-3.5 h-3.5 hidden md:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
             <button class="settings-tab-btn shrink-0 md:w-full text-left px-3 py-2 rounded text-xs font-medium text-gray-600 hover:bg-gray-100 flex items-center justify-between gap-2" data-target="tab-social">
@@ -175,18 +179,18 @@
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Nama Portal (Site Name)</label>
-              <input type="text" value="Japakeh Post" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs font-bold text-gray-900 focus:ring-buser-red">
+              <input type="text" id="setting-site-name" value="Japakeh Post" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs font-bold text-gray-900 focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Slogan Media (Site Tagline)</label>
-              <input type="text" value="Cepat, Akurat, Terpercaya" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-buser-red">
+              <input type="text" id="setting-site-tagline" value="Cepat, Akurat, Terpercaya" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Badan Usaha / Penerbit</label>
-              <input type="text" value="PT Japakeh Media Nusantara" readonly class="w-full py-2 px-3 bg-gray-100 border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 cursor-not-allowed">
-              <p class="text-[10px] text-gray-400 mt-1">Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Kec. Darul Imarah, Kab. Aceh Besar, Aceh</p>
+              <input type="text" id="setting-company-name" value="PT Japakeh Media Nusantara" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs font-semibold text-gray-900 focus:ring-buser-red">
+              <p class="text-[10px] text-gray-400 mt-1">Nama perusahaan penerbit resmi media siber Japakeh Post</p>
             </div>
 
             <div class="pt-2">
@@ -202,13 +206,13 @@
                     <span class="text-[7.5px] text-gray-400 font-semibold tracking-wider uppercase mt-0.5 whitespace-nowrap">CEPAT, AKURAT, TERPERCAYA</span>
                   </div>
                 </div>
-                <button type="button" class="btn btn-outline btn-sm text-xs ml-auto">Ganti File Logo</button>
+                <span class="text-[11px] text-gray-400 ml-auto">assets/images/logo/favicon.webp</span>
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Deskripsi Ringkas Portal</label>
-              <textarea rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-buser-red">Portal berita independen dan tepercaya yang menyajikan berita daerah Aceh, nasional, politik, hukum, ekonomi, bisnis, pendidikan, teknologi, opini, dan internasional secara cepat, akurat, dan berimbang.</textarea>
+              <textarea id="setting-site-desc" rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-buser-red">Portal berita independen dan tepercaya yang menyajikan berita daerah Aceh, nasional, politik, hukum, ekonomi, bisnis, pendidikan, teknologi, opini, dan internasional secara cepat, akurat, dan berimbang.</textarea>
             </div>
           </div>
 
@@ -235,44 +239,194 @@
 
             <div class="pt-2 space-y-2">
               <label class="flex items-center space-x-2.5 cursor-pointer">
-                <input type="checkbox" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
+                <input type="checkbox" id="setting-review-required" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
                 <span class="text-xs font-semibold text-gray-800">Wajibkan Review Editor untuk Naskah Reporter</span>
               </label>
               <label class="flex items-center space-x-2.5 cursor-pointer">
-                <input type="checkbox" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
+                <input type="checkbox" id="setting-moderate-comments" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
                 <span class="text-xs font-semibold text-gray-800">Aktifkan Moderasi Komentar Otomatis (Filter Kata Kasar)</span>
               </label>
               <label class="flex items-center space-x-2.5 cursor-pointer">
-                <input type="checkbox" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
+                <input type="checkbox" id="setting-show-breaking-time" checked class="w-4 h-4 text-buser-red rounded border-gray-300 focus:ring-buser-red">
                 <span class="text-xs font-semibold text-gray-800">Tampilkan Tanda Waktu 'Update Terkini' pada Berita Utama</span>
               </label>
             </div>
           </div>
 
-          <!-- TAB 3: CONTACT -->
+          <!-- TAB 3: CONTACT & PENGADUAN -->
           <div id="tab-contact" class="settings-pane cms-card p-6 space-y-4 hidden">
-            <h2 class="text-sm font-bold text-gray-900 border-b border-gray-100 pb-3">Kontak & Alamat Kantor Redaksi</h2>
+            <h2 class="text-sm font-bold text-gray-900 border-b border-gray-100 pb-3">Kontak Pengaduan, Hotline & Alamat Kantor Redaksi</h2>
 
             <div>
-              <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor Hotline Redaksi / WhatsApp</label>
-              <input type="text" value="082165071114" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <label class="block text-xs font-semibold text-gray-700 mb-1">Nomor Hotline / WhatsApp Pengaduan Redaksi</label>
+              <input type="text" id="setting-hotline" value="082165071114" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <p class="text-[10px] text-gray-400 mt-1">Nomor ini otomatis sinkron ke seluruh website: box <strong>"Kontak Pengaduan & Redaksi"</strong> (sidebar artikel), halaman Tentang Kami (Layanan Kontak Resmi & Hak Jawab), tombol WhatsApp Redaksi (menu mobile), dan footer web.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-semibold text-gray-700 mb-1">Email Redaksi</label>
-                <input type="email" value="alb4hri@gmail.com" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Email Meja Redaksi & Klarifikasi Berita</label>
+                <input type="email" id="setting-email-redaksi" value="alb4hri@gmail.com" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+                <p class="text-[10px] text-gray-400 mt-1">Tampil di sidebar artikel berita ("Kontak Pengaduan & Redaksi") dan halaman Tentang Kami.</p>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-gray-700 mb-1">Email Iklan & Kerjasama</label>
-                <input type="email" value="iklan@japakehpost.com" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+                <input type="email" id="setting-email-iklan" value="iklan@japakehpost.com" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+                <p class="text-[10px] text-gray-400 mt-1">Untuk keperluan kerjasama periklanan dan kemitraan media.</p>
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Alamat Kantor Redaksi</label>
-              <textarea rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">Gedung PT Japakeh Media Nusantara, Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Kec. Darul Imarah, Kab. Aceh Besar, Aceh.</textarea>
+              <textarea id="setting-office-address" rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">Gedung PT Japakeh Media Nusantara, Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Kec. Darul Imarah, Kab. Aceh Besar, Aceh.</textarea>
+              <p class="text-[10px] text-gray-400 mt-1">Alamat ini akan otomatis diperbarui ke seluruh halaman website publik setelah disimpan.</p>
             </div>
+          </div>
+
+          <!-- TAB: TENTANG KAMI & LEGALITAS -->
+          <div id="tab-about" class="settings-pane cms-card p-6 space-y-6 hidden">
+            <div class="border-b border-gray-100 pb-3 flex items-center justify-between">
+              <div>
+                <h2 class="text-sm font-bold text-gray-900">Kelola Halaman Tentang Kami & Legalitas Pers</h2>
+                <p class="text-[11px] text-gray-500">Semua perubahan di sini akan langsung tampil pada halaman publik tentang.html</p>
+              </div>
+              <a href="../tentang.html" target="_blank" class="text-xs font-semibold text-buser-red hover:underline flex items-center gap-1">
+                <span>Lihat Halaman</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+
+            <!-- 1. Header Banner -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                1. Banner Utama (Hero)
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Badge Tag</label>
+                  <input type="text" id="setting-about-hero-badge" value="PROFIL RESMI" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-bold text-buser-red focus:ring-buser-red">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Judul Utama Halaman</label>
+                  <input type="text" id="setting-about-hero-title" value="Tentang Japakeh Post" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-bold text-gray-900 focus:ring-buser-red">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Slogan / Tagline Hero</label>
+                <input type="text" id="setting-about-hero-subtitle" value="&quot;Cepat, Akurat, Terpercaya&quot;" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs italic text-gray-700 focus:ring-buser-red">
+              </div>
+            </div>
+
+            <!-- 2. Profil Media & Sejarah -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                2. Profil Media Siber (Tentang Media)
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Judul Bagian</label>
+                  <input type="text" id="setting-about-intro-heading" value="Tentang Japakeh Post" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-semibold text-gray-900 focus:ring-buser-red">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Sub-label Bagian</label>
+                  <input type="text" id="setting-about-intro-subheading" value="Profil Media Siber" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-700 focus:ring-buser-red">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Isi Deskripsi Profil (Paragraf)</label>
+                <textarea id="setting-about-description" rows="5" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red" placeholder="Tuliskan deskripsi profil media. Pisahkan antar paragraf dengan menekan tombol Enter (baris baru)..."></textarea>
+                <p class="text-[10px] text-gray-400 mt-1">Gunakan enter / baris baru untuk memisahkan paragraf. Sistem akan otomatis memformatnya menjadi paragraf terpisah di web.</p>
+              </div>
+            </div>
+
+            <!-- 3. Visi & Misi -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                3. Visi & Misi Media
+              </h3>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Visi Kami</label>
+                <textarea id="setting-about-visi" rows="3" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Misi Kami (1 Baris = 1 Poin Peluru)</label>
+                <textarea id="setting-about-misi" rows="4" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red" placeholder="Poin misi 1&#10;Poin misi 2&#10;Poin misi 3"></textarea>
+                <p class="text-[10px] text-gray-400 mt-1">Setiap baris baru akan otomatis ditampilkan sebagai satu butir checklist (&bull;) misi pada frontend.</p>
+              </div>
+            </div>
+
+            <!-- 4. Badan Hukum & Legalitas Pers -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                4. Badan Hukum & Legalitas Perusahaan
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Penanggung Jawab / Pemimpin Redaksi</label>
+                  <input type="text" id="setting-about-leader" value="Al Bahri" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-bold text-gray-900 focus:ring-buser-red">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Bidang Usaha</label>
+                  <input type="text" id="setting-about-business-field" value="Portal Berita Daring, Multimedia, dan Penerbitan Karya Jurnalistik" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-800 focus:ring-buser-red">
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">SK Kemenkumham</label>
+                  <input type="text" id="setting-about-legal-sk" value="AHU-0012345.AH.01.01.TAHUN 2024" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-800 focus:ring-buser-red">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">NIB (Nomor Induk Berusaha)</label>
+                  <input type="text" id="setting-about-legal-nib" value="0123456789123" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-800 focus:ring-buser-red">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">NPWP Perusahaan</label>
+                  <input type="text" id="setting-about-legal-npwp" value="12.345.678.9-123.000" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs font-mono text-gray-800 focus:ring-buser-red">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Standar Komitmen Operasional (1 Baris = 1 Poin Standar)</label>
+                <textarea id="setting-about-legal-commitments" rows="3" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red" placeholder="Undang-Undang Republik Indonesia Nomor 40 Tahun 1999 tentang Pers&#10;Kode Etik Jurnalistik (KEJ) Dewan Pers Indonesia&#10;Pedoman Pemberitaan Media Siber (Peraturan Dewan Pers)"></textarea>
+              </div>
+            </div>
+
+            <!-- 5. Boks Redaksi & Pemberitahuan -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                5. Susunan Redaksi & Pemberitahuan Etika
+              </h3>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Subjudul Boks Redaksi</label>
+                <input type="text" id="setting-about-redaksi-subtitle" value="PT Japakeh Media Nusantara • 2026" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-gray-700 focus:ring-buser-red">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Kotak Pemberitahuan Resmi (Anti Gratifikasi / KTA Pers)</label>
+                <textarea id="setting-about-redaksi-notice" rows="2" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs text-rose-900 leading-relaxed focus:ring-buser-red"></textarea>
+              </div>
+            </div>
+
+            <!-- 6. Pedoman Media Siber & Hak Jawab -->
+            <div class="space-y-3 bg-gray-50/60 p-4 rounded-xl border border-gray-200">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-buser-red"></span>
+                6. Pedoman Media Siber & Prosedur Hak Jawab
+              </h3>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Pemberitaan Media Siber (Paragraf 1)</label>
+                <textarea id="setting-about-pedoman-siber" rows="2" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red"></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Hak Jawab dan Koreksi Berita (Paragraf 2)</label>
+                <textarea id="setting-about-hak-jawab" rows="3" class="w-full py-2 px-3 bg-white border border-gray-300 rounded-lg text-xs leading-relaxed text-gray-800 focus:ring-buser-red"></textarea>
+                <p class="text-[10px] text-gray-400 mt-1">Nomor WhatsApp dan Email yang dicantumkan pada bagian kontak otomatis disinkronkan ke sini.</p>
+              </div>
+            </div>
+
           </div>
 
           <!-- TAB 4: SOCIAL MEDIA -->
@@ -281,27 +435,27 @@
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Facebook</label>
-              <input type="url" value="https://www.facebook.com/" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="url" id="setting-social-fb" value="https://www.facebook.com/" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">TikTok</label>
-              <input type="url" value="https://www.tiktok.com/" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="url" id="setting-social-tiktok" value="https://www.tiktok.com/" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Instagram</label>
-              <input type="url" value="" placeholder="https://instagram.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="url" id="setting-social-ig" value="" placeholder="https://instagram.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">YouTube Channel</label>
-              <input type="url" value="" placeholder="https://youtube.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="url" id="setting-social-yt" value="" placeholder="https://youtube.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">X (Twitter)</label>
-              <input type="url" value="" placeholder="https://x.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="url" id="setting-social-x" value="" placeholder="https://x.com/..." class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
           </div>
 
@@ -311,17 +465,17 @@
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Meta Title Default</label>
-              <input type="text" value="Japakeh Post — Cepat, Akurat, Terpercaya" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="text" id="setting-seo-title" value="Japakeh Post — Cepat, Akurat, Terpercaya" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Meta Description Default</label>
-              <textarea rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">Portal berita daerah Aceh, nasional, politik, hukum, ekonomi, bisnis, pendidikan, teknologi, dan internasional secara cepat, akurat, dan terpercaya.</textarea>
+              <textarea id="setting-seo-desc" rows="3" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">Portal berita daerah Aceh, nasional, politik, hukum, ekonomi, bisnis, pendidikan, teknologi, dan internasional secara cepat, akurat, dan terpercaya.</textarea>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-700 mb-1">Target Keywords</label>
-              <input type="text" value="japakeh post, portal berita aceh, berita terkini, daerah aceh, nasional, politik, hukum, ekonomi, bisnis" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
+              <input type="text" id="setting-seo-keywords" value="japakeh post, portal berita aceh, berita terkini, daerah aceh, nasional, politik, hukum, ekonomi, bisnis" class="w-full py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs focus:ring-buser-red">
             </div>
           </div>
 
@@ -365,14 +519,14 @@
     <!-- Corporate Footer -->
     <footer class="bg-white border-t border-gray-200 py-3 px-6 text-xs text-gray-500 shrink-0">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-        <div><span class="font-bold text-gray-800">Japakeh Post</span> — PT Japakeh Media Nusantara</div>
-        <div class="text-[11px] text-gray-400">Jl. Banda Aceh - Meulaboh Km. 8, Gampong Japakeh, Aceh Besar • WhatsApp: 082165071114 • © 2026 Japakeh Post</div>
+        <div><span id="footer-brand-title" class="font-bold text-gray-800">Japakeh Post</span> — <span id="footer-company-name">PT Japakeh Media Nusantara</span></div>
+        <div id="footer-contact-summary" class="text-[11px] text-gray-400">Gedung PT Japakeh Media Nusantara, Jl. Banda Aceh - Meulaboh Km. 8 • WhatsApp: 082165071114 • © 2026 Japakeh Post</div>
       </div>
     </footer>
 
   </div>
 
-  <script src="js/admin.js"></script>
+  <script src="js/admin.js?v=20260929_v1"></script>
   <script>
     // Tab switching for settings
     const settingTabs = document.querySelectorAll('.settings-tab-btn');
@@ -398,9 +552,145 @@
       });
     });
 
-    document.getElementById('btn-save-all-settings').addEventListener('click', () => {
-      showToast('success', 'Pengaturan Disimpan', 'Semua perubahan konfigurasi portal Japakeh Post telah diterapkan.');
-    });
+    // 1. Muat Pengaturan Aktif dari API
+    async function loadPortalSettings() {
+      try {
+        const res = await fetch('../api/pengaturan.php');
+        const result = await res.json();
+        if (result.status && result.data) {
+          const d = result.data;
+          if (document.getElementById('setting-hotline')) document.getElementById('setting-hotline').value = d.hotline_phone || '';
+          if (document.getElementById('setting-email-redaksi')) document.getElementById('setting-email-redaksi').value = d.redaksi_email || '';
+          if (document.getElementById('setting-email-iklan')) document.getElementById('setting-email-iklan').value = d.iklan_email || '';
+          if (document.getElementById('setting-office-address')) document.getElementById('setting-office-address').value = d.office_address || '';
+          if (document.getElementById('setting-site-name')) document.getElementById('setting-site-name').value = d.site_title || '';
+          if (document.getElementById('setting-site-tagline')) document.getElementById('setting-site-tagline').value = d.site_tagline || '';
+          if (document.getElementById('setting-company-name')) document.getElementById('setting-company-name').value = d.company_name || '';
+          if (document.getElementById('setting-site-desc')) document.getElementById('setting-site-desc').value = d.site_description || '';
+          if (document.getElementById('setting-social-fb')) document.getElementById('setting-social-fb').value = d.social_facebook || '';
+          if (document.getElementById('setting-social-tiktok')) document.getElementById('setting-social-tiktok').value = d.social_tiktok || '';
+          if (document.getElementById('setting-social-ig')) document.getElementById('setting-social-ig').value = d.social_instagram || '';
+          if (document.getElementById('setting-social-yt')) document.getElementById('setting-social-yt').value = d.social_youtube || '';
+          if (document.getElementById('setting-social-x')) document.getElementById('setting-social-x').value = d.social_twitter || '';
+          if (document.getElementById('setting-seo-title')) document.getElementById('setting-seo-title').value = d.seo_title || '';
+          if (document.getElementById('setting-seo-desc')) document.getElementById('setting-seo-desc').value = d.seo_description || '';
+          if (document.getElementById('setting-seo-keywords')) document.getElementById('setting-seo-keywords').value = d.seo_keywords || '';
+
+          // Bidang Tentang Kami & Legalitas
+          if (document.getElementById('setting-about-hero-badge')) document.getElementById('setting-about-hero-badge').value = d.about_hero_badge || '';
+          if (document.getElementById('setting-about-hero-title')) document.getElementById('setting-about-hero-title').value = d.about_hero_title || '';
+          if (document.getElementById('setting-about-hero-subtitle')) document.getElementById('setting-about-hero-subtitle').value = d.about_hero_subtitle || '';
+          if (document.getElementById('setting-about-intro-heading')) document.getElementById('setting-about-intro-heading').value = d.about_intro_heading || '';
+          if (document.getElementById('setting-about-intro-subheading')) document.getElementById('setting-about-intro-subheading').value = d.about_intro_subheading || '';
+          if (document.getElementById('setting-about-description')) document.getElementById('setting-about-description').value = d.about_description || '';
+          if (document.getElementById('setting-about-visi')) document.getElementById('setting-about-visi').value = d.about_visi || '';
+          if (document.getElementById('setting-about-misi')) document.getElementById('setting-about-misi').value = d.about_misi || '';
+          if (document.getElementById('setting-about-leader')) document.getElementById('setting-about-leader').value = d.about_leader || '';
+          if (document.getElementById('setting-about-business-field')) document.getElementById('setting-about-business-field').value = d.about_business_field || '';
+          if (document.getElementById('setting-about-legal-sk')) document.getElementById('setting-about-legal-sk').value = d.about_legal_sk || '';
+          if (document.getElementById('setting-about-legal-nib')) document.getElementById('setting-about-legal-nib').value = d.about_legal_nib || '';
+          if (document.getElementById('setting-about-legal-npwp')) document.getElementById('setting-about-legal-npwp').value = d.about_legal_npwp || '';
+          if (document.getElementById('setting-about-legal-commitments')) document.getElementById('setting-about-legal-commitments').value = d.about_legal_commitments || '';
+          if (document.getElementById('setting-about-redaksi-subtitle')) document.getElementById('setting-about-redaksi-subtitle').value = d.about_redaksi_subtitle || '';
+          if (document.getElementById('setting-about-redaksi-notice')) document.getElementById('setting-about-redaksi-notice').value = d.about_redaksi_notice || '';
+          if (document.getElementById('setting-about-pedoman-siber')) document.getElementById('setting-about-pedoman-siber').value = d.about_pedoman_siber || '';
+          if (document.getElementById('setting-about-hak-jawab')) document.getElementById('setting-about-hak-jawab').value = d.about_hak_jawab || '';
+
+          // Update teks footer admin
+          const compName = d.company_name || 'PT Japakeh Media Nusantara';
+          const addr = d.office_address || 'Jl. Banda Aceh - Meulaboh Km. 8';
+          const wa = d.hotline_phone || '082165071114';
+          const footerContact = document.getElementById('footer-contact-summary');
+          if (footerContact) {
+            footerContact.textContent = `${addr.split(',')[0]} • WhatsApp: ${wa} • © 2026 Japakeh Post`;
+          }
+        }
+      } catch (err) {
+        console.error('Gagal memuat pengaturan:', err);
+      }
+    }
+
+    // 2. Simpan Semua Pengaturan ke API
+    async function saveAllSettings() {
+      const payload = {
+        hotline_phone: document.getElementById('setting-hotline')?.value?.trim() || '',
+        redaksi_email: document.getElementById('setting-email-redaksi')?.value?.trim() || '',
+        iklan_email: document.getElementById('setting-email-iklan')?.value?.trim() || '',
+        office_address: document.getElementById('setting-office-address')?.value?.trim() || '',
+        site_title: document.getElementById('setting-site-name')?.value?.trim() || '',
+        site_tagline: document.getElementById('setting-site-tagline')?.value?.trim() || '',
+        company_name: document.getElementById('setting-company-name')?.value?.trim() || '',
+        site_description: document.getElementById('setting-site-desc')?.value?.trim() || '',
+        social_facebook: document.getElementById('setting-social-fb')?.value?.trim() || '',
+        social_tiktok: document.getElementById('setting-social-tiktok')?.value?.trim() || '',
+        social_instagram: document.getElementById('setting-social-ig')?.value?.trim() || '',
+        social_youtube: document.getElementById('setting-social-yt')?.value?.trim() || '',
+        social_twitter: document.getElementById('setting-social-x')?.value?.trim() || '',
+        seo_title: document.getElementById('setting-seo-title')?.value?.trim() || '',
+        seo_description: document.getElementById('setting-seo-desc')?.value?.trim() || '',
+        seo_keywords: document.getElementById('setting-seo-keywords')?.value?.trim() || '',
+
+        // Field Halaman Tentang Kami & Legalitas
+        about_hero_badge: document.getElementById('setting-about-hero-badge')?.value?.trim() || '',
+        about_hero_title: document.getElementById('setting-about-hero-title')?.value?.trim() || '',
+        about_hero_subtitle: document.getElementById('setting-about-hero-subtitle')?.value?.trim() || '',
+        about_intro_heading: document.getElementById('setting-about-intro-heading')?.value?.trim() || '',
+        about_intro_subheading: document.getElementById('setting-about-intro-subheading')?.value?.trim() || '',
+        about_description: document.getElementById('setting-about-description')?.value?.trim() || '',
+        about_visi: document.getElementById('setting-about-visi')?.value?.trim() || '',
+        about_misi: document.getElementById('setting-about-misi')?.value?.trim() || '',
+        about_leader: document.getElementById('setting-about-leader')?.value?.trim() || '',
+        about_business_field: document.getElementById('setting-about-business-field')?.value?.trim() || '',
+        about_legal_sk: document.getElementById('setting-about-legal-sk')?.value?.trim() || '',
+        about_legal_nib: document.getElementById('setting-about-legal-nib')?.value?.trim() || '',
+        about_legal_npwp: document.getElementById('setting-about-legal-npwp')?.value?.trim() || '',
+        about_legal_commitments: document.getElementById('setting-about-legal-commitments')?.value?.trim() || '',
+        about_redaksi_subtitle: document.getElementById('setting-about-redaksi-subtitle')?.value?.trim() || '',
+        about_redaksi_notice: document.getElementById('setting-about-redaksi-notice')?.value?.trim() || '',
+        about_pedoman_siber: document.getElementById('setting-about-pedoman-siber')?.value?.trim() || '',
+        about_hak_jawab: document.getElementById('setting-about-hak-jawab')?.value?.trim() || ''
+      };
+
+      const saveBtn = document.getElementById('btn-save-all-settings');
+      const originalHtml = saveBtn.innerHTML;
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg> Menyimpan...`;
+
+      try {
+        const res = await fetch('../api/pengaturan.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.status) {
+          showToast('success', 'Pengaturan Disimpan', 'Alamat kantor, nomor kontak, dan seluruh pengaturan portal telah berhasil diperbarui ke website.');
+          localStorage.setItem('portal_settings', JSON.stringify(result.data?.settings || payload));
+
+          // Update footer admin
+          const footerContact = document.getElementById('footer-contact-summary');
+          if (footerContact) {
+            footerContact.textContent = `${payload.office_address.split(',')[0]} • WhatsApp: ${payload.hotline_phone} • © 2026 Japakeh Post`;
+          }
+        } else {
+          showToast('error', 'Gagal Menyimpan', result.message || 'Terjadi kesalahan saat menyimpan pengaturan.');
+        }
+      } catch (err) {
+        showToast('error', 'Koneksi Terputus', 'Gagal menghubungi server API untuk menyimpan pengaturan.');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = originalHtml;
+      }
+    }
+
+    document.getElementById('btn-save-all-settings').addEventListener('click', saveAllSettings);
+    document.addEventListener('DOMContentLoaded', loadPortalSettings);
 
     function terminateAllSessions() {
       confirmAction({

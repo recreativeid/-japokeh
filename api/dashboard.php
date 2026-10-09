@@ -15,6 +15,12 @@ requireAuth();
 $db = Database::getConnection();
 
 try {
+    // 0. OTOMASI JADWAL TAYANG & TURUN TAYANG (EXPIRED)
+    try {
+        $db->exec("UPDATE artikel SET status = 'published' WHERE status = 'scheduled' AND published_at IS NOT NULL AND published_at <= CURRENT_TIMESTAMP");
+        $db->exec("UPDATE artikel SET status = 'draft' WHERE status = 'published' AND expired_at IS NOT NULL AND expired_at <= CURRENT_TIMESTAMP");
+    } catch (Throwable $e) {}
+
     // 1. HITUNGAN METRIK KARTU UTAMA
     $totalStmt = $db->query("SELECT COUNT(*) FROM artikel");
     $totalArticles = (int)$totalStmt->fetchColumn();

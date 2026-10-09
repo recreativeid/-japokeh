@@ -24,7 +24,7 @@ class Database {
                 $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
                 foreach ($lines as $line) {
                     $line = trim($line);
-                    if (empty($line) || str_starts_with($line, '#') || !str_contains($line, '=')) continue;
+                    if (empty($line) || strpos($line, '#') === 0 || strpos($line, '=') === false) continue;
                     list($k, $v) = explode('=', $line, 2);
                     $k = trim($k);
                     $v = trim(trim($v), "'\"");
@@ -52,10 +52,11 @@ class Database {
                     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES   => true,
-                    PDO::ATTR_TIMEOUT            => 1,
+                    PDO::ATTR_TIMEOUT            => 5,
                 ]);
             } catch (PDOException $e) {
                 http_response_code(500);
+                header('Content-Type: application/json; charset=utf-8');
                 echo json_encode([
                     'status'  => 'error',
                     'message' => 'Gagal terhubung ke database MySQL: ' . $e->getMessage()

@@ -9,8 +9,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-CREATE DATABASE IF NOT EXISTS `berita_japakehpost` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `berita_japakehpost`;
+-- CREATE DATABASE IF NOT EXISTS `berita_japakehpost` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE `berita_japakehpost`;
 
 -- Drop existing tables
 DROP TABLE IF EXISTS `komentar`;
@@ -86,22 +86,47 @@ CREATE TABLE `artikel` (
   `id_artikel` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `kategori_id` INT UNSIGNED NOT NULL,
   `author_id` INT UNSIGNED NOT NULL,
+  `editor_id` INT UNSIGNED DEFAULT NULL,
   `title` VARCHAR(255) NOT NULL,
   `slug` VARCHAR(255) NOT NULL,
   `content` LONGTEXT NOT NULL,
   `thumbnail` VARCHAR(255) DEFAULT '',
+  `caption` TEXT DEFAULT NULL,
+  `tags` VARCHAR(255) DEFAULT NULL,
   `status` ENUM('published', 'draft', 'review', 'scheduled') NOT NULL DEFAULT 'published',
   `views` INT UNSIGNED NOT NULL DEFAULT 0,
   `published_at` DATETIME DEFAULT NULL,
+  `expired_at` DATETIME DEFAULT NULL,
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_artikel`),
   UNIQUE KEY `idx_artikel_slug` (`slug`),
   KEY `idx_artikel_kategori` (`kategori_id`),
   KEY `idx_artikel_author` (`author_id`),
+  KEY `idx_artikel_editor` (`editor_id`),
   KEY `idx_artikel_status_date` (`status`, `published_at`),
+  KEY `idx_artikel_expired` (`status`, `expired_at`),
   CONSTRAINT `fk_artikel_kategori` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id_kategori`) ON DELETE CASCADE,
-  CONSTRAINT `fk_artikel_author` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_artikel_author` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_artikel_editor` FOREIGN KEY (`editor_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------------------------------
+-- 3b. Tabel: artikel_galeri (Galeri Foto / Slider Multi-Foto Berita)
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `artikel_galeri` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_artikel` INT UNSIGNED NOT NULL,
+  `foto` VARCHAR(255) NOT NULL,
+  `caption` TEXT DEFAULT NULL,
+  `urutan` INT UNSIGNED NOT NULL DEFAULT 0,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_artikel_galeri_artikel` (`id_artikel`),
+  KEY `idx_artikel_galeri_urutan` (`id_artikel`, `urutan`),
+  CONSTRAINT `fk_artikel_galeri_artikel` FOREIGN KEY (`id_artikel`) REFERENCES `artikel` (`id_artikel`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 
 -- -----------------------------------------------------------------------------
@@ -203,7 +228,10 @@ CREATE TABLE IF NOT EXISTS `iklan` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `judul` VARCHAR(255) NOT NULL,
   `tipe` ENUM('google', 'banner') NOT NULL DEFAULT 'google',
-  `posisi` ENUM('header', 'sidebar', 'article_middle', 'article_bottom', 'home_middle', 'footer') NOT NULL DEFAULT 'sidebar',
+  `posisi` ENUM('sidebar', 'sidebar_middle', 'sidebar_bottom', 'article_middle', 'article_bottom', 'home_middle', 'footer') NOT NULL DEFAULT 'sidebar',
+  `target_device` ENUM('all', 'desktop', 'mobile') NOT NULL DEFAULT 'desktop',
+  `target_page` ENUM('home', 'article') NOT NULL DEFAULT 'article',
+  `mode_tayang` ENUM('exclusive', 'rotation') NOT NULL DEFAULT 'exclusive',
   `kode_html` LONGTEXT DEFAULT NULL,
   `gambar` VARCHAR(255) DEFAULT NULL,
   `link_tujuan` VARCHAR(255) DEFAULT NULL,
@@ -213,13 +241,16 @@ CREATE TABLE IF NOT EXISTS `iklan` (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_iklan_posisi_status` (`posisi`, `is_active`)
+  KEY `idx_iklan_posisi_status` (`posisi`, `is_active`),
+  KEY `idx_iklan_target_device` (`target_device`),
+  KEY `idx_iklan_target_page` (`target_page`),
+  KEY `idx_iklan_mode_tayang` (`mode_tayang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `iklan` (`id`, `judul`, `tipe`, `posisi`, `kode_html`, `gambar`, `link_tujuan`, `keterangan`, `is_active`, `urutan`, `created_at`, `updated_at`) VALUES
-(1, 'Sponsor Resmi Japakeh Post — Bank Syariah Indonesia', 'banner', 'header', NULL, 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg', 'https://bankbsi.co.id', 'Mitra Finansial & Perbankan Syariah Mitra Redaksi', 1, 1, NOW(), NOW()),
-(2, 'Google AdSense — Sidebar Responsive Display', 'google', 'sidebar', '<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-1234567890123456\" data-ad-slot=\"9876543210\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>', NULL, NULL, 'Slot iklan sidebar otomatis Google AdSense', 1, 2, NOW(), NOW()),
-(3, 'Google AdSense — Artikel Tengah (In-Article)', 'google', 'article_middle', '<ins class=\"adsbygoogle\" style=\"display:block; text-align:center;\" data-ad-layout=\"in-article\" data-ad-format=\"fluid\" data-ad-client=\"ca-pub-1234567890123456\" data-ad-slot=\"5432109876\"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>', NULL, NULL, 'Slot iklan di sela paragraf artikel berita', 1, 3, NOW(), NOW()),
-(4, 'Banner Promo UMKM Aceh & Kuliner Khas Nusantara', 'banner', 'home_middle', NULL, 'assets/images/berita/ekonomi/panen-kopi-gayo-organik.jpg', 'https://japakehpost.com', 'Banner kemitraan promosi UMKM daerah', 1, 4, NOW(), NOW());
+INSERT INTO `iklan` (`id`, `judul`, `tipe`, `posisi`, `target_device`, `target_page`, `mode_tayang`, `kode_html`, `gambar`, `link_tujuan`, `keterangan`, `is_active`, `urutan`, `created_at`, `updated_at`) VALUES
+(1, 'Sponsor Resmi Japakeh Post — Bank Syariah Indonesia', 'banner', 'sidebar', 'desktop', 'article', 'exclusive', NULL, 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg', 'https://bankbsi.co.id', 'Mitra Finansial & Perbankan Syariah Mitra Redaksi (Eksklusif Sidebar Desktop)', 1, 1, NOW(), NOW()),
+(2, 'Google AdSense — Sidebar Responsive Display', 'google', 'sidebar_middle', 'desktop', 'article', 'exclusive', '<ins class=\"adsbygoogle\" style=\"display:block\" data-ad-client=\"ca-pub-1234567890123456\" data-ad-slot=\"9876543210\" data-ad-format=\"auto\" data-full-width-responsive=\"true\"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>', NULL, NULL, 'Slot iklan sidebar otomatis Google AdSense', 1, 2, NOW(), NOW()),
+(3, 'Google AdSense — Artikel Tengah (In-Article)', 'google', 'article_middle', 'mobile', 'article', 'exclusive', '<ins class=\"adsbygoogle\" style=\"display:block; text-align:center;\" data-ad-layout=\"in-article\" data-ad-format=\"fluid\" data-ad-client=\"ca-pub-1234567890123456\" data-ad-slot=\"5432109876\"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>', NULL, NULL, 'Slot iklan di sela paragraf artikel berita khusus HP', 1, 1, NOW(), NOW()),
+(4, 'Banner Promo UMKM Aceh & Kuliner Khas Nusantara', 'banner', 'home_middle', 'mobile', 'home', 'rotation', NULL, 'assets/images/berita/ekonomi/panen-kopi-gayo-organik.jpg', 'https://japakehpost.com', 'Banner kemitraan promosi UMKM daerah (Mode Rotasi Bersama)', 1, 1, NOW(), NOW());
 
 SET FOREIGN_KEY_CHECKS = 1;

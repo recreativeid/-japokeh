@@ -3,18 +3,19 @@
  * Menghubungkan Frontend Website dan Admin ke REST API PHP / MySQL
  */
 
-const API_BASE_URL = (function() {
+var API_BASE_URL = (function() {
+  if (typeof window !== 'undefined' && window.API_BASE_URL) return window.API_BASE_URL;
   // Otomatis deteksi base URL apakah dibuka dari localhost:8000, xampp (localhost/...), atau live server
-  const origin = window.location.origin;
-  const path = window.location.pathname;
+  const path = typeof window !== 'undefined' ? window.location.pathname : '';
   
   if (path.includes('/admin/')) {
     return '../api';
   }
   return 'api';
 })();
+if (typeof window !== 'undefined') window.API_BASE_URL = API_BASE_URL;
 
-const BuserInfoAPI = {
+var BuserInfoAPI = {
   // --- Konfigurasi Batas Waktu Sesi (Session Timeout) ---
   SESSION_CONFIG: {
     MAX_LIFETIME_MS: 2 * 60 * 60 * 1000, // 2 jam batas maksimal sesi aktif
@@ -180,7 +181,16 @@ const BuserInfoAPI = {
         credentials: 'include',
         body: JSON.stringify({ email, password })
       });
-      const json = await res.json();
+      const text = await res.text();
+      let json = null;
+      try {
+        json = JSON.parse(text);
+      } catch (e) {
+        return {
+          status: 'error',
+          message: `Server Error (${res.status}): Database belum terhubung. Harap buat database di cPanel dan sesuaikan api/config/database.php`
+        };
+      }
       if (json.status === 'success' && json.data) {
         this.setAuth(json.data.token, json.data.user, json.data.expires_in);
       }
@@ -473,91 +483,9 @@ const BuserInfoAPI = {
     }
   },
 
-  // Helper Fallback Mengambil Artikel dari articles-seed.json atau window.BUSER_ARTICLES
+  // Helper Fallback (Kembalikan array kosong jika database kosong)
   async _getSeedArticlesFallback(params = {}) {
-    try {
-      let rawList = null;
-      try {
-        const seedUrl = `${API_BASE_URL}/articles-seed.json`;
-        const res = await fetch(seedUrl);
-        if (res.ok) {
-          rawList = await res.json();
-        }
-      } catch (fe) {}
-
-      // Fallback ke window.BUSER_ARTICLES jika fetch gagal (misal pada protokol file://)
-      if (!Array.isArray(rawList) || rawList.length === 0) {
-        if (typeof window !== 'undefined' && Array.isArray(window.BUSER_ARTICLES) && window.BUSER_ARTICLES.length > 0) {
-          rawList = window.BUSER_ARTICLES;
-        }
-      }
-
-      if (!Array.isArray(rawList) || rawList.length === 0) {
-        return { articles: [], pagination: {} };
-      }
-
-      let list = rawList.map((item, idx) => ({
-        id_artikel: item.id || (idx + 1),
-        id: item.id || `art-${idx + 1}`,
-        title: item.title,
-        slug: item.slug,
-        excerpt: item.excerpt,
-        content: item.content,
-        thumbnail: item.image,
-        status: 'published',
-        views: parseInt(String(item.views || '1000').replace(/\D/g, ''), 10) || 1000,
-        published_at: item.date ? `${item.date} • ${item.time || 'WIB'}` : 'Baru saja',
-        name_kategori: item.category || 'Daerah',
-        kategori_slug: item.categorySlug || 'daerah',
-        author_name: item.author || 'Al Bahri',
-        author_role: item.authorRole || 'Pemimpin Redaksi Japakeh Post',
-        author_avatar: 'assets/images/logo/favicon.webp',
-        tags: item.tags || [],
-        isHero: !!item.isHero,
-        isTrending: !!item.isTrending,
-        trendingRank: item.trendingRank || (idx + 1),
-        timestamp: item.timestamp || Date.now()
-      }));
-
-      // Filter Kategori
-      if (params.kategori && String(params.kategori).toLowerCase() !== 'all') {
-        const catFilter = String(params.kategori).toLowerCase().trim();
-        list = list.filter(a => 
-          (a.kategori_slug || '').toLowerCase() === catFilter || 
-          (a.name_kategori || '').toLowerCase() === catFilter
-        );
-      }
-
-      // Filter Pencarian (Cari di Title, Excerpt, Content, Tags, Author, Kategori)
-      if (params.search && String(params.search).trim()) {
-        const q = String(params.search).toLowerCase().trim();
-        list = list.filter(a => 
-          (a.title || '').toLowerCase().includes(q) || 
-          (a.excerpt || '').toLowerCase().includes(q) || 
-          (a.content || '').toLowerCase().includes(q) ||
-          (Array.isArray(a.tags) && a.tags.some(t => String(t).toLowerCase().includes(q))) ||
-          (a.author_name || '').toLowerCase().includes(q) ||
-          (a.name_kategori || '').toLowerCase() === q
-        );
-      }
-
-      // Limit
-      if (params.limit && parseInt(params.limit, 10) > 0) {
-        list = list.slice(0, parseInt(params.limit, 10));
-      }
-
-      return {
-        articles: list,
-        pagination: {
-          total: list.length,
-          page: 1,
-          limit: params.limit || list.length,
-          total_pages: 1
-        }
-      };
-    } catch (e) {
-      return { articles: [], pagination: {} };
-    }
+    return { articles: [], pagination: { total: 0, page: 1, limit: params.limit || 10, total_pages: 0 } };
   },
 
   // --- Berita Endpoints ---
@@ -577,18 +505,39 @@ const BuserInfoAPI = {
 
       const json = await res.json();
       if (json.status === 'success' && json.data && Array.isArray(json.data.articles)) {
-        if (json.data.articles.length > 0 || params.search) {
-          return json.data;
-        }
+        return json.data;
       }
     } catch (err) {
-      // Graceful fallback ke local data jika API offline / timeout / error
+      console.warn('[JapakehPostAPI] Gagal mengambil artikel dari API:', err.message);
     }
-    // Fallback otomatis ke seed data jika API kosong atau server belum aktif
-    return await this._getSeedArticlesFallback(params);
+
+    return { articles: [], pagination: { total: 0, page: 1, limit: params.limit || 10, total_pages: 0 } };
   },
 
-  // Ambil detail berita berdasarkan slug
+  // Ambil rekomendasi berita terkait otomatis (Multi-tier Tag, Kategori & Relevansi)
+  async getRelatedArticles(identifier, options = {}) {
+    try {
+      const limit = options.limit || 6;
+      const query = new URLSearchParams({ related_to: identifier, limit }).toString();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      const res = await fetch(`${API_BASE_URL}/artikel.php?${query}`, {
+        credentials: 'include',
+        headers: this.getAuthHeaders(),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      const json = await res.json();
+      if (json.status === 'success' && json.data && Array.isArray(json.data.articles)) {
+        return json.data.articles;
+      }
+    } catch (err) {
+      console.warn('[JapakehPostAPI] Gagal memuat artikel terkait via related_to:', err);
+    }
+    return [];
+  },
+
+  // Ambil detail berita berdasarkan slug (Murni dari Database MySQL)
   async getArticleBySlug(slug) {
     try {
       const res = await fetch(`${API_BASE_URL}/artikel.php?slug=${encodeURIComponent(slug)}`, {
@@ -601,13 +550,10 @@ const BuserInfoAPI = {
     } catch (err) {
       console.warn('[JapakehPostAPI] Gagal memuat detail artikel by slug:', err);
     }
-    // Fallback cari dari seed data
-    const fallbackData = await this._getSeedArticlesFallback();
-    const found = fallbackData.articles.find(a => a.slug === slug);
-    return found || null;
+    return null;
   },
 
-  // Ambil detail berita berdasarkan ID (Admin Edit)
+  // Ambil detail berita berdasarkan ID (Murni dari Database MySQL)
   async getArticleById(id) {
     try {
       const res = await fetch(`${API_BASE_URL}/artikel.php?id=${encodeURIComponent(id)}`, {
@@ -621,9 +567,7 @@ const BuserInfoAPI = {
     } catch (err) {
       console.warn('[JapakehPostAPI] Gagal memuat detail artikel by ID:', err);
     }
-    const fallbackData = await this._getSeedArticlesFallback();
-    const found = fallbackData.articles.find(a => String(a.id_artikel) === String(id));
-    return found || null;
+    return null;
   },
 
   // Upload Gambar Thumbnail Berita (Admin)
@@ -639,6 +583,77 @@ const BuserInfoAPI = {
       });
       this.handleUnauthorized(res.status);
       return await res.json();
+    } catch (err) {
+      return { status: 'error', message: err.message };
+    }
+  },
+
+  // Upload Foto Profil / Avatar Pengguna & Penulis (Admin & Redaksi)
+  async uploadAvatar(file) {
+    try {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      formData.append('type', 'avatar');
+      const res = await fetch(`${API_BASE_URL}/upload.php`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: this.getAuthHeaders(),
+        body: formData
+      });
+      this.handleUnauthorized(res.status);
+      return await res.json();
+    } catch (err) {
+      return { status: 'error', message: err.message };
+    }
+  },
+
+  // Upload satu foto untuk galeri artikel
+  async uploadGalleryPhoto(file) {
+    try {
+      const formData = new FormData();
+      formData.append('photo', file);
+      formData.append('type', 'gallery');
+      const res = await fetch(`${API_BASE_URL}/upload.php`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: this.getAuthHeaders(),
+        body: formData
+      });
+      this.handleUnauthorized(res.status);
+      return await res.json();
+    } catch (err) {
+      return { status: 'error', message: err.message };
+    }
+  },
+
+  // Upload banyak foto galeri sekaligus (Batch)
+  async uploadGalleryPhotos(files) {
+    try {
+      const formData = new FormData();
+      const fileArray = Array.from(files);
+      fileArray.forEach(file => {
+        formData.append('photos[]', file);
+      });
+      const res = await fetch(`${API_BASE_URL}/upload.php`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: this.getAuthHeaders(),
+        body: formData
+      });
+      this.handleUnauthorized(res.status);
+      const json = await res.json();
+      if (json && json.status === 'success' && json.data && json.data.files) {
+        return json;
+      }
+      // Fallback upload satu per satu
+      const results = [];
+      for (const file of fileArray) {
+        const single = await this.uploadGalleryPhoto(file);
+        if (single && single.status === 'success' && single.data && single.data.url) {
+          results.push({ url: single.data.url, filename: single.data.filename, caption: '' });
+        }
+      }
+      return { status: 'success', data: { files: results, count: results.length } };
     } catch (err) {
       return { status: 'error', message: err.message };
     }
@@ -799,11 +814,14 @@ const BuserInfoAPI = {
         id: 1,
         judul: 'Sponsor Resmi Japakeh Post — Bank Syariah Indonesia',
         tipe: 'banner',
-        posisi: 'header',
+        posisi: 'sidebar',
+        target_device: 'desktop',
+        target_page: 'article',
+        mode_tayang: 'exclusive',
         kode_html: null,
         gambar: 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg',
         link_tujuan: 'https://bankbsi.co.id',
-        keterangan: 'Mitra Finansial & Perbankan Syariah Mitra Redaksi',
+        keterangan: 'Mitra Finansial & Perbankan Syariah Mitra Redaksi (Eksklusif Sidebar Desktop)',
         is_active: 1,
         urutan: 1,
         created_at: '2026-09-12 10:00:00'
@@ -812,11 +830,14 @@ const BuserInfoAPI = {
         id: 2,
         judul: 'Google AdSense — Sidebar Responsive Display',
         tipe: 'google',
-        posisi: 'sidebar',
+        posisi: 'sidebar_middle',
+        target_device: 'desktop',
+        target_page: 'article',
+        mode_tayang: 'exclusive',
         kode_html: '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1234567890123456" data-ad-slot="9876543210" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
         gambar: null,
         link_tujuan: null,
-        keterangan: 'Slot iklan sidebar otomatis Google AdSense',
+        keterangan: 'Slot iklan sidebar tengah otomatis Google AdSense',
         is_active: 1,
         urutan: 2,
         created_at: '2026-09-12 10:05:00'
@@ -826,12 +847,15 @@ const BuserInfoAPI = {
         judul: 'Google AdSense — Artikel Tengah (In-Article)',
         tipe: 'google',
         posisi: 'article_middle',
+        target_device: 'mobile',
+        target_page: 'article',
+        mode_tayang: 'exclusive',
         kode_html: '<ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-1234567890123456" data-ad-slot="5432109876"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script>',
         gambar: null,
         link_tujuan: null,
-        keterangan: 'Slot iklan di sela paragraf artikel berita',
+        keterangan: 'Slot iklan di sela paragraf artikel berita khusus HP',
         is_active: 1,
-        urutan: 3,
+        urutan: 1,
         created_at: '2026-09-12 10:10:00'
       },
       {
@@ -839,12 +863,15 @@ const BuserInfoAPI = {
         judul: 'Banner Promo UMKM Aceh & Kuliner Khas Nusantara',
         tipe: 'banner',
         posisi: 'home_middle',
+        target_device: 'mobile',
+        target_page: 'home',
+        mode_tayang: 'rotation',
         kode_html: null,
         gambar: 'assets/images/berita/ekonomi/panen-kopi-gayo-organik.jpg',
         link_tujuan: 'https://japakehpost.com',
-        keterangan: 'Banner kemitraan promosi UMKM daerah',
+        keterangan: 'Banner kemitraan promosi UMKM daerah (Mode Rotasi Bersama)',
         is_active: 1,
-        urutan: 4,
+        urutan: 1,
         created_at: '2026-09-12 10:15:00'
       }
     ];
@@ -888,6 +915,12 @@ const BuserInfoAPI = {
     let ads = this.getLocalAds();
     if (params.posisi) ads = ads.filter(a => a.posisi === params.posisi);
     if (params.tipe) ads = ads.filter(a => a.tipe === params.tipe);
+    if (params.target_device) ads = ads.filter(a => (a.target_device || 'all') === params.target_device);
+    if (params.device === 'mobile') ads = ads.filter(a => ['all', 'mobile'].includes(a.target_device || 'all'));
+    if (params.device === 'desktop') ads = ads.filter(a => ['all', 'desktop'].includes(a.target_device || 'all'));
+    if (params.target_page) ads = ads.filter(a => (a.target_page || 'article') === params.target_page);
+    if (params.page === 'home') ads = ads.filter(a => (a.target_page || 'article') === 'home');
+    if (params.page === 'article') ads = ads.filter(a => (a.target_page || 'article') === 'article');
     if (params.status === 'active') ads = ads.filter(a => a.is_active == 1);
     if (params.status === 'inactive') ads = ads.filter(a => a.is_active == 0);
     if (params.search) {
@@ -1358,23 +1391,37 @@ const BuserInfoAPI = {
         body: JSON.stringify(data)
       });
       this.handleUnauthorized(res.status);
-      return await res.json();
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        try {
+          localStorage.removeItem('buser_redaksi_cache');
+          localStorage.removeItem('japakeh_redaksi_cache');
+        } catch (e) {}
+      }
+      return json;
     } catch (err) {
       return { status: 'error', message: err.message };
     }
   },
 
-  // Perbarui data anggota profil redaksi
+  // Perbarui data anggota profil redaksi (POST _method=PUT untuk kompatibilitas penuh hosting/cPanel)
   async updateRedaksi(id, data) {
     try {
-      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}`, {
-        method: 'PUT',
+      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}&_method=PUT`, {
+        method: 'POST',
         headers: this.getAuthHeaders({ 'Content-Type': 'application/json' }),
         credentials: 'include',
-        body: JSON.stringify(data)
+        body: JSON.stringify({ ...data, id, _method: 'PUT' })
       });
       this.handleUnauthorized(res.status);
-      return await res.json();
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        try {
+          localStorage.removeItem('buser_redaksi_cache');
+          localStorage.removeItem('japakeh_redaksi_cache');
+        } catch (e) {}
+      }
+      return json;
     } catch (err) {
       return { status: 'error', message: err.message };
     }
@@ -1383,13 +1430,21 @@ const BuserInfoAPI = {
   // Toggle status aktif/nonaktif anggota profil redaksi
   async toggleRedaksiStatus(id) {
     try {
-      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}&action=toggle_status`, {
-        method: 'PUT',
+      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}&action=toggle_status&_method=PUT`, {
+        method: 'POST',
         headers: this.getAuthHeaders({ 'Content-Type': 'application/json' }),
-        credentials: 'include'
+        credentials: 'include',
+        body: JSON.stringify({ id, action: 'toggle_status', _method: 'PUT' })
       });
       this.handleUnauthorized(res.status);
-      return await res.json();
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        try {
+          localStorage.removeItem('buser_redaksi_cache');
+          localStorage.removeItem('japakeh_redaksi_cache');
+        } catch (e) {}
+      }
+      return json;
     } catch (err) {
       return { status: 'error', message: err.message };
     }
@@ -1398,13 +1453,21 @@ const BuserInfoAPI = {
   // Hapus anggota profil redaksi
   async deleteRedaksi(id) {
     try {
-      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}`, {
-        method: 'DELETE',
-        headers: this.getAuthHeaders(),
-        credentials: 'include'
+      const res = await fetch(`${API_BASE_URL}/redaksi.php?id=${encodeURIComponent(id)}&_method=DELETE`, {
+        method: 'POST',
+        headers: this.getAuthHeaders({ 'Content-Type': 'application/json' }),
+        credentials: 'include',
+        body: JSON.stringify({ id, _method: 'DELETE' })
       });
       this.handleUnauthorized(res.status);
-      return await res.json();
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        try {
+          localStorage.removeItem('buser_redaksi_cache');
+          localStorage.removeItem('japakeh_redaksi_cache');
+        } catch (e) {}
+      }
+      return json;
     } catch (err) {
       return { status: 'error', message: err.message };
     }
@@ -1450,7 +1513,14 @@ const BuserInfoAPI = {
         credentials: 'include'
       });
       this.handleUnauthorized(res.status);
-      return await res.json();
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        try {
+          localStorage.removeItem('buser_redaksi_cache');
+          localStorage.removeItem('japakeh_redaksi_cache');
+        } catch (e) {}
+      }
+      return json;
     } catch (err) {
       return { status: 'error', message: err.message };
     }

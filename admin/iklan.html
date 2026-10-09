@@ -8,10 +8,10 @@
   <link rel="icon" type="image/webp" href="../assets/images/logo/favicon.webp">
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="../assets/css/tailwind.min.css">
-  <link rel="stylesheet" href="css/admin.css">
-  <script src="../assets/js/api-client.js"></script>
-  <script src="js/auth-guard.js"></script>
+  <link rel="stylesheet" href="../assets/css/tailwind.min.css?v=20260929_v1">
+  <link rel="stylesheet" href="css/admin.css?v=20260929_v1">
+  <script src="../assets/js/api-client.js?v=20260929_v1"></script>
+  <script src="js/auth-guard.js?v=20260929_v1"></script>
 </head>
 <body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
 
@@ -204,23 +204,29 @@
           </button>
         </div>
 
-        <div id="guide-content-box" class="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div id="guide-content-box" class="mt-4 pt-4 border-t border-slate-700/80 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs">
           <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
             <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-blue-500/20 text-blue-300 rounded mb-1.5">1. Google AdSense</span>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              Pilih tipe <strong>Google Ads</strong>, lalu tempelkan <em>(paste)</em> potongan kode script <code>&lt;script&gt;...&lt;/script&gt;</code> yang didapat dari akun AdSense Anda ke kotak kode. Iklan akan berganti otomatis sesuai pembaca.
+              Pilih tipe <strong>Google Ads</strong>, lalu tempelkan <em>(paste)</em> potongan kode script <code>&lt;script&gt;...&lt;/script&gt;</code> ke kotak kode. Iklan tayang otomatis sesuai audiens.
             </p>
           </div>
           <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
             <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-purple-500/20 text-purple-300 rounded mb-1.5">2. Sponsor / Endorse</span>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              Pilih tipe <strong>Banner Sponsor</strong>. Unggah foto banner (JPG/PNG/WebP) dan masukkan tautan (URL web klien atau link WhatsApp). Saat pembaca mengklik banner, mereka akan diarahkan ke tujuan tersebut.
+              Pilih tipe <strong>Banner Sponsor</strong>. Unggah gambar banner dan tautan tujuan (link klien/WhatsApp). Banner tampil utuh tanpa terpotong.
             </p>
           </div>
           <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
-            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/20 text-emerald-300 rounded mb-1.5">3. Sistem Prioritas</span>
+            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-emerald-500/20 text-emerald-300 rounded mb-1.5">3. Pemisahan Device Tegas</span>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              Jika di slot yang sama (misal Sidebar) terdapat Banner Sponsor dan Google Ads yang sama-sama aktif, sistem akan <strong>memprioritaskan Banner Sponsor</strong> terlebih dahulu agar website tetap rapi dan tidak bertumpuk.
+              Pilih <strong>Desktop & Tablet</strong> (Sidebar Samping) ATAU <strong>Khusus Mobile</strong> (Sela Paragraf & Bawah Berita). Pilihan slot otomatis menyesuaikan device agar layout proporsional & bebas tabrakan posisi.
+            </p>
+          </div>
+          <div class="bg-slate-800/60 p-3.5 rounded-lg border border-slate-700">
+            <span class="inline-block px-2 py-0.5 text-[9px] font-bold uppercase bg-amber-500/20 text-amber-300 rounded mb-1.5">4. Mode Eksklusif vs Rotasi</span>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              Gunakan mode <strong>Eksklusif</strong> untuk sponsor tunggal prioritas utama. Aktifkan opsi <strong>Rotasi Bersama</strong> jika sponsor bersedia bergantian tayang per 12 detik. Notifikasi konflik otomatis memandu prioritas urutan.
             </p>
           </div>
         </div>
@@ -230,7 +236,7 @@
       <div class="cms-card p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-2.5 flex-1">
           <!-- Search input -->
-          <div class="relative min-w-[200px] flex-1 sm:flex-initial">
+          <div class="relative min-w-[180px] flex-1 sm:flex-initial">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
@@ -248,15 +254,37 @@
             <option value="banner">Banner Sponsor</option>
           </select>
 
-          <!-- Posisi Filter -->
+          <!-- Target Halaman Filter (NEW) -->
+          <select id="ad-page-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800 font-medium">
+            <option value="all">Semua Target Halaman</option>
+            <option value="article">📄 Hanya Dalam Artikel</option>
+            <option value="home">🏠 Hanya Halaman Beranda</option>
+          </select>
+
+          <!-- Posisi Filter (Tanpa Header) -->
           <select id="ad-position-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800">
             <option value="all">Semua Posisi Slot</option>
-            <option value="header">Header Atas (Leaderboard)</option>
             <option value="sidebar">Sidebar Samping</option>
+            <option value="sidebar_middle">Sidebar Tengah</option>
+            <option value="sidebar_bottom">Sidebar Bawah (Setelah Pilihan Redaksi)</option>
             <option value="article_middle">Artikel Tengah (In-Article)</option>
-            <option value="home_middle">Beranda Tengah (Home Feed)</option>
             <option value="article_bottom">Artikel Bawah</option>
+            <option value="home_middle">Beranda Tengah (Home Feed)</option>
             <option value="footer">Footer Bawah</option>
+          </select>
+
+          <!-- Target Perangkat Filter -->
+          <select id="ad-device-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800 font-medium">
+            <option value="all">Semua Perangkat</option>
+            <option value="desktop">💻 Desktop & Tablet</option>
+            <option value="mobile">📱 Khusus Mobile</option>
+          </select>
+
+          <!-- Mode Penayangan Filter (Baru) -->
+          <select id="ad-mode-filter" class="py-1.5 px-3 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-800 font-medium">
+            <option value="all">Semua Model Tayang</option>
+            <option value="exclusive">🎯 Eksklusif (Tunggal)</option>
+            <option value="rotation">🔄 Rotasi Bersama</option>
           </select>
 
           <!-- Status Filter -->
@@ -279,17 +307,20 @@
           <table class="w-full text-left border-collapse text-xs table-responsive-cards">
             <thead class="hidden md:table-header-group">
               <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase tracking-wider text-[10px]">
-                <th class="py-3 px-4 w-12 text-center">No</th>
+                <th class="py-3 px-4 w-10 text-center">No</th>
                 <th class="py-3 px-4">Info Iklan / Kampanye</th>
                 <th class="py-3 px-4">Tipe & Format</th>
+                <th class="py-3 px-4">Target Halaman</th>
                 <th class="py-3 px-4">Posisi Slot</th>
-                <th class="py-3 px-4 text-center">Status Tayang</th>
+                <th class="py-3 px-4">Perangkat</th>
+                <th class="py-3 px-4">Mode Tayang</th>
+                <th class="py-3 px-4 text-center">Status</th>
                 <th class="py-3 px-4 text-right">Aksi</th>
               </tr>
             </thead>
             <tbody id="ad-table-body" class="divide-y divide-gray-100">
               <tr>
-                <td colspan="6" class="p-8 text-center text-gray-500">
+                <td colspan="9" class="p-8 text-center text-gray-500">
                   <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-red-600 border-t-transparent mb-2"></div>
                   <p class="text-xs">Memuat data iklan...</p>
                 </td>
@@ -362,19 +393,100 @@
           </div>
         </div>
 
-        <!-- Posisi Slot Penempatan -->
+        <!-- Target Perangkat Penayangan (Pembeda Device Tegas: Desktop vs Mobile) -->
         <div class="space-y-1.5">
-          <label class="block font-bold text-gray-800">
-            Posisi Penempatan Slot <span class="text-red-500">*</span>
-          </label>
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gray-800">
+              Target Perangkat Penayangan <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10px] text-gray-500 font-medium">Ukuran Layar Terpisah</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-buser-red bg-red-50/20 hover:border-buser-red" id="label-device-desktop">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="target_device" value="desktop" checked class="text-buser-red focus:ring-buser-red">
+                <span class="font-bold text-gray-900 text-xs">💻 Desktop & Tablet</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Layar lebar & menengah (Fokus Sidebar Samping & Rekomendasi)</p>
+            </label>
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-gray-200 hover:border-emerald-400 bg-white" id="label-device-mobile">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="target_device" value="mobile" class="text-emerald-600 focus:ring-emerald-500">
+                <span class="font-bold text-gray-900 text-xs">📱 Khusus Mobile (HP)</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Layar ponsel (Format responsif di sela bacaan artikel & beranda)</p>
+            </label>
+          </div>
+        </div>
+
+        <!-- Target Halaman Penayangan (Pilih Salah Satu) -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gray-800">
+              Target Halaman Penayangan <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10.5px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-medium">Pilih Salah Satu</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-buser-red bg-red-50/20 hover:border-buser-red" id="label-page-article">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="target_page" value="article" checked class="text-buser-red focus:ring-buser-red">
+                <span class="font-bold text-gray-900 text-xs">📄 Artikel & Seluruh Kategori</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Iklan tayang di halaman bacaan berita serta seluruh rubrik kategori (Nasional, Daerah, Politik, dll).</p>
+            </label>
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-gray-200 hover:border-amber-400 bg-white" id="label-page-home">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="target_page" value="home" class="text-amber-600 focus:ring-amber-500">
+                <span class="font-bold text-gray-900 text-xs">🏠 Halaman Beranda (Home Page)</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Iklan hanya tayang di halaman utama / beranda depan portal berita.</p>
+            </label>
+          </div>
+        </div>
+
+        <!-- Posisi Slot Penempatan (Disesuaikan Otomatis Berdasarkan Perangkat & Halaman) -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gray-800">
+              Posisi Penempatan Slot <span class="text-red-500">*</span>
+            </label>
+            <span id="slot-device-indicator" class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Desktop</span>
+          </div>
           <select id="ad-position-input" required class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-xs text-gray-900 focus:ring-2 focus:ring-buser-red focus:border-buser-red focus:bg-white">
-            <option value="header">Header Atas (Leaderboard Banner — Sangat Strategis)</option>
-            <option value="sidebar">Sidebar Samping (Widget Artikel / Beranda)</option>
-            <option value="article_middle">Artikel Tengah (Di sela paragraf berita pembaca)</option>
-            <option value="home_middle">Beranda Tengah (Di antara seksi berita utama)</option>
-            <option value="article_bottom">Artikel Bawah (Sebelum kolom komentar)</option>
-            <option value="footer">Footer Bawah (Di atas copyright)</option>
+            <!-- Diisi otomatis oleh JavaScript sesuai device dan page yang dipilih -->
           </select>
+        </div>
+
+        <!-- Kebijakan Sponsor: Model Penayangan (Eksklusif vs Rotasi Bersama) -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-bold text-gray-800">
+              Model Penayangan (Kebijakan Kontrak) <span class="text-red-500">*</span>
+            </label>
+            <span class="text-[10px] text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200 font-medium">Opsional Rotasi</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-buser-red bg-red-50/20 hover:border-buser-red" id="label-mode-exclusive">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="mode_tayang" value="exclusive" checked class="text-buser-red focus:ring-buser-red">
+                <span class="font-bold text-gray-900 text-xs">🎯 Eksklusif (Prioritas Tunggal)</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Iklan menguasai slot ini 100%. Iklan lain dengan prioritas lebih rendah tidak akan tayang.</p>
+            </label>
+            <label class="cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all border-gray-200 hover:border-sky-400 bg-white" id="label-mode-rotation">
+              <div class="flex items-center space-x-2">
+                <input type="radio" name="mode_tayang" value="rotation" class="text-sky-600 focus:ring-sky-500">
+                <span class="font-bold text-gray-900 text-xs">🔄 Rotasi Bersama (Bergantian)</span>
+              </div>
+              <p class="text-[10.5px] text-gray-500 leading-tight">Iklan bersedia tayang bergantian secara otomatis dengan sponsor lain di slot ini per interval waktu.</p>
+            </label>
+          </div>
+        </div>
+
+        <!-- REAL-TIME CONFLICT & STATUS NOTIFICATION BOX -->
+        <div id="slot-conflict-box" class="transition-all duration-200">
+          <!-- Diisi otomatis oleh checkSlotConflict() -->
         </div>
 
         <!-- FIELD KHUSUS: GOOGLE ADSENSE -->
@@ -409,9 +521,8 @@
               <span>Rekomendasi Ukuran Standar (Proporsional Tanpa Terpotong):</span>
             </p>
             <ul class="list-disc list-inside text-[10.5px] text-gray-600 pl-1 space-y-0.5">
-              <li><strong>Slot Header:</strong> 728 &times; 90 px atau 1200 &times; 200 px (Banner Horizontal)</li>
-              <li><strong>Slot Sidebar:</strong> 300 &times; 250 px atau Rasio 1:1 Persegi</li>
-              <li><strong>Slot Artikel / Beranda:</strong> Rasio 16:9 atau 4:1 (Maksimal tinggi 200 px)</li>
+              <li><strong>Slot Sidebar (Desktop & Tablet):</strong> 300 &times; 250 px atau Rasio Persegi 1:1 (Maks tinggi 350 px agar seimbang)</li>
+              <li><strong>Slot Artikel / Beranda (Mobile):</strong> Rasio 16:9 atau Horizontal (Maks tinggi 130 px format full-width nyaman dibaca)</li>
             </ul>
           </div>
           
@@ -427,11 +538,16 @@
           </div>
 
           <!-- Preview Gambar Banner (Proporsional Utuh) -->
-          <div id="banner-preview-box" class="mt-2 hidden">
-            <span class="text-[10px] text-gray-500 block mb-1">Preview Gambar (Tampil Utuh Tanpa Terpotong):</span>
-            <div class="relative h-32 bg-slate-100/90 rounded-lg overflow-hidden border border-purple-200 flex items-center justify-center p-2">
+          <div id="banner-preview-box" class="mt-2 hidden space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] text-gray-500 font-semibold block">Preview Gambar (Proporsional Utuh):</span>
+              <span id="banner-aspect-badge" class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-700">Dimensi</span>
+            </div>
+            <div class="relative h-36 bg-slate-100/90 rounded-lg overflow-hidden border border-purple-200 flex items-center justify-center p-2">
               <img id="banner-preview-img" src="" alt="Preview Banner" class="max-h-full max-w-full w-auto h-auto object-contain">
             </div>
+            <!-- Boks Rekomendasi Cerdas Tata Letak Berdasarkan Rasio Gambar -->
+            <div id="aspect-recommendation-box" class="transition-all duration-200"></div>
           </div>
 
           <div class="space-y-1">
@@ -488,26 +604,50 @@
   </div>
 
   <!-- =========================================================================
-       MODAL PREVIEW IKLAN LIVE
+       MODAL PREVIEW IKLAN LIVE (DENGAN DEVICE SWITCHER DESKTOP VS MOBILE)
        ========================================================================= -->
   <div id="modal-preview" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div id="modal-preview-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
-    <div class="modal-container relative bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col">
+    <div class="modal-container relative bg-white w-full max-w-3xl rounded-xl shadow-2xl overflow-hidden z-10 flex flex-col">
       <div class="h-14 px-6 bg-[#0B0B0B] text-white flex items-center justify-between shrink-0">
         <div class="flex items-center space-x-2">
           <span class="w-2.5 h-2.5 bg-blue-500 rounded-full"></span>
-          <h3 class="text-sm font-bold text-white tracking-wide">Pratinjau Tampilan Iklan</h3>
+          <h3 class="text-sm font-bold text-white tracking-wide">Pratinjau Tampilan Iklan Langsung</h3>
         </div>
         <button type="button" id="btn-close-preview" class="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
       <div class="p-6 overflow-y-auto max-h-[75vh]">
-        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl mb-4 text-[11px] text-gray-600">
-          <strong>Posisi Slot:</strong> <span id="preview-slot-label" class="font-bold text-gray-900">-</span>
+        <!-- Top Controls: Info Slot + Device Preview Switcher -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-gray-200">
+          <div class="text-[11px] text-gray-600 flex flex-wrap items-center gap-2">
+            <span><strong>Posisi Slot:</strong> <span id="preview-slot-label" class="font-bold text-gray-900">-</span></span>
+            <span class="text-gray-300">|</span>
+            <span id="preview-page-badge"></span>
+            <span class="text-gray-300">|</span>
+            <span id="preview-device-badge"></span>
+            <span class="text-gray-300">|</span>
+            <span id="preview-mode-badge"></span>
+          </div>
+          <!-- Device Switcher Buttons -->
+          <div class="inline-flex p-0.5 bg-slate-100 rounded-lg border border-slate-200 text-xs shrink-0 self-start sm:self-auto">
+            <button type="button" id="preview-btn-desktop" class="px-3 py-1 font-bold rounded-md transition-all bg-white text-slate-900 shadow-2xs flex items-center gap-1.5" title="Simulasi Tampilan Desktop">
+              <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <span>Desktop</span>
+            </button>
+            <button type="button" id="preview-btn-mobile" class="px-3 py-1 font-medium rounded-md transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5" title="Simulasi Tampilan Mobile / HP">
+              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+              <span>Mobile / HP</span>
+            </button>
+          </div>
         </div>
-        <div id="preview-content-box" class="border border-dashed border-gray-300 p-4 rounded-xl flex items-center justify-center min-h-[140px] bg-white">
-          <!-- Content preview injected here -->
+
+        <!-- Frame Simulasi Preview -->
+        <div id="preview-frame-container" class="w-full transition-all duration-300 flex justify-center">
+          <div id="preview-content-box" class="w-full flex items-center justify-center transition-all duration-300">
+            <!-- Content preview injected here -->
+          </div>
         </div>
       </div>
     </div>
@@ -539,11 +679,16 @@
     document.addEventListener('DOMContentLoaded', () => {
       let currentAds = [];
       let activeDeleteId = null;
+      let activePreviewAd = null;
+      let activePreviewMode = 'desktop';
 
       const adTableBody = document.getElementById('ad-table-body');
       const searchInput = document.getElementById('ad-search-input');
       const typeFilter = document.getElementById('ad-type-filter');
+      const pageFilter = document.getElementById('ad-page-filter');
       const positionFilter = document.getElementById('ad-position-filter');
+      const deviceFilter = document.getElementById('ad-device-filter');
+      const modeFilter = document.getElementById('ad-mode-filter');
       const statusFilter = document.getElementById('ad-status-filter');
       const btnRefresh = document.getElementById('btn-refresh-list');
 
@@ -557,6 +702,10 @@
       const btnClosePreview = document.getElementById('btn-close-preview');
       const btnCancelDelete = document.getElementById('btn-cancel-delete');
       const btnConfirmDelete = document.getElementById('btn-confirm-delete');
+
+      // Preview Switcher Buttons
+      const previewBtnDesktop = document.getElementById('preview-btn-desktop');
+      const previewBtnMobile = document.getElementById('preview-btn-mobile');
 
       // Form Elements
       const formAd = document.getElementById('form-ad');
@@ -606,6 +755,482 @@
           document.getElementById('label-type-banner').classList.add('border-purple-500', 'bg-purple-50/40');
           document.getElementById('label-type-google').classList.remove('border-blue-500', 'bg-blue-50/40');
         }
+        checkAspectRecommendation();
+      }
+
+      // Radio Target Device Switch (Hanya 2 Pilihan: Desktop & Tablet vs Mobile)
+      document.querySelectorAll('input[name="target_device"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          switchTargetDevice(e.target.value);
+        });
+      });
+
+      function switchTargetDevice(val) {
+        val = (val === 'mobile') ? 'mobile' : 'desktop';
+        const lblDesktop = document.getElementById('label-device-desktop');
+        const lblMobile = document.getElementById('label-device-mobile');
+
+        if (lblDesktop && lblMobile) {
+          lblDesktop.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'desktop' ? 'border-buser-red bg-red-50/20' : 'border-gray-200 bg-white hover:border-gray-300');
+          lblMobile.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'mobile' ? 'border-emerald-600 bg-emerald-50/30' : 'border-gray-200 bg-white hover:border-emerald-300');
+        }
+
+        const targetPage = document.querySelector('input[name="target_page"]:checked')?.value || 'article';
+        updatePositionOptions(val, targetPage);
+      }
+
+      // Radio Target Page Switch
+      document.querySelectorAll('input[name="target_page"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          switchTargetPage(e.target.value);
+        });
+      });
+
+      function switchTargetPage(val) {
+        const lblArticle = document.getElementById('label-page-article');
+        const lblHome = document.getElementById('label-page-home');
+        if (lblArticle && lblHome) {
+          lblArticle.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'article' ? 'border-buser-red bg-red-50/20' : 'border-gray-200 bg-white hover:border-gray-300');
+          lblHome.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'home' ? 'border-amber-500 bg-amber-50/30' : 'border-gray-200 bg-white hover:border-amber-300');
+        }
+
+        const targetDev = document.querySelector('input[name="target_device"]:checked')?.value || 'desktop';
+        updatePositionOptions(targetDev, val);
+      }
+
+      // Radio Mode Penayangan Switch (Eksklusif vs Rotasi Bersama)
+      document.querySelectorAll('input[name="mode_tayang"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          switchModeTayang(e.target.value);
+          checkSlotConflict();
+        });
+      });
+
+      function switchModeTayang(val) {
+        val = (val === 'rotation') ? 'rotation' : 'exclusive';
+        const lblEx = document.getElementById('label-mode-exclusive');
+        const lblRot = document.getElementById('label-mode-rotation');
+        if (lblEx && lblRot) {
+          lblEx.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'exclusive' ? 'border-buser-red bg-red-50/20' : 'border-gray-200 bg-white hover:border-gray-300');
+          lblRot.className = 'cursor-pointer border-2 rounded-xl p-3 flex flex-col justify-between space-y-1 transition-all ' + (val === 'rotation' ? 'border-sky-500 bg-sky-50/30' : 'border-gray-200 bg-white hover:border-sky-300');
+        }
+      }
+
+      /**
+       * Mengubah pilihan slot posisi secara dinamis sesuai Target Perangkat dan Halaman
+       */
+      function updatePositionOptions(device, targetPage, selectedVal = null) {
+        const indEl = document.getElementById('slot-device-indicator');
+        if (indEl) {
+          indEl.textContent = (device === 'mobile') ? '📱 Khusus Mobile' : '💻 Desktop & Tablet';
+          indEl.className = (device === 'mobile') 
+            ? 'text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200'
+            : 'text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200';
+        }
+
+        let options = [];
+        if (device === 'desktop') {
+          if (targetPage === 'article') {
+            options = [
+              { val: 'sidebar', label: 'Sidebar Samping Atas — (Ideal: Poster Tegak / Kotak / Flyer)' },
+              { val: 'sidebar_middle', label: 'Sidebar Samping Tengah — (Ideal: Poster Tegak / Kotak)' },
+              { val: 'sidebar_bottom', label: 'Sidebar Samping Bawah — (Ideal: Poster Tegak / Kotak)' }
+            ];
+          } else {
+            options = [
+              { val: 'home_middle', label: 'Beranda Tengah — (Ideal: Banner Melebar / Landscape Full-Width)' },
+              { val: 'footer', label: 'Footer Bawah Desktop — (Ideal: Banner Melebar / Landscape)' }
+            ];
+          }
+        } else {
+          // mobile
+          if (targetPage === 'article') {
+            options = [
+              { val: 'article_middle', label: 'Sela Konten / Feed Berita — (Bebas: Landscape maupun Portrait)' },
+              { val: 'article_bottom', label: 'Bawah Konten / Feed Berita — (Bebas: Landscape maupun Portrait)' },
+              { val: 'footer', label: 'Footer Bawah Mobile — (Banner Horizontal Responsif)' }
+            ];
+          } else {
+            options = [
+              { val: 'home_middle', label: 'Tengah Beranda Mobile — (Bebas: Landscape maupun Portrait)' },
+              { val: 'footer', label: 'Footer Bawah Mobile — (Banner Horizontal Responsif)' }
+            ];
+          }
+        }
+
+        adPositionInput.innerHTML = options.map(opt => `<option value="${opt.val}">${opt.label}</option>`).join('');
+
+        if (selectedVal && options.some(o => o.val === selectedVal)) {
+          adPositionInput.value = selectedVal;
+        } else if (options.length > 0) {
+          adPositionInput.value = options[0].val;
+        }
+
+        checkSlotConflict();
+        checkAspectRecommendation();
+      }
+
+      /**
+       * Pemeriksaan Deteksi Tabrakan Logika Slot Real-Time (Conflict Warning Box)
+       */
+      function checkSlotConflict() {
+        const box = document.getElementById('slot-conflict-box');
+        if (!box) return;
+
+        const curId = adIdInput.value;
+        const curDev = document.querySelector('input[name="target_device"]:checked')?.value || 'desktop';
+        const curPage = document.querySelector('input[name="target_page"]:checked')?.value || 'article';
+        const curPos = adPositionInput.value;
+        const curMode = document.querySelector('input[name="mode_tayang"]:checked')?.value || 'exclusive';
+        const curOrder = parseInt(adOrderInput.value || '1', 10);
+        const isCurActive = adActiveInput.checked;
+
+        if (!isCurActive) {
+          box.innerHTML = `
+            <div class="p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-500 text-[11px] flex items-center gap-2">
+              <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Status iklan nonaktif. Tidak mempengaruhi alokasi slot di website portal berita.</span>
+            </div>
+          `;
+          return;
+        }
+
+        // Cari iklan aktif yang menempati slot & device & halaman yang sama
+        const conflicts = currentAds.filter(ad => {
+          if (curId && String(ad.id) === String(curId)) return false;
+          if (ad.is_active != 1) return false;
+          const adDev = ad.target_device || 'desktop';
+          if (adDev !== curDev && adDev !== 'all') return false;
+          const adPage = ad.target_page || 'article';
+          if (adPage !== curPage && adPage !== 'all') return false;
+          return ad.posisi === curPos;
+        });
+
+        if (conflicts.length === 0) {
+          box.innerHTML = `
+            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-2.5 text-emerald-900">
+              <svg class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <div class="text-[11px] leading-relaxed">
+                <span class="font-bold text-emerald-800">✅ Slot Posisi Tersedia!</span>
+                <p class="text-emerald-700 mt-0.5">Belum ada iklan aktif yang menempati posisi ini. Iklan Anda akan langsung tayang sebagai pengisi slot utama.</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        // Urutkan conflicts berdasarkan urutan
+        conflicts.sort((a, b) => (Number(a.urutan) || 1) - (Number(b.urutan) || 1));
+        const topExisting = conflicts[0];
+        const topExistingMode = topExisting.mode_tayang || 'exclusive';
+        const topExistingOrder = Number(topExisting.urutan) || 1;
+
+        if (topExistingMode === 'exclusive') {
+          const isWinning = curOrder < topExistingOrder;
+          box.innerHTML = `
+            <div class="p-3.5 bg-amber-50 border border-amber-300 rounded-xl space-y-2 text-amber-900">
+              <div class="flex items-center gap-2 font-bold text-amber-900 text-xs">
+                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span>⚠️ Perhatian: Posisi Ini Sedang Ditempati Secara Eksklusif!</span>
+              </div>
+              <p class="text-[11px] text-amber-800 leading-relaxed">
+                Slot ini sedang aktif digunakan oleh iklan: <strong>"${escapeHtml(topExisting.judul)}"</strong> (Prioritas Urutan: #${topExistingOrder}, Mode: Eksklusif).
+              </p>
+              <div class="p-2.5 bg-white/80 rounded-lg border border-amber-200 text-[10.5px] text-amber-900 space-y-1">
+                <div class="font-bold">Panduan Agar Tidak Terjadi Tabrakan Logika:</div>
+                <ul class="list-disc list-inside space-y-0.5 text-gray-700">
+                  <li>
+                    ${isWinning 
+                      ? `<span class="text-emerald-700 font-bold">Prioritas Urutan #${curOrder} lebih tinggi daripada #${topExistingOrder}.</span> Iklan baru ini akan otomatis menggeser iklan lama menjadi cadangan.` 
+                      : `<strong>Rubahlah Prioritas Urutan</strong> menjadi angka lebih kecil dari #${topExistingOrder} (misal: #${Math.max(1, topExistingOrder - 1)}) jika ingin memprioritaskan iklan baru ini di atas iklan lama.`}
+                  </li>
+                  <li>
+                    <strong>Ingin iklan tayang bergantian?</strong> Sesuai kebijakan persetujuan sponsor, kedua iklan harus diatur ke mode <strong>"Rotasi Bersama"</strong>.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        // Mode Rotasi
+        if (topExistingMode === 'rotation') {
+          if (curMode === 'rotation') {
+            box.innerHTML = `
+              <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl space-y-1 text-sky-900">
+                <div class="flex items-center gap-2 font-bold text-sky-900 text-xs">
+                  <svg class="w-4 h-4 text-sky-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                  <span>🔄 Slot Ini Mengaktifkan Mode Rotasi Bersama</span>
+                </div>
+                <p class="text-[11px] text-sky-800 leading-relaxed">
+                  Slot ini sudah aktif digunakan bersama oleh: <strong>"${escapeHtml(topExisting.judul)}"</strong>.
+                </p>
+                <p class="text-[10.5px] text-sky-700 bg-white/80 p-2 rounded-lg border border-sky-200">
+                  ✨ Iklan baru Anda akan otomatis ikut dijadwalkan tayang bergantian secara berkala (auto-rotate per 12 detik) tanpa menabrak iklan yang sudah ada.
+                </p>
+              </div>
+            `;
+          } else {
+            box.innerHTML = `
+              <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl space-y-1.5 text-amber-900">
+                <div class="flex items-center gap-2 font-bold text-amber-900 text-xs">
+                  <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <span>⚠️ Peringatan: Mengambil Alih Slot Rotasi</span>
+                </div>
+                <p class="text-[11px] text-amber-800 leading-relaxed">
+                  Slot ini saat ini aktif digunakan bersama dalam mode rotasi oleh: <strong>"${escapeHtml(topExisting.judul)}"</strong>.
+                </p>
+                <p class="text-[10.5px] text-amber-800 bg-white/80 p-2 rounded-lg border border-amber-200">
+                  Jika Anda memilih mode <strong>Eksklusif</strong> dengan prioritas lebih tinggi, iklan ini akan menguasai slot sepenuhnya dan menghentikan rotasi iklan lainnya.
+                </p>
+              </div>
+            `;
+          }
+        }
+      }
+
+      // State Meta Rasio Gambar Banner
+      let currentImageMeta = null;
+
+      /**
+       * Deteksi Dimensi Asli & Rasio Gambar Banner secara Otomatis
+       */
+      function evaluateImageMeta() {
+        if (!bannerPreviewImg || !bannerPreviewImg.naturalWidth) return;
+        const nw = bannerPreviewImg.naturalWidth;
+        const nh = bannerPreviewImg.naturalHeight;
+        if (nw <= 0 || nh <= 0) return;
+
+        const ratio = nw / nh;
+        const isPortrait = ratio < 0.95;
+        const isLandscape = ratio >= 1.25;
+        const isSquare = !isPortrait && !isLandscape;
+
+        let orientLabel = 'Persegi (Square 1:1)';
+        let badgeColor = 'bg-slate-100 text-slate-700 border-slate-200';
+        if (isPortrait) {
+          orientLabel = 'Tegak (Portrait)';
+          badgeColor = 'bg-amber-100 text-amber-800 border-amber-300';
+        } else if (isLandscape) {
+          orientLabel = 'Melebar (Landscape)';
+          badgeColor = 'bg-blue-100 text-blue-800 border-blue-300';
+        }
+
+        currentImageMeta = {
+          width: nw,
+          height: nh,
+          ratio,
+          isPortrait,
+          isLandscape,
+          isSquare,
+          orientLabel
+        };
+
+        const badgeEl = document.getElementById('banner-aspect-badge');
+        if (badgeEl) {
+          badgeEl.className = `text-[10px] font-bold px-2 py-0.5 rounded border ${badgeColor}`;
+          badgeEl.innerHTML = `📐 ${nw} &times; ${nh} px &bull; ${orientLabel}`;
+        }
+
+        checkAspectRecommendation();
+      }
+
+      /**
+       * Sistem Rekomendasi Cerdas Tata Letak Berdasarkan Rasio Gambar Banner
+       */
+      function checkAspectRecommendation() {
+        const box = document.getElementById('aspect-recommendation-box');
+        if (!box) return;
+
+        const curType = document.querySelector('input[name="ad_type"]:checked')?.value || 'google';
+        if (curType !== 'banner' || !currentImageMeta) {
+          box.innerHTML = '';
+          return;
+        }
+
+        const curDev = document.querySelector('input[name="target_device"]:checked')?.value || 'desktop';
+        const curPos = adPositionInput.value;
+        const { width: nw, height: nh, isPortrait, isLandscape } = currentImageMeta;
+
+        // 1. KASUS POSTER TEGAK (PORTRAIT)
+        if (isPortrait) {
+          if (curDev === 'desktop' && (curPos === 'home_middle' || curPos === 'footer')) {
+            box.innerHTML = `
+              <div class="p-3 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 space-y-2">
+                <div class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                  <div class="text-[11px] leading-relaxed flex-1">
+                    <span class="font-bold text-amber-800">⚠️ Saran Tata Letak: Poster Berformat Tegak (${nw}&times;${nh} px)</span>
+                    <p class="text-amber-700 mt-0.5">
+                      Di layar Desktop, posisi <strong>${getPositionLabel(curPos)}</strong> membentang horizontal. Poster tegak akan menyisakan ruang kosong besar di samping kiri &amp; kanan.
+                    </p>
+                    <p class="text-amber-800 font-semibold mt-1">Pilihan posisi yang paling pas &amp; profesional:</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2 pt-1 border-t border-amber-200/80">
+                  <button type="button" id="btn-apply-sidebar" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-[10.5px] transition-all inline-flex items-center gap-1.5 shadow-xs">
+                    <span>👉 Pindahkan ke Sidebar Samping Desktop (Rekomendasi)</span>
+                  </button>
+                  <button type="button" id="btn-apply-mobile" class="px-3 py-1.5 bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 font-bold rounded-lg text-[10.5px] transition-all inline-flex items-center gap-1.5">
+                    <span>📱 Ubah Target ke Khusus Mobile</span>
+                  </button>
+                </div>
+              </div>
+            `;
+
+            document.getElementById('btn-apply-sidebar')?.addEventListener('click', () => {
+              const articleRadio = document.querySelector('input[name="target_page"][value="article"]');
+              if (articleRadio) {
+                articleRadio.checked = true;
+                switchTargetPage('article');
+              }
+              const devRadio = document.querySelector('input[name="target_device"][value="desktop"]');
+              if (devRadio) {
+                devRadio.checked = true;
+                switchTargetDevice('desktop');
+              }
+              updatePositionOptions('desktop', 'article', 'sidebar');
+              showToast('Posisi berhasil dialihkan ke Sidebar Samping Desktop!', 'success');
+            });
+
+            document.getElementById('btn-apply-mobile')?.addEventListener('click', () => {
+              const mobileRadio = document.querySelector('input[name="target_device"][value="mobile"]');
+              if (mobileRadio) {
+                mobileRadio.checked = true;
+                switchTargetDevice('mobile');
+              }
+              showToast('Target berhasil diubah ke Khusus Mobile!', 'success');
+            });
+            return;
+          }
+
+          if (curDev === 'desktop' && curPos.startsWith('sidebar')) {
+            box.innerHTML = `
+              <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-[11px] leading-snug">
+                  <strong>✅ Tata Letak Sangat Pas:</strong> Format poster tegak (${nw}&times;${nh} px) sangat ideal dan presisi mengisi kolom Sidebar Desktop tanpa ruang kosong.
+                </span>
+              </div>
+            `;
+            return;
+          }
+
+          if (curDev === 'mobile') {
+            box.innerHTML = `
+              <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-[11px] leading-snug">
+                  <strong>✅ Sangat Cocok di Ponsel:</strong> Layar smartphone berbentuk vertikal, sehingga poster tegak (${nw}&times;${nh} px) tampil penuh, utuh, dan nyaman dibaca.
+                </span>
+              </div>
+            `;
+            return;
+          }
+        }
+
+        // 2. KASUS BANNER MELEBAR (LANDSCAPE LEBAR)
+        if (isLandscape && currentImageMeta.ratio >= 1.6) {
+          if (curDev === 'desktop' && curPos.startsWith('sidebar')) {
+            box.innerHTML = `
+              <div class="p-3 bg-sky-50 border border-sky-200 rounded-xl text-sky-900 space-y-2">
+                <div class="flex items-start gap-2">
+                  <svg class="w-4 h-4 text-sky-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <div class="text-[11px] leading-relaxed flex-1">
+                    <span class="font-bold text-sky-800">💡 Info Banner Horizontal Melebar (${nw}&times;${nh} px)</span>
+                    <p class="text-sky-700 mt-0.5">
+                      Di kolom sidebar samping, banner melebar akan mengecil agar muat. Format horizontal seperti ini akan tampil jauh lebih megah &amp; terbaca jelas jika membentang penuh di <strong>Beranda Tengah</strong> atau <strong>Footer</strong>.
+                    </p>
+                  </div>
+                </div>
+                <div class="pt-1 border-t border-sky-200">
+                  <button type="button" id="btn-apply-home-middle" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-lg text-[10.5px] transition-all inline-flex items-center gap-1.5 shadow-xs">
+                    <span>👉 Pasang di Beranda Tengah Desktop (Membentang Penuh)</span>
+                  </button>
+                </div>
+              </div>
+            `;
+
+            document.getElementById('btn-apply-home-middle')?.addEventListener('click', () => {
+              const homeRadio = document.querySelector('input[name="target_page"][value="home"]');
+              if (homeRadio) {
+                homeRadio.checked = true;
+                switchTargetPage('home');
+              }
+              const devRadio = document.querySelector('input[name="target_device"][value="desktop"]');
+              if (devRadio) {
+                devRadio.checked = true;
+                switchTargetDevice('desktop');
+              }
+              updatePositionOptions('desktop', 'home', 'home_middle');
+              showToast('Posisi berhasil dialihkan ke Beranda Tengah Desktop!', 'success');
+            });
+            return;
+          }
+
+          if (curDev === 'desktop' && (curPos === 'home_middle' || curPos === 'footer')) {
+            box.innerHTML = `
+              <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-[11px] leading-snug">
+                  <strong>✅ Format Ideal:</strong> Banner horizontal (${nw}&times;${nh} px) akan membentang megah memenuhi lebar kontainer desktop.
+                </span>
+              </div>
+            `;
+            return;
+          }
+        }
+
+        // 3. KASUS PERSEGI (1:1) / STANDAR PROPORSI
+        box.innerHTML = `
+          <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-700 flex items-center gap-2 text-[10.5px]">
+            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Rasio gambar proporsional (${nw}&times;${nh} px). Gambar akan tampil utuh dan rapi di posisi ini.</span>
+          </div>
+        `;
+      }
+
+      // Event listener perubahan posisi, order, dan status aktif untuk real-time warning
+      adPositionInput.addEventListener('change', () => {
+        checkSlotConflict();
+        checkAspectRecommendation();
+      });
+      adOrderInput.addEventListener('input', checkSlotConflict);
+      adActiveInput.addEventListener('change', checkSlotConflict);
+
+      // Helper Badge Target Page
+      function getPageBadge(page) {
+        page = page || 'article';
+        if (page === 'home') {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+            <svg class="w-3 h-3 mr-1 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            🏠 Beranda
+          </span>`;
+        } else {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            <svg class="w-3 h-3 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            📄 Artikel & Kategori
+          </span>`;
+        }
+      }
+
+      /**
+       * Helper resolusi path gambar khusus admin (karena halaman admin berada di subfolder /admin/)
+       */
+      function formatAdminImageUrl(url) {
+        if (!url) return '../assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg';
+        url = url.trim();
+        if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
+          return url;
+        }
+        if (url.startsWith('../')) {
+          return url;
+        }
+        if (url.startsWith('/')) {
+          return '..' + url;
+        }
+        return '../' + url;
       }
 
       // Preview Image on file select
@@ -628,10 +1253,25 @@
         adImageUrl.addEventListener('input', (e) => {
           const val = e.target.value.trim();
           if (val) {
-            bannerPreviewImg.src = val;
+            bannerPreviewImg.src = formatAdminImageUrl(val);
             bannerPreviewBox.classList.remove('hidden');
+          } else {
+            bannerPreviewBox.classList.add('hidden');
+            currentImageMeta = null;
+            checkAspectRecommendation();
           }
         });
+      }
+
+      if (bannerPreviewImg) {
+        bannerPreviewImg.onload = () => {
+          evaluateImageMeta();
+        };
+        bannerPreviewImg.onerror = () => {
+          bannerPreviewImg.src = '../assets/images/logo/favicon.webp';
+          currentImageMeta = null;
+          checkAspectRecommendation();
+        };
       }
 
       // Helper Toast
@@ -640,9 +1280,7 @@
         const toast = document.createElement('div');
         const color = type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white';
         toast.className = `${color} px-4 py-2.5 rounded-lg shadow-lg text-xs font-semibold flex items-center space-x-2 transform transition-all duration-200 translate-y-2 opacity-0 pointer-events-auto`;
-        toast.innerHTML = `
-          <span>${msg}</span>
-        `;
+        toast.innerHTML = `<span>${msg}</span>`;
         container.appendChild(toast);
         setTimeout(() => {
           toast.classList.remove('translate-y-2', 'opacity-0');
@@ -656,21 +1294,50 @@
       // Format Posisi Slot Label
       function getPositionLabel(pos) {
         const map = {
-          'header': 'Header Atas (Leaderboard)',
-          'sidebar': 'Sidebar Samping',
-          'article_middle': 'Artikel Tengah (In-Article)',
-          'home_middle': 'Beranda Tengah',
-          'article_bottom': 'Artikel Bawah',
+          'sidebar': 'Sidebar Atas',
+          'sidebar_middle': 'Sidebar Tengah',
+          'sidebar_bottom': 'Sidebar Bawah',
+          'article_middle': 'Sela Berita (In-Feed/Article)',
+          'home_middle': 'Tengah Beranda',
+          'article_bottom': 'Bawah Berita / Feed',
           'footer': 'Footer Bawah'
         };
-        return map[pos] || pos;
+        return map[pos] || (pos === 'header' ? 'Sidebar Atas' : pos);
+      }
+
+      // Helper Badge Target Device (Desktop vs Mobile)
+      function getDeviceBadge(dev) {
+        if (dev === 'mobile') {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <svg class="w-3 h-3 mr-1 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            📱 Mobile
+          </span>`;
+        } else {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">
+            <svg class="w-3 h-3 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            💻 Desktop & Tablet
+          </span>`;
+        }
+      }
+
+      // Helper Badge Mode Penayangan (Eksklusif vs Rotasi Bersama)
+      function getModeBadge(mode) {
+        if (mode === 'rotation') {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200" title="Tayang bergantian dengan sponsor lain secara otomatis">
+            🔄 Rotasi
+          </span>`;
+        } else {
+          return `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200" title="Menguasai slot secara penuh (Prioritas tunggal)">
+            🎯 Eksklusif
+          </span>`;
+        }
       }
 
       // Load Ads from API
       async function loadAds() {
         adTableBody.innerHTML = `
           <tr>
-            <td colspan="6" class="p-8 text-center text-gray-500">
+            <td colspan="8" class="p-8 text-center text-gray-500">
               <div class="inline-block animate-spin rounded-full h-7 w-7 border-4 border-red-600 border-t-transparent mb-2"></div>
               <p class="text-xs">Mengambil data iklan terbaru...</p>
             </td>
@@ -685,7 +1352,7 @@
         } catch (err) {
           adTableBody.innerHTML = `
             <tr>
-              <td colspan="6" class="p-6 text-center text-red-500">
+              <td colspan="8" class="p-6 text-center text-red-500">
                 Gagal memuat data iklan: ${err.message}
               </td>
             </tr>
@@ -703,12 +1370,18 @@
       function renderAdsTable() {
         const q = searchInput.value.toLowerCase().trim();
         const typeVal = typeFilter.value;
+        const pageVal = pageFilter ? pageFilter.value : 'all';
         const posVal = positionFilter.value;
+        const devVal = deviceFilter.value;
+        const modeVal = modeFilter ? modeFilter.value : 'all';
         const statusVal = statusFilter.value;
 
         const filtered = currentAds.filter(ad => {
           if (typeVal !== 'all' && ad.tipe !== typeVal) return false;
+          if (pageVal !== 'all' && (ad.target_page || 'article') !== pageVal) return false;
           if (posVal !== 'all' && ad.posisi !== posVal) return false;
+          if (devVal !== 'all' && (ad.target_device || 'desktop') !== devVal && ad.target_device !== 'all') return false;
+          if (modeVal !== 'all' && (ad.mode_tayang || 'exclusive') !== modeVal) return false;
           if (statusVal === 'active' && ad.is_active != 1) return false;
           if (statusVal === 'inactive' && ad.is_active != 0) return false;
           if (q) {
@@ -722,10 +1395,10 @@
         if (filtered.length === 0) {
           adTableBody.innerHTML = `
             <tr>
-              <td colspan="6" class="p-8 text-center text-gray-400">
+              <td colspan="9" class="p-8 text-center text-gray-400">
                 <svg class="w-10 h-10 mx-auto text-gray-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 <p class="font-bold text-gray-600">Tidak ada iklan ditemukan</p>
-                <p class="text-[11px] text-gray-400 mt-0.5">Silakan tambahkan iklan baru atau sesuaikan filter pencarian Anda.</p>
+                <p class="text-[11px] text-gray-400 mt-0.5">Silakan sesuaikan filter pencarian atau tambahkan kampanye iklan baru.</p>
               </td>
             </tr>
           `;
@@ -738,12 +1411,15 @@
             ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">Google Ads</span>`
             : `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-purple-50 text-purple-700 border border-purple-200">Banner Sponsor</span>`;
 
+          const pageBadge = getPageBadge(ad.target_page);
           const posBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">${getPositionLabel(ad.posisi)}</span>`;
+          const deviceBadge = getDeviceBadge(ad.target_device);
+          const modeBadge = getModeBadge(ad.mode_tayang);
 
           const visualThumb = isGoogle
             ? `<div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 font-bold flex items-center justify-center shrink-0 text-xs">G-Ads</div>`
             : `<div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-                 <img src="${ad.gambar || '../assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg'}" class="w-full h-full object-cover" onerror="this.src='../assets/images/logo/favicon.webp';">
+                 <img src="${formatAdminImageUrl(ad.gambar)}" class="w-full h-full object-cover" onerror="this.src='../assets/images/logo/favicon.webp';">
                </div>`;
 
           const isActive = ad.is_active == 1;
@@ -772,11 +1448,14 @@
                     </div>
                   </div>
 
-                  <!-- Middle: Type & Position Badges -->
-                  <div class="flex flex-wrap items-center gap-2 bg-gray-50 p-2 rounded-lg border border-gray-100 text-xs">
+                  <!-- Middle: Type, Page, Position, Target Device & Mode Badges -->
+                  <div class="flex flex-wrap items-center gap-1.5 bg-gray-50 p-2 rounded-lg border border-gray-100 text-xs">
                     ${typeBadge}
+                    ${pageBadge}
                     ${posBadge}
-                    <span class="text-[10px] text-gray-400 ml-auto">Urutan: #${ad.urutan || 1}</span>
+                    ${deviceBadge}
+                    ${modeBadge}
+                    <span class="text-[10px] text-gray-500 font-bold ml-auto">Urutan: #${ad.urutan || 1}</span>
                   </div>
 
                   <!-- Bottom: Action Buttons full width without swiping! -->
@@ -808,7 +1487,10 @@
                 </div>
               </td>
               <td class="hidden md:table-cell py-3 px-4">${typeBadge}</td>
+              <td class="hidden md:table-cell py-3 px-4">${pageBadge}</td>
               <td class="hidden md:table-cell py-3 px-4">${posBadge}</td>
+              <td class="hidden md:table-cell py-3 px-4">${deviceBadge}</td>
+              <td class="hidden md:table-cell py-3 px-4">${modeBadge}</td>
               <td class="hidden md:table-cell py-3 px-4 text-center">${statusToggle}</td>
               <td class="hidden md:table-cell py-3 px-4 text-right whitespace-nowrap">
                 <div class="inline-flex items-center space-x-1.5">
@@ -880,7 +1562,10 @@
       // Filter change listeners
       searchInput.addEventListener('input', renderAdsTable);
       typeFilter.addEventListener('change', renderAdsTable);
+      if (pageFilter) pageFilter.addEventListener('change', renderAdsTable);
       positionFilter.addEventListener('change', renderAdsTable);
+      deviceFilter.addEventListener('change', renderAdsTable);
+      if (modeFilter) modeFilter.addEventListener('change', renderAdsTable);
       statusFilter.addEventListener('change', renderAdsTable);
       btnRefresh.addEventListener('click', () => {
         showToast('Memperbarui data iklan...');
@@ -892,10 +1577,40 @@
         formAd.reset();
         adIdInput.value = '';
         document.getElementById('modal-ad-title').textContent = 'Tambah Iklan Baru';
-        document.querySelector('input[name="ad_type"][value="google"]').checked = true;
+
+        // Set Default Type Google
+        const defaultTypeRadio = document.querySelector('input[name="ad_type"][value="google"]');
+        if (defaultTypeRadio) defaultTypeRadio.checked = true;
         switchAdType('google');
+
+        // Set Default Device Desktop
+        const defaultDevRadio = document.querySelector('input[name="target_device"][value="desktop"]');
+        if (defaultDevRadio) defaultDevRadio.checked = true;
+        switchTargetDevice('desktop');
+
+        // Set Default Page Article
+        const defaultPageRadio = document.querySelector('input[name="target_page"][value="article"]');
+        if (defaultPageRadio) defaultPageRadio.checked = true;
+        switchTargetPage('article');
+
+        // Set Default Mode Tayang Exclusive
+        const defaultModeRadio = document.querySelector('input[name="mode_tayang"][value="exclusive"]');
+        if (defaultModeRadio) defaultModeRadio.checked = true;
+        switchModeTayang('exclusive');
+
+        updatePositionOptions('desktop', 'article');
+
+        adOrderInput.value = 1;
+        bannerPreviewImg.src = '';
         bannerPreviewBox.classList.add('hidden');
+        currentImageMeta = null;
+        const boxAdvice = document.getElementById('aspect-recommendation-box');
+        if (boxAdvice) boxAdvice.innerHTML = '';
+        const badgeAspect = document.getElementById('banner-aspect-badge');
+        if (badgeAspect) badgeAspect.textContent = 'Dimensi';
         adActiveInput.checked = true;
+        checkSlotConflict();
+        checkAspectRecommendation();
         modalAdForm.classList.remove('hidden');
       });
 
@@ -904,7 +1619,6 @@
         adIdInput.value = ad.id;
         document.getElementById('modal-ad-title').textContent = 'Edit Iklan / Kampanye';
         adTitleInput.value = ad.judul || '';
-        adPositionInput.value = ad.posisi || 'sidebar';
         adNoteInput.value = ad.keterangan || '';
         adOrderInput.value = ad.urutan || 1;
         adActiveInput.checked = ad.is_active == 1;
@@ -913,17 +1627,46 @@
         if (typeRadio) typeRadio.checked = true;
         switchAdType(ad.tipe);
 
+        const targetDev = (ad.target_device === 'mobile') ? 'mobile' : 'desktop';
+        const devRadio = document.querySelector(`input[name="target_device"][value="${targetDev}"]`);
+        if (devRadio) devRadio.checked = true;
+        switchTargetDevice(targetDev);
+
+        const targetPage = ad.target_page || 'article';
+        const pageRadio = document.querySelector(`input[name="target_page"][value="${targetPage}"]`);
+        if (pageRadio) pageRadio.checked = true;
+        switchTargetPage(targetPage);
+
+        // Update Slot Posisi sesuai device & page
+        const savedPos = (ad.posisi === 'header') ? 'sidebar' : (ad.posisi || 'sidebar');
+        updatePositionOptions(targetDev, targetPage, savedPos);
+
+        const targetMode = ad.mode_tayang === 'rotation' ? 'rotation' : 'exclusive';
+        const modeRadio = document.querySelector(`input[name="mode_tayang"][value="${targetMode}"]`);
+        if (modeRadio) modeRadio.checked = true;
+        switchModeTayang(targetMode);
+
         if (ad.tipe === 'google') {
           adCodeInput.value = ad.kode_html || '';
+          currentImageMeta = null;
+          const boxAdv = document.getElementById('aspect-recommendation-box');
+          if (boxAdv) boxAdv.innerHTML = '';
         } else {
           adImageUrl.value = ad.gambar || '';
           adLinkInput.value = ad.link_tujuan || '';
           if (ad.gambar) {
-            bannerPreviewImg.src = ad.gambar;
+            bannerPreviewImg.src = formatAdminImageUrl(ad.gambar);
             bannerPreviewBox.classList.remove('hidden');
+          } else {
+            bannerPreviewImg.src = '';
+            bannerPreviewBox.classList.add('hidden');
+            currentImageMeta = null;
+            const boxAdv = document.getElementById('aspect-recommendation-box');
+            if (boxAdv) boxAdv.innerHTML = '';
           }
         }
 
+        checkSlotConflict();
         modalAdForm.classList.remove('hidden');
       }
 
@@ -932,6 +1675,9 @@
         e.preventDefault();
         const id = adIdInput.value;
         const type = document.querySelector('input[name="ad_type"]:checked').value;
+        const targetDev = document.querySelector('input[name="target_device"]:checked')?.value || 'desktop';
+        const targetPage = document.querySelector('input[name="target_page"]:checked')?.value || 'article';
+        const modeTayang = document.querySelector('input[name="mode_tayang"]:checked')?.value || 'exclusive';
         const submitBtn = document.getElementById('btn-submit-ad-modal');
         submitBtn.disabled = true;
         submitBtn.innerHTML = `<span>Menyimpan...</span>`;
@@ -951,9 +1697,18 @@
             const uploadJson = await uploadRes.json();
             if (uploadJson.status === 'success' && uploadJson.data?.url) {
               gambarPath = uploadJson.data.url;
+            } else {
+              throw new Error(uploadJson.message || 'Gagal mengunggah file gambar banner');
             }
           } catch (ue) {
-            console.warn('Gagal upload banner, menggunakan fallback lokal:', ue);
+            console.error('Gagal upload banner:', ue);
+            showToast(ue.message || 'Gagal mengunggah file banner sponsor', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Simpan Iklan</span>
+            `;
+            return;
           }
         }
 
@@ -961,6 +1716,9 @@
           judul: adTitleInput.value.trim(),
           tipe: type,
           posisi: adPositionInput.value,
+          target_device: targetDev,
+          target_page: targetPage,
+          mode_tayang: modeTayang,
           kode_html: type === 'google' ? adCodeInput.value : null,
           gambar: type === 'banner' ? (gambarPath || 'assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg') : null,
           link_tujuan: type === 'banner' ? adLinkInput.value.trim() : null,
@@ -995,35 +1753,124 @@
         }
       });
 
+      // Preview Modal Device Switcher
+      if (previewBtnDesktop) {
+        previewBtnDesktop.addEventListener('click', () => {
+          activePreviewMode = 'desktop';
+          updatePreviewModeUI();
+        });
+      }
+      if (previewBtnMobile) {
+        previewBtnMobile.addEventListener('click', () => {
+          activePreviewMode = 'mobile';
+          updatePreviewModeUI();
+        });
+      }
+
+      function updatePreviewModeUI() {
+        if (activePreviewMode === 'desktop') {
+          previewBtnDesktop.className = 'px-3 py-1 font-bold rounded-md transition-all bg-white text-slate-900 shadow-2xs flex items-center gap-1.5';
+          previewBtnMobile.className = 'px-3 py-1 font-medium rounded-md transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+        } else {
+          previewBtnMobile.className = 'px-3 py-1 font-bold rounded-md transition-all bg-white text-slate-900 shadow-2xs flex items-center gap-1.5';
+          previewBtnDesktop.className = 'px-3 py-1 font-medium rounded-md transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+        }
+        if (activePreviewAd) {
+          renderPreviewContent(activePreviewAd, activePreviewMode);
+        }
+      }
+
       // Preview Modal Handler
       function openPreviewModal(ad) {
+        activePreviewAd = ad;
+        // Tentukan mode awal berdasarkan target iklan
+        activePreviewMode = (ad.target_device === 'mobile') ? 'mobile' : 'desktop';
+        
         document.getElementById('preview-slot-label').textContent = `${getPositionLabel(ad.posisi)} (${ad.tipe === 'google' ? 'Google AdSense' : 'Banner Sponsor'})`;
+        const pageBadgeEl = document.getElementById('preview-page-badge');
+        if (pageBadgeEl) pageBadgeEl.innerHTML = getPageBadge(ad.target_page);
+        document.getElementById('preview-device-badge').innerHTML = getDeviceBadge(ad.target_device);
+        const modeBadgeEl = document.getElementById('preview-mode-badge');
+        if (modeBadgeEl) modeBadgeEl.innerHTML = getModeBadge(ad.mode_tayang);
+
+        updatePreviewModeUI();
+        modalPreview.classList.remove('hidden');
+      }
+
+      /**
+       * Render Pratinjau Murni & Full (Tanpa Card Wrapper & Tanpa Embel-embel)
+       */
+      function renderPreviewContent(ad, mode) {
         const box = document.getElementById('preview-content-box');
         box.innerHTML = '';
 
-        if (ad.tipe === 'banner') {
-          box.innerHTML = `
-            <div class="w-full max-w-lg mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-white">
-              <div class="px-3 py-1 bg-gray-50 border-b border-gray-100 flex items-center justify-between text-[10px] text-gray-500 uppercase font-bold">
-                <span>Iklan Sponsor</span>
-                <span>${escapeHtml(ad.judul)}</span>
+        const isMobileMode = mode === 'mobile';
+        const imgSrc = formatAdminImageUrl(ad.gambar);
+        const link = ad.link_tujuan || '#';
+        const targetPageLabel = (ad.target_page === 'home') ? 'Beranda' : 'Artikel & Kategori';
+
+        if (isMobileMode) {
+          // SIMULASI SMARTPHONE (Format Full-Width Responsif di Layar HP)
+          if (ad.tipe === 'banner') {
+            box.innerHTML = `
+              <div class="w-full max-w-[340px] bg-slate-900 rounded-[32px] p-3 shadow-2xl border-4 border-slate-700 mx-auto">
+                <!-- Phone Top Speaker & Camera Notch -->
+                <div class="w-24 h-4 bg-slate-800 rounded-full mx-auto mb-2 flex items-center justify-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                  <span class="w-8 h-1 rounded-full bg-slate-700"></span>
+                </div>
+                <!-- Phone Screen Content (100% Full-Width Banner) -->
+                <div class="bg-white rounded-2xl p-2.5 overflow-hidden min-h-[180px] flex flex-col justify-center">
+                  <div class="text-[9px] text-gray-500 font-bold mb-1 text-center">Tampilan Full-Width Layar HP (${targetPageLabel})</div>
+                  <a href="${escapeHtml(link)}" target="_blank" class="block w-full">
+                    <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(ad.judul)}" class="w-full h-auto max-h-[280px] object-contain rounded-lg block shadow-2xs mx-auto">
+                  </a>
+                </div>
+                <!-- Phone Bottom Bar Indicator -->
+                <div class="w-20 h-1 bg-slate-700 rounded-full mx-auto mt-2.5"></div>
               </div>
-              <a href="${ad.link_tujuan || '#'}" target="_blank" class="flex items-center justify-center p-3 bg-slate-50/80 min-h-[140px] max-h-56">
-                <img src="${ad.gambar || '../assets/images/berita/nasional/kantor-pusat-bsi-landmark-aceh.jpg'}" class="max-h-52 max-w-full w-auto h-auto object-contain">
-              </a>
-            </div>
-          `;
+            `;
+          } else {
+            box.innerHTML = `
+              <div class="w-full max-w-[340px] bg-slate-900 rounded-[32px] p-3 shadow-2xl border-4 border-slate-700 mx-auto">
+                <div class="w-24 h-4 bg-slate-800 rounded-full mx-auto mb-2 flex items-center justify-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                  <span class="w-8 h-1 rounded-full bg-slate-700"></span>
+                </div>
+                <div class="bg-white rounded-2xl p-3 overflow-hidden min-h-[180px]">
+                  <div class="text-[9px] text-gray-500 font-bold mb-1 text-center">Google Ads Full-Width Layar HP (${targetPageLabel})</div>
+                  <div class="font-mono text-[10.5px] text-gray-700 bg-slate-50 p-2.5 rounded border border-gray-200 text-left overflow-x-auto">
+                    ${escapeHtml(ad.kode_html || '')}
+                  </div>
+                </div>
+                <div class="w-20 h-1 bg-slate-700 rounded-full mx-auto mt-2.5"></div>
+              </div>
+            `;
+          }
         } else {
-          box.innerHTML = `
-            <div class="w-full text-center p-4 bg-blue-50/50 border border-blue-200 rounded-xl">
-              <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold uppercase rounded mb-2">Google AdSense Slot</span>
-              <div class="font-mono text-xs text-gray-700 bg-white p-3 rounded border border-gray-200 text-left overflow-x-auto max-h-40">
-                ${escapeHtml(ad.kode_html || '')}
+          // SIMULASI DESKTOP (Format Fleksibel Lebar / Sesuai Slot)
+          if (ad.tipe === 'banner') {
+            const isSidebar = ad.posisi === 'sidebar' || ad.posisi === 'sidebar_middle' || ad.posisi === 'sidebar_bottom';
+            const maxWidth = isSidebar ? 'max-w-xs' : 'max-w-2xl';
+            box.innerHTML = `
+              <div class="w-full ${maxWidth} mx-auto flex flex-col items-center">
+                <div class="text-[10px] text-gray-500 font-bold mb-1.5">Tampilan Proporsional Desktop (${isSidebar ? 'Sidebar Samping' : 'Bawah Konten'}) &bull; ${targetPageLabel}</div>
+                <a href="${escapeHtml(link)}" target="_blank" class="block w-full text-center">
+                  <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(ad.judul)}" class="max-w-full w-full h-auto ${isSidebar ? 'max-h-[350px]' : 'max-h-[220px]'} object-contain rounded-xl shadow-xs mx-auto">
+                </a>
               </div>
-            </div>
-          `;
+            `;
+          } else {
+            box.innerHTML = `
+              <div class="w-full max-w-xl mx-auto text-center">
+                <div class="text-[10px] text-gray-500 font-bold mb-1.5">Google AdSense (Desktop &bull; ${targetPageLabel})</div>
+                <div class="font-mono text-xs text-gray-700 bg-slate-50 p-3.5 rounded-xl border border-gray-200 text-left overflow-x-auto max-h-48">
+                  ${escapeHtml(ad.kode_html || '')}
+                </div>
+              </div>
+            `;
+          }
         }
-        modalPreview.classList.remove('hidden');
       }
 
       // Delete Confirm Handler
@@ -1067,6 +1914,6 @@
       loadAds();
     });
   </script>
-  <script src="js/admin.js"></script>
+  <script src="js/admin.js?v=20260929_v1"></script>
 </body>
 </html>

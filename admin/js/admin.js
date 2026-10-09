@@ -402,7 +402,10 @@ function closeModal(modalOrId) {
   const modal = typeof modalOrId === 'string' ? document.getElementById(modalOrId) : modalOrId;
   if (!modal) return;
   modal.classList.add('hidden');
-  document.body.classList.remove('overflow-hidden');
+  const otherOpen = document.querySelector('.modal-container:not(.hidden)');
+  if (!otherOpen) {
+    document.body.classList.remove('overflow-hidden');
+  }
 }
 
 function closeAllModals() {

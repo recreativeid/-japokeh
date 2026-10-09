@@ -16,7 +16,10 @@ try {
         `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         `judul` VARCHAR(255) NOT NULL,
         `tipe` ENUM('google', 'banner') NOT NULL DEFAULT 'google',
-        `posisi` ENUM('header', 'sidebar', 'article_middle', 'article_bottom', 'home_middle', 'footer') NOT NULL DEFAULT 'sidebar',
+        `posisi` ENUM('sidebar', 'sidebar_middle', 'article_middle', 'article_bottom', 'home_middle', 'footer') NOT NULL DEFAULT 'sidebar',
+        `target_device` ENUM('all', 'desktop', 'mobile') NOT NULL DEFAULT 'desktop',
+        `target_page` ENUM('home', 'article') NOT NULL DEFAULT 'article',
+        `mode_tayang` ENUM('exclusive', 'rotation') NOT NULL DEFAULT 'exclusive',
         `kode_html` LONGTEXT DEFAULT NULL,
         `gambar` VARCHAR(255) DEFAULT NULL,
         `link_tujuan` VARCHAR(255) DEFAULT NULL,
@@ -25,7 +28,9 @@ try {
         `urutan` INT DEFAULT 0,
         `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
         `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        KEY `idx_iklan_posisi_status` (`posisi`, `is_active`)
+        KEY `idx_iklan_posisi_status` (`posisi`, `is_active`),
+        KEY `idx_iklan_target_device` (`target_device`),
+        KEY `idx_iklan_mode_tayang` (`mode_tayang`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ";
 

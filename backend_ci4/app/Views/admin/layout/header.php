@@ -8,10 +8,10 @@
   <link rel="icon" type="image/webp" href="<?= base_url('assets/images/logo/favicon.webp') ?>">
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="<?= base_url('assets/css/tailwind.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('assets/css/tailwind.min.css?v=20260929_v1') ?>">
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="<?= base_url('admin/css/admin.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('admin/css/admin.css?v=20260929_v1') ?>">
 </head>
 <body class="bg-[#F5F5F5] text-gray-900 antialiased flex h-screen overflow-hidden">
   <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden opacity-0 transition-opacity duration-200 lg:hidden"></div>

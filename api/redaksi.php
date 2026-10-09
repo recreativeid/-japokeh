@@ -22,7 +22,8 @@ switch ($method) {
         handleGetRedaksi($db);
         break;
     case 'POST':
-        $override = $_POST['_method'] ?? $_GET['_method'] ?? null;
+        $rawJson = @json_decode(file_get_contents('php://input'), true);
+        $override = $_POST['_method'] ?? $_GET['_method'] ?? ($rawJson['_method'] ?? null);
         if ($override === 'PUT') {
             handleUpdateRedaksi($db);
         } elseif ($override === 'DELETE') {

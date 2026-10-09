@@ -559,6 +559,7 @@ async function handleRedaksiFormSubmit(e) {
   }
 
   const payload = {
+    id: id ? id : undefined,
     nama,
     jabatan,
     kategori,
@@ -579,6 +580,10 @@ async function handleRedaksiFormSubmit(e) {
     }
 
     if (res && res.status === 'success') {
+      try {
+        localStorage.removeItem('buser_redaksi_cache');
+        localStorage.removeItem('japakeh_redaksi_cache');
+      } catch (e) {}
       if (typeof showToast === 'function') {
         showToast('success', 'Berhasil', id ? 'Profil redaksi berhasil diperbarui.' : 'Anggota redaksi baru berhasil ditambahkan.');
       }

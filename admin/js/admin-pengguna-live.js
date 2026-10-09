@@ -13,10 +13,58 @@ function initUsersLive() {
   const btnAdd = document.getElementById('btn-add-user');
   const form = document.getElementById('user-form');
   const btnGenPass = document.getElementById('btn-generate-pass');
+  const avatarInput = document.getElementById('user-avatar-input');
+  const avatarUrlInput = document.getElementById('user-avatar-url');
+  const avatarPreview = document.getElementById('user-avatar-preview');
+  const avatarInitials = document.getElementById('user-avatar-initials');
+  const btnRemoveAvatar = document.getElementById('btn-remove-user-avatar');
 
   if (btnAdd) {
     btnAdd.addEventListener('click', () => {
       openUserModal(null);
+    });
+  }
+
+  if (avatarInput) {
+    avatarInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        if (avatarPreview) {
+          avatarPreview.src = evt.target.result;
+          avatarPreview.classList.remove('hidden');
+        }
+        if (avatarInitials) avatarInitials.classList.add('hidden');
+        if (btnRemoveAvatar) btnRemoveAvatar.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+
+      if (window.BuserInfoAPI && window.BuserInfoAPI.uploadAvatar) {
+        if (typeof showToast === 'function') showToast('info', 'Mengunggah Foto...', 'Sedang menyimpan foto profil pengguna.');
+        const res = await window.BuserInfoAPI.uploadAvatar(file);
+        if (res && res.status === 'success' && res.data && res.data.url) {
+          if (avatarUrlInput) avatarUrlInput.value = res.data.url;
+          if (typeof showToast === 'function') showToast('success', 'Foto Tersimpan', 'Foto profil berhasil diunggah.');
+        } else {
+          if (typeof showToast === 'function') showToast('warning', 'Peringatan', res.message || 'Gagal menyimpan foto ke server.');
+        }
+      }
+    });
+  }
+
+  if (btnRemoveAvatar) {
+    btnRemoveAvatar.addEventListener('click', () => {
+      if (avatarUrlInput) avatarUrlInput.value = '';
+      if (avatarInput) avatarInput.value = '';
+      if (avatarPreview) {
+        avatarPreview.src = '';
+        avatarPreview.classList.add('hidden');
+      }
+      if (avatarInitials) avatarInitials.classList.remove('hidden');
+      btnRemoveAvatar.classList.add('hidden');
+      if (typeof showToast === 'function') showToast('info', 'Foto Direset', 'Foto profil dikembalikan ke inisial.');
     });
   }
 
@@ -128,6 +176,26 @@ function renderUserRows(users, tbody) {
     const toggleText = isActive ? 'Nonaktifkan' : 'Aktifkan';
     const toggleColor = isActive ? 'text-amber-600 hover:text-amber-800 hover:bg-amber-50' : 'text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50';
 
+    const hasAvatar = user.avatar && user.avatar.trim() !== '';
+    const avatarImgSrc = hasAvatar ? (user.avatar.startsWith('assets/') ? '../' + user.avatar : user.avatar) : '';
+    const avatarDesktopHtml = hasAvatar
+      ? `<div class="relative w-8 h-8 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200 bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(user.nama_users)}" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+          <span class="hidden">${escapeHtml(initials)}</span>
+        </div>`
+      : `<div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+          ${escapeHtml(initials)}
+        </div>`;
+
+    const avatarMobileHtml = hasAvatar
+      ? `<div class="relative w-9 h-9 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200 bg-slate-900 flex items-center justify-center text-xs font-bold text-white">
+          <img src="${avatarImgSrc}" alt="${escapeHtml(user.nama_users)}" class="w-full h-full object-cover" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+          <span class="hidden">${escapeHtml(initials)}</span>
+        </div>`
+      : `<div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
+          ${escapeHtml(initials)}
+        </div>`;
+
     tr.innerHTML = `
       <!-- MOBILE CARD VIEW (md:hidden, NO HORIZONTAL SWIPING) -->
       <td class="md:hidden block w-full p-4 border-0">
@@ -135,9 +203,7 @@ function renderUserRows(users, tbody) {
           <!-- Top: Avatar + Name + Status -->
           <div class="flex items-center justify-between gap-2">
             <div class="flex items-center space-x-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
-                ${escapeHtml(initials)}
-              </div>
+              ${avatarMobileHtml}
               <div class="min-w-0">
                 <div class="font-bold text-gray-900 text-xs truncate flex items-center space-x-1.5">
                   <span>${escapeHtml(user.nama_users)}</span>
@@ -175,9 +241,7 @@ function renderUserRows(users, tbody) {
       <!-- DESKTOP TABLE VIEW (hidden md:table-cell) -->
       <td class="hidden md:table-cell py-3 px-4">
         <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full ${avatarColor} text-xs font-bold flex items-center justify-center shrink-0">
-            ${escapeHtml(initials)}
-          </div>
+          ${avatarDesktopHtml}
           <div>
             <div class="font-bold text-gray-900 flex items-center space-x-1.5">
               <span>${escapeHtml(user.nama_users)}</span>
@@ -230,8 +294,16 @@ function openUserModal(user = null) {
   const roleSelect = document.getElementById('user-role-select');
   const passInput = document.getElementById('user-pass-input');
   const passLabel = document.getElementById('user-pass-label');
+  const bioInput = document.getElementById('user-bio-input');
+  const avatarInput = document.getElementById('user-avatar-input');
+  const avatarUrlInput = document.getElementById('user-avatar-url');
+  const avatarPreview = document.getElementById('user-avatar-preview');
+  const avatarInitials = document.getElementById('user-avatar-initials');
+  const btnRemoveAvatar = document.getElementById('btn-remove-user-avatar');
 
   if (!modalTitle || !nameInput || !emailInput || !passInput) return;
+
+  if (avatarInput) avatarInput.value = '';
 
   if (user) {
     modalTitle.textContent = 'Edit Pengguna: ' + user.nama_users;
@@ -239,19 +311,53 @@ function openUserModal(user = null) {
     nameInput.value = user.nama_users || '';
     emailInput.value = user.email_users || '';
     if (roleSelect) roleSelect.value = user.role || 'Reporter';
+    if (bioInput) bioInput.value = user.bio || '';
     passInput.value = '';
     passInput.placeholder = 'Biarkan kosong jika tidak ingin mengubah password';
     passInput.required = false;
     if (passLabel) passLabel.textContent = 'Ganti Password (Opsional)';
+
+    if (user.avatar && user.avatar.trim() !== '') {
+      if (avatarUrlInput) avatarUrlInput.value = user.avatar;
+      if (avatarPreview) {
+        avatarPreview.src = user.avatar.startsWith('assets/') ? '../' + user.avatar : user.avatar;
+        avatarPreview.classList.remove('hidden');
+      }
+      if (avatarInitials) avatarInitials.classList.add('hidden');
+      if (btnRemoveAvatar) btnRemoveAvatar.classList.remove('hidden');
+    } else {
+      if (avatarUrlInput) avatarUrlInput.value = '';
+      if (avatarPreview) {
+        avatarPreview.src = '';
+        avatarPreview.classList.add('hidden');
+      }
+      if (avatarInitials) {
+        avatarInitials.textContent = getInitials(user.nama_users || 'JP');
+        avatarInitials.classList.remove('hidden');
+      }
+      if (btnRemoveAvatar) btnRemoveAvatar.classList.add('hidden');
+    }
   } else {
     modalTitle.textContent = 'Tambah Pengguna Baru';
     if (idInput) idInput.value = '';
     nameInput.value = '';
     emailInput.value = '';
     if (roleSelect) roleSelect.value = 'Reporter';
+    if (bioInput) bioInput.value = '';
     generateRandomPassword();
     passInput.required = true;
     if (passLabel) passLabel.textContent = 'Password Sementara';
+
+    if (avatarUrlInput) avatarUrlInput.value = '';
+    if (avatarPreview) {
+      avatarPreview.src = '';
+      avatarPreview.classList.add('hidden');
+    }
+    if (avatarInitials) {
+      avatarInitials.textContent = 'JP';
+      avatarInitials.classList.remove('hidden');
+    }
+    if (btnRemoveAvatar) btnRemoveAvatar.classList.add('hidden');
   }
 
   if (typeof openModal === 'function') {
@@ -283,12 +389,16 @@ async function handleUserFormSubmit(e) {
   const emailInput = document.getElementById('user-email-input');
   const roleSelect = document.getElementById('user-role-select');
   const passInput = document.getElementById('user-pass-input');
+  const bioInput = document.getElementById('user-bio-input');
+  const avatarUrlInput = document.getElementById('user-avatar-url');
 
   const id = idInput ? idInput.value : '';
   const name = nameInput ? nameInput.value.trim() : '';
   const email = emailInput ? emailInput.value.trim() : '';
   const role = roleSelect ? roleSelect.value : 'Reporter';
   const password = passInput ? passInput.value.trim() : '';
+  const bio = bioInput ? bioInput.value.trim() : '';
+  const avatar = avatarUrlInput ? avatarUrlInput.value.trim() : '';
 
   if (!name || !email) {
     if (typeof showToast === 'function') showToast('error', 'Validasi Gagal', 'Nama dan email wajib diisi!');
@@ -310,11 +420,11 @@ async function handleUserFormSubmit(e) {
   try {
     let res;
     if (id) {
-      const payload = { name, email, role };
+      const payload = { name, email, role, bio, avatar };
       if (password) payload.password = password;
       res = await window.BuserInfoAPI.updateUser(id, payload);
     } else {
-      res = await window.BuserInfoAPI.createUser({ name, email, role, password });
+      res = await window.BuserInfoAPI.createUser({ name, email, role, password, bio, avatar });
     }
 
     if (res && res.status === 'success') {

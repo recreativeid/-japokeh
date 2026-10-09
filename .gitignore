@@ -27,6 +27,9 @@ backend_ci4/env
 backend_ci4/writable/
 writable/
 *.cache
+# Cache hasil fetch link-preview (PRD FR-09) bersifat lokal & sementara
+api/cache/link-preview/*
+!api/cache/link-preview/.gitkeep
 
 # ------------------------------------------------------------------------------
 # 4. Dependencies (Composer & Node/NPM)
@@ -94,3 +97,24 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+opencode.json
+
+# ------------------------------------------------------------------------------
+# 9. Temporary, Deploy & Development Scratch Files
+# ------------------------------------------------------------------------------
+scratch/
+__pycache__/
+*.py[cod]
+*$py.class
+*.zip
+*.tar.gz
+*.rar
+
+# Dynamic Cache
+/assets/images/og-cache/
+
+# Screenshots & Draft/PRD Documents
+/assets/images/Screenshot*
+PRD-Link-Card.md
+DRAFT_PERUBAHAN_PENULIS_REDAKSI.md
+

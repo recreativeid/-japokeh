@@ -1,0 +1,66 @@
+# =============================================================================
+# Japakeh Post - Root .htaccess Configuration
+# PT Japakeh Media Nusantara
+# Mendukung Dynamic Open Graph Sharing (WhatsApp, Facebook, Twitter, Telegram, LinkedIn)
+# =============================================================================
+
+# 1. Tentukan halaman utama prioritas (mencegah Index of /)
+DirectoryIndex index.html index.php
+
+# 2. Matikan directory browsing untuk keamanan
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # RewriteBase / (dinonaktifkan agar fleksibel di root maupun di subfolder htdocs)
+
+    # 1. Pastikan Request artikel.html dialihkan secara transparan ke artikel.php
+    #    agar crawler WhatsApp & Media Sosial memuat Open Graph & thumbnail otomatis
+    RewriteRule ^artikel\.html$ artikel.php [QSA,L]
+
+    # 2. Dukungan Clean SEO URL: /artikel/slug-berita -> artikel.php?slug=slug-berita
+    RewriteRule ^artikel/([a-zA-Z0-9_\-\.]+)/?$ artikel.php?slug=$1 [QSA,L]
+
+    # 3. Dukungan Clean URL untuk Open Graph Image: /og-image/slug-berita.jpg -> og-image.php?slug=slug-berita
+    RewriteRule ^og-image/([a-zA-Z0-9_\-\.]+)\.jpg$ og-image.php?slug=$1 [QSA,L]
+
+    # 4. Teruskan Authorization Header untuk REST API (Bearer token)
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+# MIME Type Definition
+<IfModule mod_mime.c>
+    AddType image/jpeg .jpg .jpeg
+    AddType image/png .png
+    AddType image/webp .webp
+    AddType image/gif .gif
+    AddType image/svg+xml .svg
+</IfModule>
+
+# Keamanan & Optimasi Header untuk Media Sharing dan Anti-Cache
+<IfModule mod_headers.c>
+    # Cegah MIME-sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # 1. Nonaktifkan Cache khusus file Halaman & Script/Style (HTML, PHP, JS, CSS)
+    # Supaya pembaruan kode, data, dan tampilan langsung terlihat oleh pengguna tanpa tertahan cache.
+    # Pengecualian: link-preview.php tetap boleh di-cache publik 24 jam (PRD FR-09),
+    # sehingga aturan no-cache dilewati untuk URI tersebut via kondisi expr (Apache 2.4).
+    <FilesMatch "\.(html|htm|php|js|css)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate" "expr=%{REQUEST_URI} !~ /link-preview\.php/"
+        Header set Pragma "no-cache" "expr=%{REQUEST_URI} !~ /link-preview\.php/"
+        Header set Expires "0" "expr=%{REQUEST_URI} !~ /link-preview\.php/"
+    </FilesMatch>
+    <Files "link-preview.php">
+        Header set Cache-Control "public, max-age=86400"
+        Header unset Pragma
+        Header unset Expires
+    </Files>
+
+    # 2. Izinkan CORS dan Cache Cerdas untuk aset media dan gambar agar WhatsApp & sosmed memuat kilat
+    <FilesMatch "\.(jpg|jpeg|png|webp|gif|svg|ico)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>

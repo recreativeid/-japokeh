@@ -8,14 +8,15 @@
   <meta name="author" content="PT Japakeh Media Nusantara">
   <link rel="icon" type="image/webp" href="assets/images/logo/favicon.webp">
 
+ 
   <!-- Reading Progress Bar -->
   <div id="reading-progress-bar"></div>
 
   <!-- Tailwind CSS (Production Compiled) -->
-  <link rel="stylesheet" href="assets/css/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/tailwind.min.css?v=20260929_v1">
 
   <!-- Google Fonts & Custom CSS -->
-  <link rel="stylesheet" href="assets/css/style.css?v=20260917_special_cards_v1">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261004_v3">
 </head>
 <body class="bg-[#F1F5F9] text-[#0F172A] antialiased flex flex-col min-h-screen font-sans">
 
@@ -73,134 +74,277 @@
 
 
   <!-- MAIN ARTICLE CONTAINER -->
-  <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 flex-1 w-full">
-    <!-- SLOT IKLAN: HEADER LEADERBOARD -->
-    <div data-ad-slot="header" class="w-full mb-6"></div>
+  <main class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 flex-1 w-full">
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
 
       <!-- LEFT COLUMN: ARTICLE DETAIL CONTENT (8 cols) -->
       <article class="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-5 sm:p-8 shadow-soft">
         
-        <!-- Breadcrumb: Home / Internasional / Judul Berita -->
-        <nav class="flex items-center space-x-2 text-xs text-slate-500 mb-3.5 overflow-x-auto whitespace-nowrap no-scrollbar pb-1">
-          <a href="index.html" class="hover:text-buser-red flex-shrink-0 transition-colors">Home</a>
-          <span class="flex-shrink-0 text-slate-300">/</span>
-          <a id="article-breadcrumb-cat" href="internasional.html" class="hover:text-buser-red flex-shrink-0 transition-colors">Internasional</a>
-          <span class="flex-shrink-0 text-slate-300">/</span>
-          <span id="article-breadcrumb-title" class="text-slate-800 font-semibold truncate max-w-xs">
-            Detail Berita
-          </span>
-        </nav>
-
-        <!-- Category Badge -->
-        <div class="mb-3">
-          <span id="article-cat-badge" class="bg-buser-red text-white text-[11px] sm:text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-full inline-block shadow-xs">
-            BERITA
-          </span>
+        <!-- Category Link (Tabaca Style) -->
+        <div class="mb-2">
+          <a id="article-breadcrumb-cat" href="internasional.html" class="inline-block text-xs font-black uppercase tracking-wider text-buser-red hover:underline">
+            <span id="article-cat-badge">BERITA</span>
+          </a>
+          <span id="article-breadcrumb-title" class="hidden">Detail Berita</span>
         </div>
 
         <!-- Headline (Bold, High Readability) -->
-        <h1 id="article-headline" class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 leading-tight mb-3 tracking-tight">
-          Memuat Berita...
-        </h1>
-
-        <!-- Excerpt / Sub-headline -->
-        <p id="article-excerpt" class="text-sm sm:text-base text-slate-600 leading-relaxed mb-5 font-normal">
-          Portal Berita Terkini, Cepat, Akurat, Terpercaya — Japakeh Post
-        </p>
-
-        <!-- Editorial Metadata Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 py-3.5 border-y border-slate-100 mb-6 text-xs text-slate-600 bg-slate-50/70 px-4 rounded-xl">
-          <div class="flex items-center space-x-3">
-            <div class="w-9 h-9 rounded-full bg-buser-red text-white font-black flex items-center justify-center text-xs shadow-xs">
-              JP
-            </div>
-            <div>
-              <div class="font-bold text-slate-900 text-xs sm:text-sm" id="article-author">Al Bahri</div>
-              <div class="text-[11px] text-slate-500" id="article-author-role">Pemimpin Redaksi Japakeh Post</div>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
-            <div><span class="font-medium text-slate-700" id="article-date">Rabu, 9 September 2026 - 14:35 WIB</span></div>
-            <div>&bull;</div>
-            <div id="article-read-time" class="font-bold text-buser-red">4 menit baca</div>
-            <div>&bull;</div>
-            <div id="article-views" class="flex items-center">
-              <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>
-              48.210 pembaca
-            </div>
-          </div>
+        <div class="post-title mb-2">
+          <h1 id="article-headline" class="text-2xl sm:text-3xl lg:text-[34px] font-black text-slate-900 leading-tight tracking-tight">
+            Memuat Berita...
+          </h1>
         </div>
 
-        <!-- READER TOOLBAR (Font resizer, bookmark, share buttons) -->
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-6 p-3 bg-slate-50/70 border border-slate-200 rounded-xl">
-          
-          <!-- Font Size Controls (A- / Normal / A+) -->
-          <div class="flex items-center space-x-1.5">
-            <span class="text-xs text-slate-500 font-semibold mr-1">Ukuran Teks:</span>
-            <button id="font-decrease-btn" class="px-2.5 py-1 text-xs border border-slate-200 bg-white rounded-full hover:bg-slate-100 font-semibold transition-colors" title="Perkecil Ukuran Huruf">A-</button>
-            <button id="font-reset-btn" class="px-2.5 py-1 text-xs border border-buser-red rounded-full hover:bg-buser-redHover font-bold bg-buser-red text-white shadow-xs transition-colors" title="Ukuran Normal">A</button>
-            <button id="font-increase-btn" class="px-2.5 py-1 text-xs border border-slate-200 bg-white rounded-full hover:bg-slate-100 font-semibold transition-colors" title="Perbesar Ukuran Huruf">A+</button>
+        <!-- Excerpt / Sub-headline (Hanya tampil jika ada ringkasan/sub-judul) -->
+        <p id="article-excerpt" class="text-sm sm:text-base text-slate-600 leading-relaxed mb-3 font-normal hidden"></p>
+
+        <!-- Date & Reading Time (Directly under title like Tabaca) -->
+        <div class="flex items-center gap-2 mb-3.5 text-xs text-slate-500 font-medium">
+          <time id="article-date">Rabu, 9 September 2026 | 14:35 WIB</time>
+          <span>&bull;</span>
+          <span id="article-read-time" class="font-semibold text-buser-red">4 menit baca</span>
+        </div>
+
+        <!-- Unified Author & Social Share Bar: (Foto) Penulis | (Foto) Editor -->
+        <div class="flex flex-row flex-wrap sm:flex-nowrap items-center justify-between gap-y-2.5 gap-x-3 pb-3.5 mb-5 border-b border-slate-200/80">
+          <!-- Left: Separated Author & Editor (Each with own photo) -->
+          <div class="flex items-center flex-wrap gap-x-2.5 sm:gap-x-3 gap-y-1.5 min-w-0">
+            <!-- Author Block: (Foto) Nama Penulis -->
+            <div class="inline-flex items-center gap-2 min-w-0">
+              <!-- Author Avatar -->
+              <div id="article-author-avatar-box" class="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-buser-red text-white font-bold flex items-center justify-center text-[10px] sm:text-xs ring-2 ring-white shadow-2xs shrink-0" title="Penulis">
+                <span id="article-author-initials">JP</span>
+                <img id="article-author-img" src="" alt="Foto Penulis" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('article-author-initials').classList.remove('hidden');">
+              </div>
+              <div class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 leading-tight min-w-0">
+                <span class="text-slate-500 font-normal shrink-0">Penulis:</span>
+                <div id="article-author" class="inline-block font-bold text-slate-900 hover:text-buser-red transition-colors truncate">Al Bahri</div>
+                <div id="article-author-role" class="hidden">Wartawan Japakeh Post</div>
+              </div>
+            </div>
+
+            <!-- Separator between Penulis and Editor -->
+            <div id="article-author-editor-separator" class="inline-block text-slate-300 font-light select-none sm:mx-0.5">|</div>
+
+            <!-- Editor Block: (Foto) Nama Editor -->
+            <div id="article-editor-container" class="inline-flex items-center gap-2 min-w-0">
+              <!-- Editor Avatar -->
+              <div id="article-editor-avatar-box" class="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-slate-800 text-white font-bold flex items-center justify-center text-[10px] sm:text-xs ring-2 ring-white shadow-2xs shrink-0">
+                <span id="article-editor-initials">ED</span>
+                <img id="article-editor-img" src="" alt="Foto Editor" class="w-full h-full object-cover hidden" onerror="this.classList.add('hidden'); document.getElementById('article-editor-initials').classList.remove('hidden');">
+              </div>
+              <div class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-700 leading-tight min-w-0">
+                <span class="text-slate-500 font-normal shrink-0">Editor:</span>
+                <div id="article-editor-name" class="inline-block font-bold text-slate-900 hover:text-buser-red transition-colors truncate">Al Bahri</div>
+                <div id="article-editor-role" class="hidden">Redaktur Pelaksana</div>
+              </div>
+            </div>
           </div>
 
-          <!-- Actions: Bookmark & Share -->
-          <div class="flex items-center space-x-2">
-            <!-- Bookmark Button -->
-            <button id="article-bookmark-btn" class="flex items-center space-x-1.5 px-3.5 py-1.5 border border-slate-200 bg-white hover:border-buser-red hover:text-buser-red text-xs font-bold rounded-full transition-all shadow-2xs" title="Simpan ke Daftar Baca">
-              <svg id="article-bookmark-icon" class="w-4 h-4 text-buser-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-              </svg>
-              <span id="article-bookmark-text">Simpan Berita</span>
-            </button>
-
-            <!-- Quick Share Dropdown / Buttons -->
-            <div class="flex items-center space-x-1">
-              <a id="share-wa" href="#" target="_blank" class="p-2 bg-[#25D366] text-white rounded-full hover:opacity-90 transition-opacity" title="Bagikan ke WhatsApp">
-                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          <!-- Right: Social Share Buttons (Circular) — Sejajar Horizontal dengan Penulis & Editor -->
+          <div class="flex items-center shrink-0">
+            <div class="flex items-center space-x-1 sm:space-x-1.5">
+              <a id="share-wa" href="#" target="_blank" class="post-share-circle bg-[#25D366]" title="Bagikan ke WhatsApp" aria-label="WhatsApp">
+                <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.54.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/></svg>
               </a>
-              <a id="share-fb" href="#" target="_blank" class="p-2 bg-[#1877F2] text-white rounded-full hover:opacity-90 transition-opacity" title="Bagikan ke Facebook">
-                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <a id="share-fb" href="#" target="_blank" class="post-share-circle bg-[#1877F2]" title="Bagikan ke Facebook" aria-label="Facebook">
+                <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
-              <a id="share-tw" href="#" target="_blank" class="p-2 bg-slate-900 text-white rounded-full hover:opacity-90 transition-opacity" title="Bagikan ke X">
-                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <a id="share-tw" href="#" target="_blank" class="post-share-circle bg-[#000000]" title="Bagikan ke X" aria-label="X">
+                <svg class="w-3 h-3 fill-white" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               </a>
-              <button id="share-copy" class="p-2 bg-slate-700 text-white rounded-full hover:bg-buser-red transition-colors" title="Salin Tautan Berita">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+              <a id="share-tg" href="#" target="_blank" class="post-share-circle bg-[#229ED9]" title="Bagikan ke Telegram" aria-label="Telegram">
+                <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+              </a>
+              <button id="share-copy" class="post-share-circle bg-slate-700 hover:bg-buser-red transition-colors" title="Salin Tautan Berita" aria-label="Copy Link">
+                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
               </button>
             </div>
           </div>
-
         </div>
 
-        <!-- HERO ARTICLE MEDIA -->
-        <figure class="mb-6">
-          <div class="relative overflow-hidden aspect-[16/9] w-full rounded-2xl bg-slate-900 shadow-2xs">
-            <img id="article-hero-img" src="assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg" alt="Dokumentasi Berita" class="w-full h-full object-cover" />
+        <!-- ARTICLE MEDIA CONTAINER: SINGLE IMAGE OR PHOTO GALLERY -->
+        <div id="article-media-wrapper" class="mb-6">
+
+          <!-- 1. STANDALONE SINGLE IMAGE (Used when article has no gallery) -->
+          <figure id="article-single-media" class="relative">
+            <div class="relative overflow-hidden aspect-[16/9] w-full rounded-2xl bg-slate-900 shadow-2xs">
+              <img id="article-hero-img" src="assets/images/berita/nasional/pembangunan-ikn-nusantara.jpg" alt="Dokumentasi Berita" class="w-full h-full object-cover" />
+            </div>
+            <figcaption id="article-hero-caption" class="text-xs sm:text-[13px] text-slate-600 italic mt-2.5 px-3 py-1.5 bg-slate-50 border-l-2 border-buser-red rounded-r-lg leading-relaxed text-left">
+              Dokumentasi Liputan Japakeh Post
+            </figcaption>
+          </figure>
+
+          <!-- 2. PHOTO GALLERY SECTION (Slider & Grid with Synced Thumbnails Underneath) -->
+          <div id="article-gallery-container" class="hidden relative">
+            <!-- Gallery Header Bar: Badge + Slider/Grid Toggle + Fullscreen Button -->
+            <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-buser-red font-bold text-xs rounded-full border border-red-200">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <span id="gallery-badge-count">GALERI FOTO</span>
+                </span>
+                <span class="text-[11px] text-slate-500 hidden sm:inline">Rangkaian Dokumentasi Lensa</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- Mode Toggle: Slider vs Grid -->
+                <div class="inline-flex p-0.5 bg-slate-100 rounded-lg border border-slate-200">
+                  <button type="button" id="gallery-toggle-slider" class="px-2.5 py-1 text-xs font-bold rounded-md transition-all bg-white text-slate-900 shadow-2xs flex items-center gap-1" title="Tampilan Slider">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                    <span>Slider</span>
+                  </button>
+                  <button type="button" id="gallery-toggle-grid" class="px-2.5 py-1 text-xs font-medium rounded-md transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1" title="Tampilan Grid">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    <span>Grid</span>
+                  </button>
+                </div>
+                <!-- Lightbox Button -->
+                <button type="button" id="gallery-open-lightbox" class="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors border border-slate-200" title="Perbesar Layar Penuh">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- VIEW 1: SLIDER VIEW -->
+            <div id="gallery-slider-view" class="block">
+              <!-- Main Large Photo (16:9) -->
+              <div class="group relative overflow-hidden aspect-[16/9] w-full rounded-2xl bg-slate-950 shadow-md select-none">
+                <img id="gallery-main-img" src="" alt="Galeri Foto Berita" class="w-full h-full object-cover transition-opacity duration-200 cursor-pointer" />
+
+                <!-- Overlay Gradient Top & Bottom for readability -->
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+
+                <!-- Slide Index Counter Badge (Top-left) -->
+                <div class="absolute top-3 left-3 bg-black/75 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm border border-white/10">
+                  <span class="w-2 h-2 rounded-full bg-buser-red animate-pulse"></span>
+                  <span id="gallery-slide-counter">Foto 1 dari 1</span>
+                </div>
+
+                <!-- Zoom / Fullscreen Button (Top-right) -->
+                <button type="button" id="gallery-zoom-trigger" class="absolute top-3 right-3 bg-black/75 hover:bg-buser-red text-white p-2 rounded-full transition-all backdrop-blur-sm border border-white/10 shadow-sm" title="Perbesar Foto">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                </button>
+
+                <!-- Navigation Prev Button (Left) -->
+                <button type="button" id="gallery-prev-btn" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-buser-red text-white w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all opacity-85 group-hover:opacity-100 backdrop-blur-sm shadow-md border border-white/10 focus:outline-none" title="Foto Sebelumnya (Panah Kiri)">
+                  <svg class="w-5 h-5 -ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+
+                <!-- Navigation Next Button (Right) -->
+                <button type="button" id="gallery-next-btn" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-buser-red text-white w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center transition-all opacity-85 group-hover:opacity-100 backdrop-blur-sm shadow-md border border-white/10 focus:outline-none" title="Foto Berikutnya (Panah Kanan)">
+                  <svg class="w-5 h-5 -mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+
+              <!-- Main Photo Caption (Directly beneath main photo) -->
+              <figcaption id="gallery-main-caption" class="text-xs sm:text-[13px] text-slate-700 mt-2.5 px-3.5 py-2.5 bg-slate-50 border-l-3 border-buser-red rounded-r-lg leading-relaxed text-left min-h-[44px] flex items-start">
+                Caption foto akan tampil di sini
+              </figcaption>
+
+              <!-- THUMBNAIL SLIDER TRACK (EXACTLY BELOW THE PHOTO & CAPTION AS IN TABACA REFERENCE) -->
+              <div class="mt-3 relative bg-slate-50/80 p-2 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-2">
+                  <!-- Thumb Prev Button -->
+                  <button type="button" id="gallery-thumb-prev-btn" class="shrink-0 w-8 h-14 bg-white hover:bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center transition-colors border border-slate-200 shadow-2xs disabled:opacity-30 disabled:cursor-not-allowed" title="Geser Thumbnail Kiri">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+
+                  <!-- Scrollable Thumbnail Strip -->
+                  <div id="gallery-thumbnails-track" class="flex-1 flex items-center gap-2.5 overflow-x-auto py-1 scroll-smooth select-none no-scrollbar">
+                    <!-- Dynamic Thumbnails Injected Here -->
+                  </div>
+
+                  <!-- Thumb Next Button -->
+                  <button type="button" id="gallery-thumb-next-btn" class="shrink-0 w-8 h-14 bg-white hover:bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center transition-colors border border-slate-200 shadow-2xs disabled:opacity-30 disabled:cursor-not-allowed" title="Geser Thumbnail Kanan">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-500 mt-1.5 px-1">
+                  <span>*Klik thumbnail untuk berpindah foto</span>
+                  <span class="hidden sm:inline">Dapat digeser atau gunakan tombol keyboard &larr; &rarr;</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- VIEW 2: GRID VIEW -->
+            <div id="gallery-grid-view" class="hidden">
+              <div id="gallery-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                <!-- Dynamic Grid Cards Injected Here -->
+              </div>
+            </div>
+
           </div>
-          <figcaption id="article-hero-caption" class="text-xs text-slate-500 italic mt-2.5 px-2 border-l-2 border-buser-red">
-            Dokumentasi Liputan Japakeh Post
-          </figcaption>
-        </figure>
+
+        </div>
 
         <!-- ARTICLE BODY CONTENT (Optimized paragraph spacing & line-height) -->
         <div id="article-body-content" class="article-text-md font-sans text-slate-800 space-y-4">
           <!-- Injected dynamically by article.js -->
         </div>
 
-        <!-- SLOT IKLAN: ARTIKEL (IN-ARTICLE / BOTTOM) -->
+        <!-- SLOT IKLAN: AKHIR ARTIKEL (SEBELUM SHARE) -->
         <div data-ad-slot="article_middle" class="w-full my-6"></div>
 
-        <!-- EDITOR SIGN-OFF -->
-        <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-500 italic">
-          <p>Pemimpin Redaksi / Penanggung Jawab: <strong id="article-editor" class="text-slate-800 not-italic">Al Bahri</strong></p>
-          <p class="mt-0.5">Hak Cipta Terlindungi &copy; 2026 PT Japakeh Media Nusantara</p>
+        <!-- TOOLBAR UKURAN TEKS (A- / A / A+) & SIMPAN BERITA (SEBELUM BAGIAN SHARE, MOBILE & DESKTOP) -->
+        <div class="mt-8 pt-4 pb-3 border-t border-slate-200/80 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 sm:gap-2.5">
+            <span class="text-xs sm:text-sm font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v14m6-6h6m-3-3v6"/></svg>
+              Ukuran Teks:
+            </span>
+            <div class="flex items-center gap-1 sm:gap-1.5">
+              <button id="font-decrease-btn" class="w-7 h-7 sm:w-8 sm:h-8 text-xs border border-slate-200 bg-white rounded-lg hover:bg-slate-100 font-semibold text-slate-700 transition-colors shadow-2xs flex items-center justify-center cursor-pointer" title="Perkecil Ukuran Huruf">A-</button>
+              <button id="font-reset-btn" class="w-7 h-7 sm:w-8 sm:h-8 text-xs border border-buser-red rounded-lg hover:bg-buser-redHover font-bold bg-buser-red text-white transition-colors shadow-2xs flex items-center justify-center cursor-pointer" title="Ukuran Normal">A</button>
+              <button id="font-increase-btn" class="w-7 h-7 sm:w-8 sm:h-8 text-xs border border-slate-200 bg-white rounded-lg hover:bg-slate-100 font-semibold text-slate-700 transition-colors shadow-2xs flex items-center justify-center cursor-pointer" title="Perbesar Ukuran Huruf">A+</button>
+            </div>
+          </div>
+
+          <!-- Bookmark Button -->
+          <button id="article-bookmark-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors cursor-pointer border border-slate-200" title="Simpan Berita">
+            <svg id="article-bookmark-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            <span id="article-bookmark-text">Simpan Berita</span>
+          </button>
         </div>
 
-        <!-- TAGS CONTAINER -->
-        <div class="mt-6 pt-4 border-t border-slate-100">
-          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2.5">Topik Terkait:</span>
+        <!-- BOTTOM SHARE BAR (Inline: "Share:" + Icons) -->
+        <div class="pt-3 border-t border-slate-200/60 flex items-center flex-wrap gap-2.5">
+          <span class="text-xs sm:text-sm font-black text-slate-800 tracking-wide uppercase">Share:</span>
+          <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <a id="share-wa-bottom" href="#" target="_blank" class="post-share-circle bg-[#25D366] hover:bg-[#1ebe5d]" title="Bagikan ke WhatsApp" aria-label="WhatsApp">
+              <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24zm4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.54.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3z"/></svg>
+            </a>
+            <a id="share-fb-bottom" href="#" target="_blank" class="post-share-circle bg-[#1877F2] hover:bg-[#166fe5]" title="Bagikan ke Facebook" aria-label="Facebook">
+              <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a id="share-tw-bottom" href="#" target="_blank" class="post-share-circle bg-[#000000] hover:bg-slate-900" title="Bagikan ke X" aria-label="X">
+              <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a id="share-tg-bottom" href="#" target="_blank" class="post-share-circle bg-[#229ED9] hover:bg-[#1d8bc0]" title="Bagikan ke Telegram" aria-label="Telegram">
+              <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+            </a>
+            <button id="share-copy-bottom" class="post-share-circle bg-slate-700 hover:bg-buser-red transition-colors" title="Salin Tautan Berita" aria-label="Copy Link">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hidden Author & Sign-off Elements (Backwards-compatibility for PHP regex & API) -->
+        <div class="hidden" aria-hidden="true">
+          <span id="article-author-bottom-name">Al Bahri</span>
+          <span id="article-author-bottom-role">Wartawan</span>
+          <span id="article-author-bottom-bio"></span>
+          <span id="article-signoff-author">Al Bahri</span>
+          <span id="article-signoff-editor">Al Bahri</span>
+        </div>
+
+        <!-- TAGS CONTAINER (Tabaca Style Soft Pill Tags) -->
+        <div class="mt-4 mb-6">
+          <span class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-2">Topik Terkait:</span>
           <div id="article-tags-container" class="flex flex-wrap gap-2">
             <!-- Injected by article.js -->
           </div>
@@ -232,17 +376,11 @@
           </div>
         </div>
 
-        <!-- SLOT IKLAN: ARTIKEL BAWAH (SEBELUM KOMENTAR) -->
-        <div data-ad-slot="article_bottom" class="w-full my-6"></div>
-
-        <!-- READER COMMENTS SECTION -->
+        <!-- READER COMMENTS SECTION (Langsung di akhir berita & reaksi pembaca) -->
         <div class="mt-8 pt-6 border-t border-slate-200">
-          <div class="section-heading-bar mb-4 justify-between">
-            <div class="flex items-center space-x-2">
-              <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
-              <h3 class="text-base font-black uppercase text-slate-900">Komentar Pembaca</h3>
-            </div>
-            <span class="text-xs text-slate-400 font-medium">Komentar santun & patuhi hukum</span>
+          <div class="block-title-tabaca flex items-center justify-between">
+            <span class="title">Komentar Pembaca</span>
+            <span class="text-xs text-slate-400 font-normal">Komentar santun & patuhi etika</span>
           </div>
 
           <!-- Comment Form -->
@@ -251,7 +389,7 @@
               <input type="text" id="comment-name" required placeholder="Nama Lengkap Anda..." class="w-full text-xs p-3 bg-white border border-slate-200 rounded-xl focus:border-buser-red focus:outline-none" />
               <input type="email" id="comment-email" placeholder="Email (tidak akan dipublikasikan)..." class="w-full text-xs p-3 bg-white border border-slate-200 rounded-xl focus:border-buser-red focus:outline-none" />
             </div>
-            <textarea id="comment-text" required rows="3" placeholder="Tuliskan pandangan atau tanggapan Anda..." class="w-full text-xs p-3 bg-white border border-slate-200 rounded-xl focus:border-buser-red focus:outline-none"></textarea>
+            <textarea id="comment-text" required rows="3" placeholder="Tuliskan tanggapan atau pandangan Anda terkait artikel ini..." class="w-full text-xs p-3 bg-white border border-slate-200 rounded-xl focus:border-buser-red focus:outline-none"></textarea>
             <div class="flex justify-end">
               <button type="submit" class="bg-buser-red hover:bg-buser-redHover text-white px-6 py-2.5 text-xs font-bold rounded-full transition-all shadow-xs">
                 Kirim Komentar
@@ -273,47 +411,63 @@
           </div>
         </div>
 
-        <!-- BERITA TERKAIT (3-4 Related Articles) -->
-        <div class="mt-10 pt-6 border-t-2 border-slate-100">
-          <div class="section-heading-bar mb-5 justify-between">
-            <div class="flex items-center space-x-2">
-              <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
-              <h3 class="text-base sm:text-lg font-black uppercase tracking-tight text-slate-900">
-                Berita Terkait
-              </h3>
-            </div>
-            <span class="text-xs text-slate-400 font-medium">Rekomendasi Editor</span>
+        <!-- BLOK BERITA TERKAIT (Tabaca Style with Accent Left Bar & 3-Col Grid) -->
+        <section class="mt-8 pt-6 border-t border-slate-200">
+          <div class="block-title-tabaca flex items-center justify-between">
+            <span class="title">Berita Terkait</span>
+            <span class="text-[11px] sm:text-xs text-slate-400 font-medium">Rekomendasi Berita Paling Relevan</span>
           </div>
-
-          <div id="related-articles-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div id="related-articles-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-4.5">
             <!-- Populated by article.js -->
           </div>
-        </div>
+        </section>
+
+        <!-- SLOT IKLAN: ARTIKEL BAWAH (SETELAH BERITA TERKAIT) -->
+        <div data-ad-slot="article_bottom" class="w-full my-6"></div>
+
+        <!-- BLOK BERITA TERKINI (Tabaca Style Horizontal List) -->
+        <section class="mt-8 pt-6 border-t border-slate-200">
+          <div class="block-title-tabaca">
+            <span class="title">Berita Terkini</span>
+          </div>
+          <div id="recent-articles-list" class="divide-y divide-slate-100">
+            <!-- Populated by article.js -->
+          </div>
+        </section>
 
       </article>
 
-      <!-- RIGHT COLUMN: SIDEBAR (4 cols) -->
+      <!-- RIGHT COLUMN: SIDEBAR (Tabaca Style with Numbered Popular & Thumb Widgets) -->
       <aside class="lg:col-span-4 space-y-6">
         
-        <!-- SIDEBAR TRENDING -->
-        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-soft">
-          <div class="section-heading-bar mb-4 justify-between">
-            <div class="flex items-center space-x-2">
-              <span class="w-1.5 h-4 bg-buser-red rounded-full inline-block"></span>
-              <h2 class="text-base font-black uppercase tracking-tight text-slate-900">
-                Trending Populer
-              </h2>
-            </div>
-            <span class="text-[10px] bg-rose-50 text-buser-red font-extrabold px-2.5 py-0.5 rounded-full">24 JAM</span>
-          </div>
+        <!-- SLOT IKLAN: SIDEBAR ATAS -->
+        <div data-ad-slot="sidebar" class="w-full"></div>
 
-          <div class="divide-y divide-slate-100" id="article-trending-feed">
-            <!-- Diisi dinamis dari database oleh article.js -->
+        <!-- WIDGET 1: BERITA POPULER (Tabaca Style with Numbered Counter 1 to 5) -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-soft">
+          <div class="widget-title-dashed">
+            <span>Berita Populer</span>
+          </div>
+          <div class="divide-y divide-dashed divide-slate-200" id="article-trending-feed">
+            <!-- Diisi dinamis oleh article.js (counter 1-5, title, category pill) -->
           </div>
         </div>
 
-        <!-- SLOT IKLAN: SIDEBAR -->
-        <div data-ad-slot="sidebar" class="w-full"></div>
+        <!-- SLOT IKLAN: SIDEBAR TENGAH -->
+        <div data-ad-slot="sidebar_middle" class="w-full"></div>
+
+        <!-- WIDGET 2: PILIHAN REDAKSI (Tabaca Style with Thumbnail List) -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-soft">
+          <div class="widget-title-dashed">
+            <span id="sidebar-category-widget-title">Pilihan Redaksi</span>
+          </div>
+          <div class="divide-y divide-dashed divide-slate-200" id="article-pilihan-feed">
+            <!-- Diisi dinamis oleh article.js (thumbnail list) -->
+          </div>
+        </div>
+
+        <!-- SLOT IKLAN: SIDEBAR BAWAH (Setelah Pilihan Redaksi - Pengganti Footer Desktop & Tablet) -->
+        <div data-ad-slot="sidebar_bottom" class="w-full"></div>
 
         <!-- SUBSCRIBE NEWSLETTER -->
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-2xl shadow-soft border-t-2 border-buser-red">
@@ -337,21 +491,20 @@
             Laporkan informasi atau klarifikasi pemberitaan langsung kepada meja redaksi:
           </p>
           <div class="space-y-2.5 text-xs font-medium">
-            <a href="https://wa.me/6282165071114" target="_blank" class="flex items-center text-emerald-700 font-bold hover:underline">
-              <span>WhatsApp: 082165071114</span>
+            <a href="https://wa.me/6282165071114" target="_blank" class="flex items-center text-emerald-700 font-bold hover:underline portal-hotline-link">
+              <span>WhatsApp: <span class="portal-hotline-text">082165071114</span></span>
             </a>
-            <a href="mailto:Japakehpost@gmail.com" class="flex items-center text-buser-red font-bold hover:underline">
-              <span>Email: Japakehpost@gmail.com</span>
+            <a href="mailto:alb4hri@gmail.com" class="flex items-center text-buser-red font-bold hover:underline portal-email-redaksi">
+              <span>Email: <span class="portal-email-text">alb4hri@gmail.com</span></span>
             </a>
           </div>
         </div>
-
       </aside>
 
     </div>
 
-    <!-- SLOT IKLAN: FOOTER BAWAH -->
-    <div data-ad-slot="footer" class="w-full mt-8"></div>
+    <!-- SLOT IKLAN: FOOTER BAWAH (Khusus Mobile) -->
+    <div data-ad-slot="footer" class="w-full mt-8 lg:hidden"></div>
   </main>
 
   <!-- FOOTER (Modern Deep Midnight Slate with Centered Navigation and Social Icons) -->
@@ -398,9 +551,10 @@
         </div>
       </div>
 
-      <!-- Bottom: Copyright aligned to right -->
-      <div class="pt-4 text-center lg:text-right text-[11px] text-slate-400">
-        &copy; 2026 Japakeh Post. All Rights Reserved.
+      <!-- Bottom: Office address & Copyright -->
+      <div class="pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2">
+        <div class="portal-office-address text-center sm:text-left">Gedung PT Japakeh Media Nusantara, Jl. Banda Aceh - Meulaboh Km. 8, Aceh Besar • WhatsApp: <a href="https://wa.me/6282165071114" class="portal-hotline-link text-slate-300 hover:text-white font-medium">082165071114</a></div>
+        <div>&copy; 2026 Japakeh Post. All Rights Reserved.</div>
       </div>
     </div>
   </footer>
@@ -501,11 +655,50 @@
     </div>
   </div>
 
+  <!-- LIGHTBOX MODAL: FULLSCREEN PHOTO VIEWER -->
+  <div id="gallery-lightbox-modal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex-col justify-between p-3 sm:p-6 transition-opacity duration-300">
+    <!-- Top Bar: Counter, Title, Close Button -->
+    <div class="flex items-center justify-between text-white/90 z-10">
+      <div class="flex items-center gap-2">
+        <span class="bg-buser-red text-white text-xs font-bold px-2.5 py-0.5 rounded-full">GALERI</span>
+        <span id="lightbox-counter" class="text-xs sm:text-sm font-medium text-white/80">Foto 1 dari 1</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" id="lightbox-close-btn" class="p-2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors" title="Tutup (Esc)">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Center Stage: Main Photo with Prev / Next Buttons -->
+    <div class="relative flex-1 flex items-center justify-center my-2 select-none">
+      <button type="button" id="lightbox-prev-btn" class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-buser-red text-white w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all z-20 backdrop-blur-sm border border-white/20 focus:outline-none" title="Sebelumnya (Panah Kiri)">
+        <svg class="w-6 h-6 -ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+
+      <img id="lightbox-main-img" src="" alt="Preview Foto" class="max-h-[75vh] max-w-[92vw] object-contain rounded-lg shadow-2xl transition-transform duration-200" />
+
+      <button type="button" id="lightbox-next-btn" class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-buser-red text-white w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all z-20 backdrop-blur-sm border border-white/20 focus:outline-none" title="Berikutnya (Panah Kanan)">
+        <svg class="w-6 h-6 -mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <!-- Bottom Bar: Caption & Mini Hint -->
+    <div class="text-center max-w-3xl mx-auto z-10 w-full space-y-1">
+      <p id="lightbox-caption" class="text-xs sm:text-sm text-white/90 bg-black/60 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/10 leading-relaxed max-h-24 overflow-y-auto">
+        Keterangan foto
+      </p>
+      <div class="text-[11px] text-white/40">
+        Tekan <kbd class="px-1.5 py-0.5 bg-white/10 rounded font-mono text-[10px]">Esc</kbd> untuk menutup &bull; Gunakan tombol panah keyboard &larr; &rarr;
+      </div>
+    </div>
+  </div>
+
   <!-- SCRIPTS -->
-  <script src="assets/js/news-data.js"></script>
-  <script src="assets/js/api-client.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/article.js"></script>
-  <script src="assets/js/ads-loader.js"></script>
+  <script src="assets/js/news-data.js?v=20260929_v1"></script>
+  <script src="assets/js/api-client.js?v=20260929_v1"></script>
+  <script src="assets/js/main.js?v=20260929_v1"></script>
+  <script src="assets/js/article.js?v=20261004_v3"></script>
+  <script src="assets/js/ads-loader.js?v=20260929_v1"></script>
 </body>
 </html>

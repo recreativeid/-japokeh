@@ -230,6 +230,10 @@ body {
 }
 .editor-content p {
   margin-bottom: 1.25rem;
+  min-height: 1.5rem;
+}
+.editor-content p:empty::before {
+  content: '\00a0';
 }
 .editor-content h2 {
   font-family: 'Inter', sans-serif;
@@ -256,6 +260,40 @@ body {
   background-color: #F9FAFB;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+.editor-content figure {
+  margin: 1.25rem 0;
+  text-align: center;
+}
+.editor-content figure img,
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin: 0 auto;
+}
+.editor-content figcaption {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #6B7280;
+  margin-top: 0.375rem;
+  font-style: italic;
+  text-align: center;
+}
+.editor-content .aspect-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 1.25rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #000;
+}
+.editor-content .aspect-video iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Toast Container */
@@ -609,4 +647,125 @@ input[type="radio"],
     max-width: none !important;
   }
 }
+
+/* Editor Link Card (admin): mini preview + selected state */
+#jp-link-preview-box .jp-link-card {
+  margin: 0;
+  background: #fff;
+  display: flex;
+  gap: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  text-decoration: none;
+}
+#jp-link-preview-box .jp-link-card__img {
+  width: 112px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+#jp-link-preview-box .jp-link-card__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+#jp-link-preview-box .jp-link-card__site {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  font-weight: 700;
+}
+#jp-link-preview-box .jp-link-card__title {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+#jp-link-preview-box .jp-link-card__desc {
+  font-size: 12px;
+  color: #475569;
+}
+#editor-body .jp-link-card {
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 16px 0;
+  background: #fff;
+  text-decoration: none;
+  user-select: none;
+}
+#editor-body .jp-link-card__img {
+  width: 112px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+#editor-body .jp-link-card__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+#editor-body .jp-link-card__site {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  font-weight: 700;
+}
+#editor-body .jp-link-card__title {
+  font-weight: 800;
+  color: #0f172a;
+}
+#editor-body .jp-link-card__desc {
+  font-size: 12px;
+  color: #475569;
+}
+#editor-body .jp-link-card.jp-link-selected {
+  outline: 2px solid #D71920;
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Link Modal & Popover Stacking / Layering Fix
+   Memastikan modal sisipkan link & popover kartu berada di atas #news-modal (z-index: 50)
+   ========================================================================== */
+#link-modal {
+  z-index: 100 !important;
+}
+
+#jp-link-popover {
+  z-index: 120 !important;
+}
+
+/* Mobile dialog sizing khusus #link-modal (hindari fullscreen stretch berlebih) */
+@media (max-width: 640px) {
+  #link-modal.modal-container {
+    padding: 1rem !important;
+    align-items: center !important;
+  }
+  #link-modal.modal-container > div {
+    height: auto !important;
+    max-height: 90vh !important;
+    border-radius: 0.875rem !important;
+    margin: auto !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45) !important;
+  }
+  #link-modal .space-y-4 {
+    max-height: calc(90vh - 120px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 
